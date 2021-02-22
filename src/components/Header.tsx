@@ -16,7 +16,9 @@ const useStyles = makeStyles((theme) => ({
   },
   appBar: {
     backgroundColor: "white",
-    color: "black"
+    color: "black",
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1)
   },
   logo: {
     marginRight: theme.spacing(2),
