@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
 import Header from './components/Header';
+import Login from './components/Login';
 
 const Home: FunctionComponent<{}> = () => <h1>Home Page</h1>;
 const Foo: FunctionComponent<{}> = () => <h1>Foo Page</h1>;
@@ -17,6 +18,7 @@ function App () {
             <Route exact path="/" component={Home} />
             <Route exact path="/foo" component={Foo} />
             <Route exact path="/bar" component={Bar} />
+            <Route exact path="/login" component={Login} />
             <Route path="/404" component={NotFound} />
             <Redirect to="/404" />
           </Switch>
