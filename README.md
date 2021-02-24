@@ -2,7 +2,7 @@
 The Frontend Application for Team Benedict Scrumberbatch's Peer Recognition Software for CS 320 @ UMass Amherst
 
 ## Getting Started with Create React App
-
+r
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 #### Available Scripts
