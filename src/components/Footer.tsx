@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-// Material UI Comopnents
+// Material UI Styling
+import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
+// Material UI Comopnents
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 
-const styles = (theme: any) => createStyles({
+const styles = (theme: Theme) => createStyles({
   grow: {
     flexGrow: 1,
   },

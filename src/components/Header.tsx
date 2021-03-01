@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-// Material UI Comopnents
+// Material UI Styling
+import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
+// Material UI Comopnents
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 // assets
 import UKGLogoImg from '../assets/img/1200px-UKG_(Ultimate_Kronos_Group)_logo.svg.png';
 import PlaceholderProfileImg from '../assets/img/kitten_placeholder.jpg'; 
 
-const styles = (theme: any) => createStyles({
+const styles = (theme: Theme) => createStyles({
   grow: {
     flexGrow: 1,
   },
