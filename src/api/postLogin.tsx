@@ -1,4 +1,4 @@
-type User = any
+import { User } from '../types/user';
 
 // Implementation code where T is the returned data shape
 export function postLogin<User>(url: string, username: string, password: string): Promise<User> {
