@@ -118,6 +118,8 @@ class Login extends Component<Props, MyState> {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={this.state.passwordFieldValue}
+                onChange={this._handlePasswordFieldChange}
               />
               <Button
                 type="submit"
