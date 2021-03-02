@@ -13,6 +13,8 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+// utils
+import { postLogin } from '../api/postLogin';
 
 const styles = (theme: Theme) => createStyles({
   paper: {
@@ -42,11 +44,41 @@ const styles = (theme: Theme) => createStyles({
   },
 });
 
-interface Props extends WithStyles<typeof styles>{ }
+interface Props extends WithStyles<typeof styles> { }
+type MyState = {
+  usernameFieldValue: string,
+  passwordFieldValue: string
+};
 
-class Login extends Component<Props> {
+class Login extends Component<Props, MyState> {
   constructor(props: any) {
-    super(props)
+    super(props);
+    this.state = {
+      usernameFieldValue: "",
+      passwordFieldValue: ""
+    }
+    // make sure the "this" variable keeps its scope
+    this._handleUsernameFieldChange = this._handleUsernameFieldChange.bind(this);
+    this._handlePasswordFieldChange = this._handlePasswordFieldChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit() {
+    console.log(`username: ${this.state.usernameFieldValue}`)
+    console.log(`password: ${this.state.passwordFieldValue}`)
+    // postLogin('http://localhost:3000/login', this.state.usernameFieldValue, this.state.passwordFieldValue)
+  }
+
+  _handleUsernameFieldChange(e: any): void {
+    this.setState({
+      usernameFieldValue: e.target.value
+    });
+  }
+
+  _handlePasswordFieldChange(e: any): void {
+    this.setState({
+      passwordFieldValue: e.target.value
+    });
   }
 
   render() {
@@ -62,7 +94,7 @@ class Login extends Component<Props> {
             <Typography component="h1" variant="h5">
               Login
             </Typography>
-            <form className={classes.form} noValidate>
+            <form className={classes.form} noValidate onSubmit={this.handleSubmit}>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -73,6 +105,8 @@ class Login extends Component<Props> {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={this.state.usernameFieldValue}
+                onChange={this._handleUsernameFieldChange}
               />
               <TextField
                 variant="outlined"
