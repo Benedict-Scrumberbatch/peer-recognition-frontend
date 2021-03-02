@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+// Routing
+import { Redirect } from 'react-router-dom';
 // Material UI Styling
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
@@ -46,16 +48,20 @@ const styles = (theme: Theme) => createStyles({
 
 interface Props extends WithStyles<typeof styles> { }
 type MyState = {
+  redirect: Boolean,
   usernameFieldValue: string,
-  passwordFieldValue: string
+  passwordFieldValue: string,
+  error: string
 };
 
 class Login extends Component<Props, MyState> {
   constructor(props: any) {
     super(props);
     this.state = {
+      redirect: false,
       usernameFieldValue: "",
-      passwordFieldValue: ""
+      passwordFieldValue: "",
+      error: ""
     }
     // make sure the "this" variable keeps its scope
     this._handleUsernameFieldChange = this._handleUsernameFieldChange.bind(this);
@@ -66,7 +72,18 @@ class Login extends Component<Props, MyState> {
   handleSubmit() {
     console.log(`username: ${this.state.usernameFieldValue}`)
     console.log(`password: ${this.state.passwordFieldValue}`)
-    // postLogin('http://localhost:3000/login', this.state.usernameFieldValue, this.state.passwordFieldValue)
+    // postLogin('http://localhost:4200/auth/login', this.state.usernameFieldValue, this.state.passwordFieldValue)
+    postLogin('http://localhost:4200/auth/login', "greg", "password1")
+      .then((data: any) => {
+        console.log(data);
+        this.setState({ redirect: true });
+        localStorage.setItem('access_token', data);
+      })
+      .catch(error => {
+        // show error message
+        console.log(error)
+        this.setState({ error: error })
+      })
   }
 
   _handleUsernameFieldChange(e: any): void {
@@ -82,6 +99,10 @@ class Login extends Component<Props, MyState> {
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to='/' />;
+    }
+
     const { classes } = this.props;
     return (
       <Container component="main" maxWidth="sm">
@@ -94,7 +115,7 @@ class Login extends Component<Props, MyState> {
             <Typography component="h1" variant="h5">
               Login
             </Typography>
-            <form className={classes.form} noValidate onSubmit={this.handleSubmit}>
+            <div className={classes.form}>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -127,6 +148,7 @@ class Login extends Component<Props, MyState> {
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                onClick={this.handleSubmit}
               >
                 LOG IN
               </Button>
@@ -142,7 +164,15 @@ class Login extends Component<Props, MyState> {
                   </Link>
                 </Grid>
               </Grid>
-            </form>
+            </div>
+            {
+              this.state.error === ""
+                ? <></>
+                :
+                <Container>
+                  <span>ERROR: {this.state.error}</span>
+                </Container>
+            }
           </div>
         </Paper>
       </Container>
