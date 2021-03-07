@@ -27,7 +27,7 @@ function App () {
         <Header />
         <div className={classes.content}>
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" component={() => (<Redirect to = "/login" />)} />
             <Route exact path="/foo" component={Foo} />
             <Route exact path="/bar" component={Bar} />
             <Route exact path="/login" component={Login} />
