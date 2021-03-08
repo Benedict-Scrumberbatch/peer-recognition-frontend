@@ -44,7 +44,8 @@ export default class MainApiProtected extends HttpClient {
   };
 
   private _handleRequest = (config: AxiosRequestConfig) => {
-    config.headers['Authorization'] = 'Bearer ...';
+    const access_token = localStorage.getItem('access_token')
+    config.headers['Authorization'] = `Bearer ${access_token}`;
     // request.headers.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTIzNDU2Nzg5IiwibmFtZSI6IlNhbXBsZSIsImlhdCI6MTUxNjIzODIzfQ.ZEBwz4pWYGqgFJc6DIi7HdTN0z5Pfs4Lcv4ZNwMr1rs';
   
     return config;
