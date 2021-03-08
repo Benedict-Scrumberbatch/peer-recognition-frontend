@@ -1,33 +1,7 @@
 // axios + TypeScript code from article: https://levelup.gitconnected.com/enhance-your-http-request-with-axios-and-typescript-f52a6c6c2c8e
-import axios, { AxiosInstance, AxiosResponse, AxiosRequestConfig } from 'axios';
+import HttpClient from './HTTPClient';
+import { AxiosRequestConfig } from 'axios';
 import { User } from '../types/user';
-
-declare module 'axios' {
-  interface AxiosResponse<T = any> extends Promise<T> {}
-}
-
-abstract class HttpClient {
-  protected readonly instance: AxiosInstance;
-
-  public constructor(baseURL: string) {
-    this.instance = axios.create({
-      baseURL,
-    });
-
-    this._initializeResponseInterceptor();
-  }
-
-  private _initializeResponseInterceptor = () => {
-    this.instance.interceptors.response.use(
-      this._handleResponse,
-      this._handleError,
-    );
-  };
-
-  private _handleResponse = ({ data }: AxiosResponse) => data;
-
-  protected _handleError = (error: any) => Promise.reject(error);
-}
 
 export default class MainApiProtected extends HttpClient {
   public constructor() {
