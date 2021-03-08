@@ -3,6 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { isAuthenticated } from '../api/authHelp';
 
 interface IProps {
+  path: string,
   component: React.FC<{}>;
   // any other props that come into the component
 }
