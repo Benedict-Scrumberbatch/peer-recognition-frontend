@@ -4,6 +4,7 @@ import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Header';
 import Login from './components/Login';
 import Footer from './components/Footer';
+import Home from './components/Home';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -28,9 +29,10 @@ function App () {
           <Switch>
             <Route exact path="/" component={Login} />
             <Route exact path="/foo" component={Foo} />
+            <Route exact path="/home" component={Home} />
             <PrivateRoute path="/profile" component={Foo} />
             <Route path="/404" component={NotFound} />
-            <Redirect to="/404" />
+            
           </Switch>
         </div>
         <Footer />
