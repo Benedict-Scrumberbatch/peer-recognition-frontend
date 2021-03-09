@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
+// Material UI Styling
+import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 // Material UI Comopnents
-import { makeStyles } from '@material-ui/core/styles';
-
-import Container from '@material-ui/core/Container';
+import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import Toolbar from '@material-ui/core/Toolbar';
 
-import AppBar from '@material-ui/core/AppBar';
-
-const useStyles = makeStyles((theme) => ({
+const styles = (theme: Theme) => createStyles({
   grow: {
     flexGrow: 1,
   },
@@ -18,18 +17,27 @@ const useStyles = makeStyles((theme) => ({
     color: 'black',
     alignItems: 'center',
   },
-}));
+});
 
-export default function Footer() {
-  const classes = useStyles();
+interface Props extends WithStyles<typeof styles>{ }
 
-  return (
-    <AppBar position="static" className={classes.appBar}>
-      <Toolbar>
-        <Typography variant="body1">
-          &copy; 2021 UKG
-        </Typography>
-      </Toolbar>
-    </AppBar>
-  )
+class Footer extends Component<Props> {
+  constructor(props: any) {
+    super(props)
+  }
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <AppBar position="static" className={classes.appBar}>
+        <Toolbar>
+          <Typography variant="body1">
+            &copy; 2021 UKG
+          </Typography>
+        </Toolbar>
+      </AppBar>
+    )
+  }
 }
+
+export default withStyles(styles, { withTheme: true })(Footer);
