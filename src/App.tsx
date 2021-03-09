@@ -2,8 +2,9 @@ import React, { FunctionComponent } from 'react';
 import { BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
 import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Header';
-import Login from './components/Login';
 import Footer from './components/Footer';
+import Login from './components/Login';
+import Feed from './components/Feed';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -28,6 +29,9 @@ function App () {
           <Switch>
             <Route exact path="/" component={Login} />
             <Route exact path="/foo" component={Foo} />
+            <Route exact path="/bar" component={Bar} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/feed" component={Feed} />
             <PrivateRoute path="/profile" component={Foo} />
             <Route path="/404" component={NotFound} />
             <Redirect to="/404" />
