@@ -2,6 +2,9 @@
     // Use IntelliSense to learn about possible attributes.
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+
+    //NOTE: need to have the server running, ie need to have the frontend running for the debugger to function properly.
+
     "version": "0.2.0",
     "configurations": [
         {
