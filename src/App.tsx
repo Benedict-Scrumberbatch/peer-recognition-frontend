@@ -5,11 +5,13 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Login from './components/Login';
 import Feed from './components/Feed';
+import Profile from './components/Profile';
 
 import { makeStyles } from '@material-ui/core/styles';
 
 
 const Foo: FunctionComponent<{}> = () => <h1>Foo Page</h1>;
+const Bar: FunctionComponent<{}> = () => <h1>Bar Page</h1>;
 const NotFound: FunctionComponent<{}> = () => <h1>Not Found</h1>;
 
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +34,7 @@ function App () {
             <Route exact path="/bar" component={Bar} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/feed" component={Feed} />
-            <PrivateRoute path="/profile" component={Foo} />
+            <PrivateRoute path="/profile" component={Profile} />
             <Route path="/404" component={NotFound} />
             <Redirect to="/404" />
           </Switch>
