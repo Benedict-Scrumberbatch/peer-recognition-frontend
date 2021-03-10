@@ -72,8 +72,7 @@ class Login extends Component<Props, MyState> {
   handleSubmit() {
     console.log(`username: ${this.state.usernameFieldValue}`)
     console.log(`password: ${this.state.passwordFieldValue}`)
-    // postLogin('http://localhost:4200/auth/login', this.state.usernameFieldValue, this.state.passwordFieldValue)
-    postLogin('http://localhost:4200/auth/login', "greg", "password1")
+    postLogin('http://localhost:4200/auth/login', this.state.usernameFieldValue, this.state.passwordFieldValue)
       .then((data: any) => {
         console.log(data);
         this.setState({ redirect: true });
@@ -99,8 +98,8 @@ class Login extends Component<Props, MyState> {
   }
 
   render() {
-    if (this.state.redirect) {
-      return <Redirect to='/' />;
+    if (localStorage.getItem("access_token") !== null && this.state.redirect) {
+      return <Redirect to='/profile' />;
     }
 
     const { classes } = this.props;
