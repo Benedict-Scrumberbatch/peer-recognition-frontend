@@ -1,19 +1,27 @@
-import React, { Component } from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { isAuthenticated } from '../api/authHelp';
+import * as React from 'react';
+import {
+  Route,
+  Redirect,
+  RouteProps,
+} from 'react-router-dom';
+import auth from '../api/authHelper'
 
-interface IProps {
-  path: string,
-  component: React.FC<{}>;
-  // any other props that come into the component
+interface PrivateRouteProps extends RouteProps {
+  // tslint:disable-next-line:no-any
+  component: any;
+  path: string;
 }
 
-export default function PrivateRoute({ component, ...rest }: IProps) {
+const PrivateRoute = (props: PrivateRouteProps) => {
+  const { component: Component, ...rest } = props;
+
   return (
     <Route {...rest} render={(props) => (
-      isAuthenticated()
+      auth.isAuthenticated()
         ? <Component {...props} />
-        : <Redirect to='/login' />
+        : <Redirect to='/' />
     )} />
   )
 }
+
+export default PrivateRoute;
