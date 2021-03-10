@@ -26,8 +26,8 @@ const styles = (theme: Theme) => createStyles({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
-    width: '200px',
-    height: '200px'
+    width: '125px',
+    height: '125px'
   },
   profilePicLink: {
     color: "#808080"
@@ -55,7 +55,7 @@ class Profile extends Component<Props> {
         <Paper elevation={3} className={classes.paper}>
           <div className={classes.wrapper}>
             <Avatar alt="profile photo" src={PlaceholderProfileImg} className={classes.avatar} />
-            <Typography component="h1" variant="h3">
+            <Typography component="h1" variant="h4">
               John Doe
             </Typography>
             <Typography>

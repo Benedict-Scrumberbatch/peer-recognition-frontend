@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
 import Header from './components/Header';
 import Login from './components/Login';
 import Profile from './components/Profile';
+import Post from './components/Post';
 import Footer from './components/Footer';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -33,6 +34,7 @@ function App () {
             <Route exact path="/bar" component={Bar} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/profile" component={Profile} />
+            <Route exact path="/post" component={Post} />
             <Route path="/404" component={NotFound} />
             <Redirect to="/404" />
           </Switch>
