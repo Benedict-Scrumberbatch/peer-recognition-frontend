@@ -80,9 +80,9 @@ class Login extends Component<Props, MyState> {
       .then((data: any) => {
         console.log(data);
         this.setState({ redirect: true });
-				auth.authenticate(data, () => {
-					this.setState({ redirect: true });
-				});
+        auth.authenticate(data, () => {
+          this.setState({ redirect: true });
+        });
       })
       .catch(error => {
         // show error message
@@ -103,6 +103,13 @@ class Login extends Component<Props, MyState> {
     });
   }
 
+  componentWillUnmount() {
+    // fix Warning: Can't perform a React state update on an unmounted component
+    this.setState = (state, callback) => {
+      return;
+    };
+  }
+
   render() {
     if (auth.isAuthenticated() || this.state.redirect) {
       return <Redirect to='/profile' />;
@@ -120,7 +127,7 @@ class Login extends Component<Props, MyState> {
             <Typography component="h1" variant="h5">
               Login
             </Typography>
-            <div className={classes.form}>
+            <form className={classes.form} noValidate>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -169,7 +176,7 @@ class Login extends Component<Props, MyState> {
                   </Link>
                 </Grid>
               </Grid>
-            </div>
+            </form>
             {
               this.state.error === ""
                 ? <></>
