@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-// Material UI Components
-import { makeStyles } from '@material-ui/core/styles';
+import React, { Component } from 'react';
+// Material UI Styling
+import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
+// Material UI Comopnents
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 // Custom Components
 import Searchbar from './Searchbar';
 import Post from './Post';
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme: Theme) => createStyles({
   grow: {
     marginTop: theme.spacing(4)
   },
@@ -44,36 +46,43 @@ const useStyles = makeStyles((theme) => ({
   postItem: {
     padding: theme.spacing(1)
   }
-}));
+});
 
-export default function Feed() {
-  const classes = useStyles();  
-  const [postList, setPostList] = useState([
-    {},
-    {},
-    {}
-  ])
+interface Props extends WithStyles<typeof styles>{ }
 
-  return (
-    <Container maxWidth="lg">
-      <div className={classes.grow} />
-      <Container maxWidth="md" className={classes.searchWrapper}>
-        <Searchbar />
+class Profile extends Component<Props, any> {
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      postList: [{}, {}, {}, {}]
+    }
+  }
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <Container maxWidth="lg">
+        <div className={classes.grow} />
+        <Container maxWidth="md" className={classes.searchWrapper}>
+          <Searchbar />
+        </Container>
+        <div className={classes.buttonList}>
+          <Button variant="contained" className={classes.buttonItem}>{"Create a Post"}</Button>
+          <Button variant="contained" className={classes.buttonItem}>{"See My Posts"}</Button>
+        </div>
+        <div className={classes.postList}>
+          {this.state.postList.map((val: any, idx: number) => {
+            // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
+            return (
+              <div key={idx} className={classes.postItem}>
+                <Post />
+              </div>
+            )
+          })}
+        </div>
       </Container>
-      <div className={classes.buttonList}>
-        <Button variant="contained" className={classes.buttonItem}>{"Create a Post"}</Button>
-        <Button variant="contained" className={classes.buttonItem}>{"See My Posts"}</Button>
-      </div>
-      <div className={classes.postList}>
-        {postList.map((val, idx) => {
-          // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
-          return (
-            <div className={classes.postItem}>
-              <Post />
-            </div>
-          )
-        })}
-      </div>
-    </Container>
-  )
+    )
+  }
 }
+
+export default withStyles(styles, { withTheme: true })(Profile);  
