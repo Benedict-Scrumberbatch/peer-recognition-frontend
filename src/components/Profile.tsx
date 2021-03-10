@@ -42,7 +42,7 @@ const styles = (theme: Theme) => createStyles({
 
 interface Props extends WithStyles<typeof styles>{ }
 
-class Profile extends Component<Props, any> {
+class Profile extends Component<Props> {
   constructor(props: any) {
     super(props)
   }
