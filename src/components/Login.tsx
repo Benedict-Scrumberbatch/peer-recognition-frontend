@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 // Material UI Styling
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
-// Material UI Comopnents
+// Material UI Components
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -15,8 +15,11 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+// Material UI Lab Components
+import Alert from '@material-ui/lab/Alert';
 // utils
 import { postLogin } from '../api/postLogin';
+import auth from '../api/authHelper';
 
 const styles = (theme: Theme) => createStyles({
   paper: {
@@ -72,16 +75,19 @@ class Login extends Component<Props, MyState> {
   handleSubmit() {
     console.log(`username: ${this.state.usernameFieldValue}`)
     console.log(`password: ${this.state.passwordFieldValue}`)
+    // {"username":"greg", "password":"password1"}
     postLogin('http://localhost:4200/auth/login', this.state.usernameFieldValue, this.state.passwordFieldValue)
       .then((data: any) => {
         console.log(data);
         this.setState({ redirect: true });
-        localStorage.setItem('access_token', data);
+				auth.authenticate(data, () => {
+					this.setState({ redirect: true });
+				});
       })
       .catch(error => {
         // show error message
         console.log(error)
-        this.setState({ error: error })
+        this.setState({ error: error.message })
       })
   }
 
@@ -98,8 +104,8 @@ class Login extends Component<Props, MyState> {
   }
 
   render() {
-    if (localStorage.getItem("access_token") !== null && this.state.redirect) {
-      return <Redirect to='/profile' />;
+    if (auth.isAuthenticated() || this.state.redirect) {
+      return <Redirect to='/feed' />;
     }
 
     const { classes } = this.props;
@@ -168,9 +174,7 @@ class Login extends Component<Props, MyState> {
               this.state.error === ""
                 ? <></>
                 :
-                <Container>
-                  <span>ERROR: {this.state.error}</span>
-                </Container>
+                <Alert severity="error">ERROR: {this.state.error}</Alert>
             }
           </div>
         </Paper>
