@@ -31,7 +31,6 @@ function App () {
           <Switch>
             <Route exact path="/" component={Login} />
             <Route exact path="/foo" component={Foo} />
-            <Route exact path="/bar" component={Bar} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/feed" component={Feed} />
             <PrivateRoute path="/profile" component={Profile} />
