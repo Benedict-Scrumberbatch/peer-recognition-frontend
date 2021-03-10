@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import Home from './components/Home';
 import Login from './components/Login';
 import Feed from './components/Feed';
+import Profile from './components/Profile';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -29,14 +30,12 @@ function App () {
         <div className={classes.content}>
           <Switch>
             <Route exact path="/" component={Login} />
-            <Route exact path="/foo" component={Foo} />
-            <Route exact path="/home" component={Home} />
-            <Route exact path="/bar" component={Bar} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/feed" component={Feed} />
-            <PrivateRoute path="/profile" component={Foo} />
+            <Route path="/foo" component={Foo} />
+            <Route path="/home" component={Home} />
+            <Route path="/login" component={Login} />
+            <PrivateRoute path="/feed" component={Feed} />
+            <PrivateRoute path="/profile" component={Profile} />
             <Route path="/404" component={NotFound} />
-            
           </Switch>
         </div>
         <Footer />
