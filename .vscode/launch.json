@@ -3,10 +3,11 @@
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 
-    //NOTE: need to have the server running, ie need to have the frontend running for the debugger to function properly.
-    //to use:
-    // have debugger for chrome extenstion installed, npm run start on the frontend, then click run->start debugging in vscode.
-
+    // How to Use:
+    // - install Debugger for Chrome
+    // - run server (`npm run start`)
+    // - VSCode -> Run -> Start Debuggin
+    
     "version": "0.2.0",
     "configurations": [
         {
