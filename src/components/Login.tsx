@@ -105,7 +105,7 @@ class Login extends Component<Props, MyState> {
 
   render() {
     if (auth.isAuthenticated() || this.state.redirect) {
-      return <Redirect to='/feed' />;
+      return <Redirect to='/profile' />;
     }
 
     const { classes } = this.props;
