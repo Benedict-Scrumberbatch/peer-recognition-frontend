@@ -22,7 +22,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
-import BackgroundStar from '../../assets/img/lime-green-star.jpg';
+import BackgroundStar from '../../assets/img/lime-green-star.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
