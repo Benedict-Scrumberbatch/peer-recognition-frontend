@@ -6,7 +6,7 @@ import Footer from './components/Footer';
 import Home from './components/Home';
 import Login from './components/Login';
 import Feed from './components/Feed';
-import Settings from './components/Settings';
+import Settings from './components/Private/Settings';
 import Profile from './components/Private/Profile';
 
 import { makeStyles } from '@material-ui/core/styles';
