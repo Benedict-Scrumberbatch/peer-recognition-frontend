@@ -26,8 +26,8 @@ const styles = (theme: Theme) => createStyles({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
-    width: '125px',
-    height: '125px'
+    width: theme.spacing(7),
+    height: theme.spacing(7)
   },
   profilePicLink: {
     color: "#808080"
