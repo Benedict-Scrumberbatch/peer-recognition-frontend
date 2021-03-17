@@ -54,10 +54,13 @@ class Settings extends Component<Props,State> {
     super(props)
     this.state = {
         contactOpen : false,
-        passwordOpen : false
+        passwordOpen : false,
     }
     this.handleContactOpen = this.handleContactOpen.bind(this)
     this.handleContactClose = this.handleContactClose.bind(this)
+    this.handlePasswordOpen = this.handlePasswordOpen.bind(this)
+    this.handlePasswordClose = this.handlePasswordClose.bind(this)
+    
   }
 
   handleContactOpen = () => {
