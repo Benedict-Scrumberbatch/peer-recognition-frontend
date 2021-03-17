@@ -15,7 +15,6 @@ import Paper from '@material-ui/core/Paper';
 import PlaceholderProfileImg from '../assets/img/kitten_placeholder.jpg'; 
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 const styles = (theme: Theme) => createStyles({
@@ -47,29 +46,41 @@ const styles = (theme: Theme) => createStyles({
 });
 
 
-type State = { open: boolean };
+type State = { contactOpen: boolean, passwordOpen : boolean };
 interface Props extends WithStyles<typeof styles>{ }
 
 class Settings extends Component<Props,State> {
   constructor(props: any) {
     super(props)
     this.state = {
-        open : false
+        contactOpen : false,
+        passwordOpen : false
     }
-    this.handleOpen = this.handleOpen.bind(this)
-    this.handleClose = this.handleClose.bind(this)
+    this.handleContactOpen = this.handleContactOpen.bind(this)
+    this.handleContactClose = this.handleContactClose.bind(this)
   }
 
-  
-  handleOpen = () => {
+  handleContactOpen = () => {
     this.setState({
-        open : true
+        contactOpen : true
     })
   };
 
-  handleClose = () => {
+  handleContactClose = () => {
     this.setState({
-        open : false
+        contactOpen : false
+    })
+  };
+
+  handlePasswordOpen = () => {
+    this.setState({
+        passwordOpen : true
+    })
+  };
+
+  handlePasswordClose = () => {
+    this.setState({
+        passwordOpen : false
     })
   };
 
@@ -87,47 +98,90 @@ class Settings extends Component<Props,State> {
             <Typography>
               <Link href="#" className={classes.profilePicLink}>Change profile picture</Link>
             </Typography>
-            <Typography className={classes.statistics}> 
+            <Typography className={classes.statistics}>
               Email: JDoe@ukg.com
             </Typography>
-            <Typography> 
+            <Typography>
               Phone Number: (401)-867-5309
             </Typography>
-            <Button variant="outlined" color="primary" className={classes.buttons} onClick={this.handleOpen}>
-              Edit Contact Info
+
+
+            <div id="edit-contact-info">
+              <Button variant="outlined" color="primary" className={classes.buttons} onClick={this.handleContactOpen}>
+                Edit Contact Info
             </Button>
-            <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" >
-              <DialogTitle id="form-dialog-title">Change Contact Info</DialogTitle>
-              <DialogContent>
-            <TextField disabled id="old-email" label="Old-Email" defaultValue="JDoe@ukg.com"/>
-                <TextField
-                  margin="dense"
-                  id="new-email"
-                  label="New email"
-                  type="email"
-                  fullWidth
-                />
-                <TextField disabled id="old-phone-number" label="Old Phone Number" defaultValue="(401)-867-5309)"/>
-                <TextField
-                  margin="dense"
-                  id="new-phone-number"
-                  label="New Phone Number"
-                  type='phone-number'
-                  fullWidth
-                />
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={this.handleClose}>
-                  Cancel
+              <Dialog open={this.state.contactOpen} onClose={this.handleContactClose} aria-labelledby="form-dialog-title" >
+                <DialogTitle id="form-dialog-title">Change Contact Info</DialogTitle>
+                <DialogContent>
+                  <TextField disabled id="old-email" label="Old-Email" defaultValue="JDoe@ukg.com" />
+                  <TextField
+                    margin="dense"
+                    id="new-email"
+                    label="New email"
+                    type="email"
+                    fullWidth
+                  />
+                  <TextField disabled id="old-phone-number" label="Old Phone Number" defaultValue="(401)-867-5309" />
+                  <TextField
+                    margin="dense"
+                    id="new-phone-number"
+                    label="New Phone Number"
+                    type='number'
+                    fullWidth
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handleContactClose}>
+                    Cancel
           </Button>
-                <Button onClick={this.handleClose} >
-                  Save
+                  <Button onClick={this.handleContactClose} >
+                    Save
           </Button>
-              </DialogActions>
-            </Dialog>
-            <Button variant="contained" color="primary" className={classes.buttons}>
-              Change Password
+                </DialogActions>
+              </Dialog>
+            </div>
+
+
+            <div id="edit-password">
+              <Button variant="outlined" color="primary" className={classes.buttons} onClick={this.handlePasswordOpen}>
+                Change Password
             </Button>
+              <Dialog open={this.state.passwordOpen} onClose={this.handlePasswordClose} aria-labelledby="form-dialog-title" >
+                <DialogTitle id="form-dialog-title">Change Password</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    margin="dense"
+                    id="old-password"
+                    label="Old password"
+                    type="password"
+                    fullWidth
+                  />
+                  <TextField
+                    margin="dense"
+                    id="new-password"
+                    label="New Password"
+                    type='password'
+                    fullWidth
+                  />
+                  <TextField
+                    margin="dense"
+                    id="re-enter-new-password"
+                    label="Re-enter New Password"
+                    type='password'
+                    fullWidth
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handlePasswordClose}>
+                    Cancel
+          </Button>
+                  <Button onClick={this.handlePasswordClose} >
+                    Save
+          </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
+
             
 
           </div>
