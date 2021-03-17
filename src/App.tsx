@@ -7,6 +7,7 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Feed from './components/Feed';
 import Profile from './components/Profile';
+import Settings from './components/Settings';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -35,6 +36,7 @@ function App () {
             <Route path="/login" component={Login} />
             <PrivateRoute path="/feed" component={Feed} />
             <PrivateRoute path="/profile" component={Profile} />
+            <PrivateRoute path="/settings" component={Settings} />
             <Route path="/404" component={NotFound} />
           </Switch>
         </div>
