@@ -12,7 +12,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import PlaceholderProfileImg from '../assets/img/kitten_placeholder.jpg'; 
+import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg'; 
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
