@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 // Material UI Styling
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
+import {Grid, Modal, Dialog} from "@material-ui/core";
+import TextField from '@material-ui/core/TextField';
 // Material UI Comopnents
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
@@ -11,6 +13,10 @@ import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import PlaceholderProfileImg from '../assets/img/kitten_placeholder.jpg'; 
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const styles = (theme: Theme) => createStyles({
   paper: {
@@ -44,7 +50,7 @@ const styles = (theme: Theme) => createStyles({
 type State = { open: boolean };
 interface Props extends WithStyles<typeof styles>{ }
 
-class Settings extends Component<Props> {
+class Settings extends Component<Props,State> {
   constructor(props: any) {
     super(props)
     this.state = {
@@ -87,13 +93,43 @@ class Settings extends Component<Props> {
             <Typography> 
               Phone Number: (401)-867-5309
             </Typography>
-            <Button variant="outlined" color="primary" className={classes.buttons}>
+            <Button variant="outlined" color="primary" className={classes.buttons} onClick={this.handleOpen}>
               Edit Contact Info
             </Button>
+            <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" >
+              <DialogTitle id="form-dialog-title">Change Contact Info</DialogTitle>
+              <DialogContent>
+            <TextField disabled id="old-email" label="Old-Email" defaultValue="JDoe@ukg.com"/>
+                <TextField
+                  margin="dense"
+                  id="new-email"
+                  label="New email"
+                  type="email"
+                  fullWidth
+                />
+                <TextField disabled id="old-phone-number" label="Old Phone Number" defaultValue="(401)-867-5309)"/>
+                <TextField
+                  margin="dense"
+                  id="new-phone-number"
+                  label="New Phone Number"
+                  type='phone-number'
+                  fullWidth
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.handleClose}>
+                  Cancel
+          </Button>
+                <Button onClick={this.handleClose} >
+                  Save
+          </Button>
+              </DialogActions>
+            </Dialog>
             <Button variant="contained" color="primary" className={classes.buttons}>
               Change Password
             </Button>
             
+
           </div>
         </Paper>
       </Container>
