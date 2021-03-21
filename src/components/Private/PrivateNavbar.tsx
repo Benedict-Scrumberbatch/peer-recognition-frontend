@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 // Material UI Styling
 import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
 // Material UI Components
@@ -8,9 +8,10 @@ import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -23,6 +24,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
+// api
+import auth from '../../api/authHelper';
 /*
   Navigation Menu holds
     - navbar (for settings)
@@ -113,10 +116,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: 'auto',
   },
 }));
-    
 
 export default function PersistentDrawerLeft(props: any) {
   const classes = useStyles();
+  let history = useHistory();
+
+  function handleClick() {
+    history.push("/home");
+  }
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -150,6 +158,12 @@ export default function PersistentDrawerLeft(props: any) {
           >
             <MenuIcon />
           </IconButton>
+          <div className={classes.grow} />
+          {auth.isAuthenticated() &&
+            <div>
+              <Button variant="contained" onClick={() => auth.signout(() => history.push("/"))}>Signout</Button>
+            </div>
+          }
         </Toolbar>
       </AppBar>
       <Drawer
@@ -172,7 +186,7 @@ export default function PersistentDrawerLeft(props: any) {
           <List>
             {routeData.map((obj: any, idx: Number) => {
               return (
-                <Link to={obj.link} key={obj.text + idx} style={{textDecoration: 'none', color: 'black' }}>
+                <Link to={obj.link} key={obj.text + idx} style={{ textDecoration: 'none', color: 'black' }}>
                   <li>
                     <ListItem button>
                       <ListItemIcon>{obj.iconFunc()}</ListItemIcon>
