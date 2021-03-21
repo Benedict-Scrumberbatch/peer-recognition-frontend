@@ -4,7 +4,8 @@ import {
   Redirect,
   RouteProps,
 } from 'react-router-dom';
-import auth from '../api/authHelper'
+import PrivateNavbar from './PrivateNavbar';
+import auth from '../../api/authHelper'
 
 interface PrivateRouteProps extends RouteProps {
   // tslint:disable-next-line:no-any
@@ -18,7 +19,10 @@ const PrivateRoute = (props: PrivateRouteProps) => {
   return (
     <Route {...rest} render={(props) => (
       auth.isAuthenticated()
-        ? <Component {...props} />
+        ?
+        <PrivateNavbar>
+          <Component {...props} />
+        </PrivateNavbar>
         : <Redirect to='/' />
     )} />
   )

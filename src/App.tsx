@@ -1,12 +1,13 @@
 import React, { FunctionComponent } from 'react';
 import { BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
-import PrivateRoute from './components/PrivateRoute';
+import PrivateRoute from './components/Private/PrivateRoute';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './components/Home';
 import Login from './components/Login';
 import Feed from './components/Feed';
-import Profile from './components/Profile';
+import Settings from './components/Private/Settings';
+import Profile from './components/Private/Profile';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -35,6 +36,7 @@ function App () {
             <Route path="/login" component={Login} />
             <PrivateRoute path="/feed" component={Feed} />
             <PrivateRoute path="/profile" component={Profile} />
+            <PrivateRoute path="/settings" component={Settings} />
             <Route path="/404" component={NotFound} />
           </Switch>
         </div>
