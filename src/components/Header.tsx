@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
-// routing
-import { withRouter } from 'react-router-dom';
-import { RouteComponentProps } from "react-router";
 // Material UI Styling
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 // Material UI Comopnents
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
 // assets
 import UKGLogoImg from '../assets/img/1200px-UKG_(Ultimate_Kronos_Group)_logo.svg.png';
 import PlaceholderProfileImg from '../assets/img/kitten_placeholder.jpg'; 
-// api
-import auth from '../api/authHelper';
 
 const styles = (theme: Theme) => createStyles({
   grow: {
@@ -37,37 +31,22 @@ const styles = (theme: Theme) => createStyles({
   }
 });
 
-type StylesProps = any;
-type RouterProps = any;
-type ComponentProps = any;
-/*
-interface ComponentProps {
-  currency: string;
-  data: any;
-  header: any;
-  operation : any;
-}
-*/
+interface Props extends WithStyles<typeof styles>{ }
 
-class Header extends React.Component<ComponentProps & StylesProps & RouterProps>  {
+class Header extends Component<Props> {
   constructor(props: any) {
-    super(props);
+    super(props)
   }
 
   render() {
-    const { classes, history } = this.props;
+    const { classes } = this.props;
     return (
       <div className={classes.grow}>
         <AppBar position="static" className={classes.appBar}>
           <Toolbar>
             <img src={UKGLogoImg} alt="logo" className={classes.logo} />
             <div className={classes.grow} />
-            {auth.isAuthenticated() &&
-            <div>
-              <img src={PlaceholderProfileImg} alt="profile photo" className={classes.profileCircle} />
-              <Button variant="contained" onClick={() => auth.signout(() => history.push("/"))}>Signout</Button>
-            </div> 
-            }
+            <img src={PlaceholderProfileImg} alt="profile photo" className={classes.profileCircle} />
           </Toolbar>
         </AppBar>
       </div>
@@ -75,4 +54,4 @@ class Header extends React.Component<ComponentProps & StylesProps & RouterProps>
   }
 }
 
-export default withStyles(styles, { withTheme: true })(withRouter(Header));
+export default withStyles(styles, { withTheme: true })(Header);
