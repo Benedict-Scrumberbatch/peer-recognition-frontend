@@ -5,11 +5,9 @@ import CardContent from '@material-ui/core/CardContent';
 import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
-
 
 import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
-import BackgroundStar from '../../assets/img/lime-green-star.png';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,10 +104,12 @@ export default function RockstarCard() {
             /></div>
             <div style={{position: 'relative', top: '-70px'}}>
             <div> <Typography variant="h5">
-              Snippets of what people said:
+              Some Quotes:
             </Typography> </div>
-            <div> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in ex enim. Duis eu erat urna. Nulla consequat, urna tincidunt mollis dapibus, 
-                    lacus libero tincidunt erat, non varius sapien arcu ac turpis. Fusce viverra blandit purus ac pellentesque. Nullam sed nisl erat.</div>
+            <div> 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in ex enim. Duis eu erat urna.</div>
+            <div> 2. Nulla consequat, urna tincidunt mollis dapibus, 
+                    lacus libero tincidunt erat, non varius sapien.</div>
+            <div> 3. Fusce viverra blandit purus ac pellentesque. Nullam sed nisl erat.</div>
             </div>
             </div>
           </CardContent>
