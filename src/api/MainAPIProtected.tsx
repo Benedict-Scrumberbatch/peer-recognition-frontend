@@ -5,7 +5,7 @@ import { User } from '../types/user';
 
 export default class MainApiProtected extends HttpClient {
   public constructor() {
-    super('https://api.awesome-site.com');
+    super('http://localhost:4200');
 
     this._initializeRequestInterceptor();
   }

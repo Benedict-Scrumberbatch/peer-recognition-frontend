@@ -4,7 +4,7 @@ import { User } from '../types/user';
 
 class MainApi extends HttpClient {
   public constructor() {
-    super('https://api.awesome-site.com');
+    super('http://localhost:4200');
   }
 
   public getUsers = () => this.instance.get<User[]>('/users');
