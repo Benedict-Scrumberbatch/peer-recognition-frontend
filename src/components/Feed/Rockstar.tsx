@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
     borderWidth: 4
   },
   profilePhoto: {
-    width: '75px',
-    height: '75px',
+    width: theme.spacing(10),
+    height: theme.spacing(10),
     borderRadius: '50%',
     objectFit: 'cover',
     padding: 20,
