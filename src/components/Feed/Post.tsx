@@ -2,7 +2,7 @@
 // component to recognize a person
 
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -13,9 +13,10 @@ import Link from '@material-ui/core/Link';
 
 import Box from '@material-ui/core/Box';
 
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
+import { green, red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 900,
     border: '2px solid',
-    borderColor: '#28AE7B',
+    borderColor: green['A400'],
     borderRadius: '15xpx',
     backgroundImage: `url(${BackgroundStar})`,
     backgroundRepeat: 'no-repeat',
@@ -60,13 +61,26 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: red[500],
   },
   themeColor: {
-    color: '#28AE7B'
+    color: green['A400']
   },
   themeBold: {
-    color: '#28AE7B',
+    color: green['A400'],
     marginTop: 10,
   },
+  buttons: {
+    margin: theme.spacing(2, 1, 0, 0)
+  },
 }));
+
+const ColorButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.getContrastText(green['A400']),
+    backgroundColor: green['A400'],
+    '&:hover': {
+      backgroundColor: green['A200'],
+    },
+  },
+}))(Button);
 
 export default function RecipeReviewCard() {
   const classes = useStyles();
@@ -75,7 +89,7 @@ export default function RecipeReviewCard() {
     <Card className={classes.root}>
       <Box display="flex" flexDirection="row" style={{ marginTop: 8}}>
         <div>
-          <img src={PlaceholderProfileImg} alt="profile photo" className={classes.profilePhoto} />
+          <img src={PlaceholderProfileImg} alt="profile" className={classes.profilePhoto} />
           <Typography variant="body2" color="textSecondary" style={{ marginLeft: 20 }}>
               September 14, 2016
           </Typography>
@@ -93,9 +107,28 @@ export default function RecipeReviewCard() {
             <Typography variant="body2" color="textSecondary" component="p" style={{ marginTop: 8 }}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
             </Typography>
-            <Box fontWeight="fontWeightBold" className={classes.themeBold}>
-              Congratulations - 10
-            </Box>
+            
+            <ColorButton variant="contained" color="primary" className={classes.buttons} disableElevation>
+              TEAMWORK - 2
+            </ColorButton>
+            <ColorButton variant="contained" color="primary" className={classes.buttons} disableElevation>
+              LEADERSHIP - 65
+            </ColorButton>
+            <ColorButton variant="contained" color="primary" className={classes.buttons} disableElevation>
+              ORGANIZATION - 11
+            </ColorButton>
+            <ColorButton variant="contained" color="primary" className={classes.buttons} disableElevation>
+              COMMUNICATION - 1
+            </ColorButton>
+            <ColorButton variant="contained" color="primary" className={classes.buttons} disableElevation>
+              CRITICAL THINKING - 8
+            </ColorButton>
+            <ColorButton variant="contained" color="primary" className={classes.buttons} disableElevation>
+              POSITIVE ATTITUDE - 391
+            </ColorButton>
+            <ColorButton variant="contained" color="primary" className={classes.buttons} disableElevation>
+              WORK ETHIC - 53
+            </ColorButton>
           </CardContent>
         </div>
       </Box>
