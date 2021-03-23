@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 // Custom Components
 import Searchbar from './Searchbar';
 import Post from './Post';
+import Rockstar from './Rockstar';
 
 const styles = (theme: Theme) => createStyles({
   grow: {
@@ -71,6 +72,9 @@ class Profile extends Component<Props, any> {
           <Button variant="contained" className={classes.buttonItem}>{"See My Posts"}</Button>
         </div>
         <div className={classes.postList}>
+          <div className={classes.postItem}>
+          <Rockstar />
+          </div>
           {this.state.postList.map((val: any, idx: number) => {
             // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
             return (
