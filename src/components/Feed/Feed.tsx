@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 // Material UI Styling
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
-import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
+import { fade, createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 // Material UI Comopnents
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
+
+import SearchIcon from '@material-ui/icons/Search';
+import InputBase from '@material-ui/core/InputBase';
+
 // Custom Components
-import Searchbar from './Searchbar';
+// import Searchbar from './Searchbar';
 import Post from './Post';
 import Rockstar from './Rockstar';
 
@@ -15,10 +19,36 @@ const styles = (theme: Theme) => createStyles({
     marginTop: theme.spacing(4)
   },
   searchWrapper: {
-    boxShadow: '0px 5px 0px #ccc, 5px 0px 0px #ccc, 0px 0px 5px #ccc',
-    borderRadius: '25px',
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
+    position: 'relative',
+      borderRadius: theme.shape.borderRadius,
+      backgroundColor: fade(theme.palette.primary.light, 0.03),
+      '&:hover': {
+        backgroundColor: fade(theme.palette.primary.light, 0.05),
+      },
+      paddingLeft: theme.spacing(0),
+      paddingRight: theme.spacing(0),
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '100ch',
+    },
   },
   buttonList: {
     display: 'flex',
@@ -65,7 +95,20 @@ class Profile extends Component<Props, any> {
       <Container maxWidth="lg">
         <div className={classes.grow} />
         <Container maxWidth="md" className={classes.searchWrapper}>
-          <Searchbar />
+        <div className={classes.searchWrapper}>
+            <div className={classes.searchIcon}>
+              <SearchIcon />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </div>
+
         </Container>
         <div className={classes.buttonList}>
           <Button variant="contained" className={classes.buttonItem}>{"Create a Post"}</Button>
