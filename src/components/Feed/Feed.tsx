@@ -14,6 +14,8 @@ import InputBase from '@material-ui/core/InputBase';
 import Post from './Post';
 import Rockstar from './Rockstar';
 
+import RecognitionService from '../../api/RecognitionService';
+
 const styles = (theme: Theme) => createStyles({
   grow: {
     marginTop: theme.spacing(4)
@@ -79,14 +81,38 @@ const styles = (theme: Theme) => createStyles({
   }
 });
 
-interface Props extends WithStyles<typeof styles>{ }
+interface Props extends WithStyles<typeof styles>{}
+
+type PostProps = {
+  postList: Array<object>
+}
 
 class Profile extends Component<Props, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      postList: [{}, {}, {}, {}]
+      postList: [{
+        empFrom: '',
+        empTo: '',
+        postDate: '',
+        msg: '',
+        tags: [],
+      }, {}, {}, {}]
     }
+  }
+
+  componentDidMount() {
+    const recognitionAPI = new RecognitionService();
+    recognitionAPI.getFeed()
+      .then((response: any) => this.setState({
+        postList: [{
+          empFrom: response.data.empFrom,
+          empTo: response.data.empTo,
+          postDate: response.data.postDate,
+          msg: response.data.msg,
+          tags: response.data.tags,
+        }, {}, {}, {}]
+      }));
   }
 
   render() {
@@ -122,7 +148,7 @@ class Profile extends Component<Props, any> {
             // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
             return (
               <div key={idx} className={classes.postItem}>
-                <Post />
+                <Post postList={this.state.postList}/>
               </div>
             )
           })}
