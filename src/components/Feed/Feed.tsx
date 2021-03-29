@@ -22,13 +22,13 @@ const styles = (theme: Theme) => createStyles({
   },
   searchWrapper: {
     position: 'relative',
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.primary.light, 0.03),
-      '&:hover': {
-        backgroundColor: fade(theme.palette.primary.light, 0.05),
-      },
-      paddingLeft: theme.spacing(0),
-      paddingRight: theme.spacing(0),
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.primary.light, 0.03),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.primary.light, 0.05),
+    },
+    paddingLeft: theme.spacing(0),
+    paddingRight: theme.spacing(0),
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -81,7 +81,7 @@ const styles = (theme: Theme) => createStyles({
   }
 });
 
-interface Props extends WithStyles<typeof styles>{}
+interface Props extends WithStyles<typeof styles> { }
 
 type PostProps = {
   postList: Array<object>
@@ -92,27 +92,24 @@ class Profile extends Component<Props, any> {
     super(props);
     this.state = {
       postList: [{
-        empFrom: '',
         empTo: '',
-        postDate: '',
+        empFrom: '',
         msg: '',
-        tags: [],
-      }, {}, {}, {}]
+        date: '',
+        tags: [{}, {}],
+      }, {}]
     }
   }
 
   componentDidMount() {
     const recognitionAPI = new RecognitionService();
     recognitionAPI.getFeed()
-      .then((response: any) => this.setState({
-        postList: [{
-          empFrom: response.data.empFrom,
-          empTo: response.data.empTo,
-          postDate: response.data.postDate,
-          msg: response.data.msg,
-          tags: response.data.tags,
-        }, {}, {}, {}]
-      }));
+      .then((response: any) => {
+        console.log(response);
+        this.setState({
+          postList: response
+        })
+      });
   }
 
   render() {
@@ -121,7 +118,7 @@ class Profile extends Component<Props, any> {
       <Container maxWidth="lg">
         <div className={classes.grow} />
         <Container maxWidth="md" className={classes.searchWrapper}>
-        <div className={classes.searchWrapper}>
+          <div className={classes.searchWrapper}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -142,7 +139,7 @@ class Profile extends Component<Props, any> {
         </div>
         <div className={classes.postList}>
           <div className={classes.postItem}>
-          <Rockstar />
+            <Rockstar />
           </div>
           {this.state.postList.map((val: any, idx: number) => {
             // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
@@ -158,4 +155,4 @@ class Profile extends Component<Props, any> {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Profile);  
+export default withStyles(styles, { withTheme: true })(Profile);

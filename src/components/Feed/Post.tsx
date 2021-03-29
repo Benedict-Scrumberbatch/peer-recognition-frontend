@@ -81,7 +81,12 @@ const ColorButton = withStyles((theme) => ({
     },
   },
 }))(Button);
+/*
+type PostProps = {
+  empFrom: string,
 
+}
+*/
 export default function RecipeReviewCard() {
   const classes = useStyles();
 
