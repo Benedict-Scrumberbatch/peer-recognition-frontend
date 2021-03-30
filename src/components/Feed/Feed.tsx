@@ -114,6 +114,7 @@ class Profile extends Component<Props, any> {
 
   render() {
     const { classes } = this.props;
+    
     return (
       <Container maxWidth="lg">
         <div className={classes.grow} />
@@ -145,7 +146,7 @@ class Profile extends Component<Props, any> {
             // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
             return (
               <div key={idx} className={classes.postItem}>
-                <Post postList={this.state.postList}/>
+                <Post postList = {this.state.postList}/>
               </div>
             )
           })}

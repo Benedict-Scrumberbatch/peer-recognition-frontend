@@ -81,15 +81,10 @@ const ColorButton = withStyles((theme) => ({
     },
   },
 }))(Button);
-/*
-type PostProps = {
-  empFrom: string,
 
-}
-*/
-export default function RecipeReviewCard() {
+export default function RecipeReviewCard(props: {postList: any}) {
   const classes = useStyles();
-
+  console.log(props.postList);
   return (
     <Card className={classes.root}>
       <Box display="flex" flexDirection="row" style={{ marginTop: 8}}>
