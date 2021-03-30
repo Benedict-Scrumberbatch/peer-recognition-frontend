@@ -46,7 +46,7 @@ const styles = (theme: Theme) => createStyles({
 });
 
 
-type State = { contactOpen: boolean, passwordOpen : boolean };
+type State = { contactOpen: boolean, passwordOpen : boolean, deleteOpen : boolean, createOpen : boolean };
 interface Props extends WithStyles<typeof styles>{ }
 
 class Settings extends Component<Props,State> {
@@ -55,12 +55,18 @@ class Settings extends Component<Props,State> {
     this.state = {
         contactOpen : false,
         passwordOpen : false,
+        deleteOpen : false,
+        createOpen : false
     }
-    this.handleContactOpen = this.handleContactOpen.bind(this)
-    this.handleContactClose = this.handleContactClose.bind(this)
-    this.handlePasswordOpen = this.handlePasswordOpen.bind(this)
-    this.handlePasswordClose = this.handlePasswordClose.bind(this)
-    
+    this.handleContactOpen = this.handleContactOpen.bind(this);
+    this.handleContactClose = this.handleContactClose.bind(this);
+    this.handlePasswordOpen = this.handlePasswordOpen.bind(this);
+    this.handlePasswordClose = this.handlePasswordClose.bind(this);
+
+    this.handleDeleteUserOpen = this.handleDeleteUserOpen.bind(this);
+    this.handleDeleteUserClose = this.handleDeleteUserClose.bind(this);
+    this.handleCreateUserOpen = this.handleCreateUserOpen.bind(this);
+    this.handleCreateUserClose = this.handleCreateUserClose.bind(this);
   }
 
   handleContactOpen = () => {
@@ -84,6 +90,28 @@ class Settings extends Component<Props,State> {
   handlePasswordClose = () => {
     this.setState({
         passwordOpen : false
+    })
+  };
+
+  handleDeleteUserOpen = () => {
+    this.setState({
+        deleteOpen : true
+    })
+  };
+  handleDeleteUserClose = () => {
+    this.setState({
+        deleteOpen : false
+    })
+  };
+
+  handleCreateUserOpen = () => {
+    this.setState({
+        createOpen : true
+    })
+  };
+  handleCreateUserClose = () => {
+    this.setState({
+        createOpen : false
     })
   };
 
@@ -185,7 +213,72 @@ class Settings extends Component<Props,State> {
               </Dialog>
             </div>
 
-            
+
+          <div id="admin-settings">
+
+
+            <div id="create-user">
+              <Button variant="outlined" color="primary" className={classes.buttons} onClick={this.handleCreateUserOpen}>
+                Create Users
+            </Button>
+              <Dialog open={this.state.createOpen} onClose={this.handleCreateUserClose} aria-labelledby="form-dialog-title" >
+                <DialogTitle id="form-dialog-title">Create User</DialogTitle>
+                <DialogContent>
+                  Please upload JSON file of employees you would like to add.
+                  <TextField
+                    margin="dense"
+                    id="employees-json"
+                    type='file'
+                    fullWidth
+                  />
+                  
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handleCreateUserClose}>
+                    Cancel
+          </Button>
+                  <Button onClick={this.handleCreateUserClose} >
+                    Save
+          </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
+
+
+            <div id="delete-user">
+              <Button variant="outlined" color="secondary" className={classes.buttons} onClick={this.handleDeleteUserOpen}>
+                Delete User
+            </Button>
+              <Dialog open={this.state.deleteOpen} onClose={this.handleDeleteUserClose} aria-labelledby="form-dialog-title" >
+                <DialogTitle id="form-dialog-title">Delete User</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    margin="dense"
+                    id="company-ID"
+                    label="Company ID"
+                    type="number"
+                    fullWidth
+                  />
+                  <TextField
+                    margin="dense"
+                    id="employee-id"
+                    label="Employee ID"
+                    type='number'
+                    fullWidth
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handleDeleteUserClose}>
+                    Cancel
+          </Button>
+                  <Button onClick={this.handleDeleteUserClose} >
+                    Save
+          </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
+</div>
+
 
           </div>
         </Paper>
