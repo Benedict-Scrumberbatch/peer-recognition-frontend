@@ -3,7 +3,6 @@ import { BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
 import PrivateRoute from './components/Private/PrivateRoute';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Home from './components/Home';
 import Login from './components/Login';
 import Feed from './components/Feed';
 import Settings from './components/Private/Settings';
@@ -32,7 +31,6 @@ function App () {
           <Switch>
             <Route exact path="/" component={Login} />
             <Route path="/foo" component={Foo} />
-            <Route path="/home" component={Home} />
             <Route path="/login" component={Login} />
             <PrivateRoute path="/feed" component={Feed} />
             <PrivateRoute path="/profile" component={Profile} />
