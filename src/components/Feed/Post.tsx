@@ -86,7 +86,6 @@ const ColorButton = withStyles((theme) => ({
 export default function RecipeReviewCard(props: {recognition: any}) {
   const classes = useStyles();
   const post = props.recognition;
-  console.log(post);
   return (
     <Card className={classes.root}>
       <Box display="flex" flexDirection="row" style={{ marginTop: 8}}>
@@ -110,21 +109,13 @@ export default function RecipeReviewCard(props: {recognition: any}) {
               {post.msg}
             </Typography>
             
-            {post.tags.forEach((tag: any) => {
+            {post.tags.map((tag: any, idx: number) => {
               return (
-                <div>
-                  <ColorButton variant="contained" color="primary" className={classes.buttons} disableElevation>
-                    {tag.value}
-                  </ColorButton>
-                </div>
+                <ColorButton variant="contained" color="primary" className={classes.buttons} disableElevation>
+                  {tag.value}
+                </ColorButton>
               )
             })}
-            <ColorButton variant="contained" color="primary" className={classes.buttons} disableElevation>
-              TEAMWORK - 2
-            </ColorButton>
-            <ColorButton variant="contained" color="primary" className={classes.buttons} disableElevation>
-              LEADERSHIP - 65
-            </ColorButton>
           </CardContent>
         </div>
       </Box>

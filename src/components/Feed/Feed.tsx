@@ -87,13 +87,7 @@ class Profile extends Component<Props, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      postList: [{
-        empTo: '',
-        empFrom: '',
-        msg: '',
-        date: '',
-        tags: [{}, {}],
-      }, {}]
+      postList: []
     }
   }
 
@@ -101,8 +95,6 @@ class Profile extends Component<Props, any> {
     const recognitionAPI = new RecognitionService();
     recognitionAPI.getFeed()
       .then((response: any) => {
-        console.log("Made a request");
-        console.log(response);
         this.setState({
           postList: response
         })
@@ -143,7 +135,7 @@ class Profile extends Component<Props, any> {
             // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
             return (
               <div key={idx} className={classes.postItem}>
-                <Post recognition = {this.state.postList[idx]}/>
+                {this.state.postList[idx] === undefined ? <div></div> : <Post recognition = {this.state.postList[idx]}/>}
               </div>
             )
           })}
