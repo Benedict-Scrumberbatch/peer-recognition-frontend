@@ -3,11 +3,17 @@ import React, { Component } from 'react';
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { fade, createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 // Material UI Comopnents
+import TextField from '@material-ui/core/TextField';
+import {Grid, Modal, Dialog} from "@material-ui/core";
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
-
+import SearchBar from "material-ui-search-bar";
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 // Custom Components
 // import Searchbar from './Searchbar';
@@ -81,14 +87,33 @@ const styles = (theme: Theme) => createStyles({
   }
 });
 
+const StyledButton = withStyles({
+  root: {
+    background: 'linear-gradient(45deg, #00b327 30%, #53ff59 99%)',
+    borderRadius: 3,
+    border: 0,
+    color: 'white',
+    height: 48,
+    padding: '0 30px',
+    boxShadow: '0 3px 3px 2px rgba(155, 155, 135, .3)',
+  },
+  label: {
+    textTransform: 'capitalize',
+  },
+
+})(Button);
+
 interface Props extends WithStyles<typeof styles> { }
 
 class Profile extends Component<Props, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      postList: []
+      postList: [],
+      open: false
     }
+    this.handleOpen = this.handleOpen.bind(this)
+    this.handleClose = this.handleClose.bind(this)
   }
 
   componentDidMount() {
@@ -100,6 +125,17 @@ class Profile extends Component<Props, any> {
         })
       });
   }
+  handleOpen = () => {
+    this.setState({
+      open: true
+    })
+  };
+
+  handleClose = () => {
+    this.setState({
+      open: false
+    })
+  };
 
   render() {
     const { classes } = this.props;
@@ -121,11 +157,44 @@ class Profile extends Component<Props, any> {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
-
+          <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" fullWidth maxWidth="md">
+            <DialogTitle id="form-dialog-title">Create New Post</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Search for Employee Name
+          </DialogContentText>
+              <SearchBar
+              />
+              <TextField
+                autoFocus
+                margin="dense"
+                id="multiline-recognition"
+                label="Type in recognition..."
+                multiline
+                rows={6}
+                variant="outlined"
+                fullWidth
+              />
+              <DialogContentText>
+                Core Values Shown
+          </DialogContentText>
+              <SearchBar
+                style={{ width: '25%' }}
+              />
+            </DialogContent>
+            <DialogActions>
+              <StyledButton onClick={this.handleClose}>
+                Cancel
+          </StyledButton>
+              <StyledButton onClick={this.handleClose} >
+                Create Post
+          </StyledButton>
+            </DialogActions>
+          </Dialog>
         </Container>
         <div className={classes.buttonList}>
-          <Button variant="contained" className={classes.buttonItem}>{"Create a Post"}</Button>
-          <Button variant="contained" className={classes.buttonItem}>{"See My Posts"}</Button>
+          <StyledButton onClick={this.handleOpen} className={classes.buttonItem}>{"Create a Post"} </StyledButton>
+          <StyledButton className={classes.buttonItem}>{"See My Posts"} </StyledButton>
         </div>
         <div className={classes.postList}>
           <div className={classes.postItem}>
