@@ -83,10 +83,6 @@ const styles = (theme: Theme) => createStyles({
 
 interface Props extends WithStyles<typeof styles> { }
 
-type PostProps = {
-  postList: Array<object>
-}
-
 class Profile extends Component<Props, any> {
   constructor(props: any) {
     super(props);
@@ -105,7 +101,6 @@ class Profile extends Component<Props, any> {
     const recognitionAPI = new RecognitionService();
     recognitionAPI.getFeed()
       .then((response: any) => {
-        console.log(response);
         this.setState({
           postList: response
         })
@@ -146,7 +141,7 @@ class Profile extends Component<Props, any> {
             // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
             return (
               <div key={idx} className={classes.postItem}>
-                <Post postList = {this.state.postList}/>
+                <Post recognition = {this.state.postList[idx]}/>
               </div>
             )
           })}
