@@ -137,6 +137,11 @@ class Settings extends Component<Props, SettingsType> {
       createOpen: false
     })
   };
+  handleCreateUserSave = () => {
+    this.setState({
+      createOpen: false 
+    })
+  };
 
   render() {
     const { classes } = this.props;
@@ -260,7 +265,7 @@ class Settings extends Component<Props, SettingsType> {
                     <Button onClick={this.handleCreateUserClose}>
                       Cancel
           </Button>
-                    <Button onClick={this.handleCreateUserClose} >
+                    <Button onClick={this.handleCreateUserSave} >
                       Save
           </Button>
                   </DialogActions>
@@ -275,13 +280,6 @@ class Settings extends Component<Props, SettingsType> {
                 <Dialog open={this.state.deleteOpen} onClose={this.handleDeleteUserClose} aria-labelledby="form-dialog-title" >
                   <DialogTitle id="form-dialog-title">Delete User</DialogTitle>
                   <DialogContent>
-                    <TextField
-                      margin="dense"
-                      id="company-ID"
-                      label="Company ID"
-                      type="number"
-                      fullWidth
-                    />
                     <TextField
                       margin="dense"
                       id="employee-id"
