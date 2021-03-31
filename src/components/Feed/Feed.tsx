@@ -101,6 +101,8 @@ class Profile extends Component<Props, any> {
     const recognitionAPI = new RecognitionService();
     recognitionAPI.getFeed()
       .then((response: any) => {
+        console.log("Made a request");
+        console.log(response);
         this.setState({
           postList: response
         })

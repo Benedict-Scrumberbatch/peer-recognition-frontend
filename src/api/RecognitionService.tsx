@@ -4,5 +4,8 @@ export default class RecognitionService extends MainApiProtected {
     public constructor() {
         super();
     }
-    public getFeed = () => this.instance.get('/recognitions/all');
+    public getFeed = () => {
+        console.log("Got feed");
+        return this.instance.get('/recognitions/all');
+    };
 }
