@@ -111,7 +111,7 @@ export default function RecipeReviewCard(props: {recognition: any}) {
             
             {post.tags.map((tag: any, idx: number) => {
               return (
-                <ColorButton variant="contained" color="primary" className={classes.buttons} disableElevation>
+                <ColorButton key={idx} variant="contained" color="primary" className={classes.buttons} disableElevation>
                   {tag.value}
                 </ColorButton>
               )
