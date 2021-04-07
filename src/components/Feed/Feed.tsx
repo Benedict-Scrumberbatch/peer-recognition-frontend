@@ -116,14 +116,12 @@ class Profile extends Component<Props, any> {
     this.handleClose = this.handleClose.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const recognitionAPI = new RecognitionService();
-    recognitionAPI.getFeed()
-      .then((response: any) => {
-        this.setState({
-          postList: response
-        })
-      });
+    const feed = await recognitionAPI.getFeed();
+    this.setState({
+      postList: feed
+    });
   }
   handleOpen = () => {
     this.setState({
@@ -204,7 +202,7 @@ class Profile extends Component<Props, any> {
             // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
             return (
               <div key={idx} className={classes.postItem}>
-                {this.state.postList[idx] === undefined ? <div></div> : <Post recognition = {this.state.postList[idx]}/>}
+                {typeof this.state.postList[idx] === undefined ? <div>Loading...</div> : <Post recognition = {this.state.postList[idx]}/>}
               </div>
             )
           })}

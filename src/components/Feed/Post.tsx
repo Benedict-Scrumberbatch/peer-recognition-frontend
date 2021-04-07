@@ -86,6 +86,7 @@ const ColorButton = withStyles((theme) => ({
 export default function RecipeReviewCard(props: {recognition: any}) {
   const classes = useStyles();
   const post = props.recognition;
+  console.log(post);
   return (
     <Card className={classes.root}>
       <Box display="flex" flexDirection="row" style={{ marginTop: 8}}>
