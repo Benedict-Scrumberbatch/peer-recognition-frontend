@@ -4,6 +4,8 @@ import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 import { Grid, Modal, Dialog } from "@material-ui/core";
 import TextField from '@material-ui/core/TextField';
+import Input from '@material-ui/core/Input';
+
 // Material UI Comopnents
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
@@ -139,9 +141,14 @@ class Settings extends Component<Props, SettingsType> {
   };
   handleCreateUserSave = () => {
     this.setState({
-      createOpen: false 
+      createOpen: false
     })
   };
+  // handleChange = ({target}) => {
+  //   this.setState({
+  //     [target.name]: target.value
+  //   })
+  // };
 
   render() {
     const { classes } = this.props;
@@ -252,13 +259,44 @@ class Settings extends Component<Props, SettingsType> {
                 <Dialog open={this.state.createOpen} onClose={this.handleCreateUserClose} aria-labelledby="form-dialog-title" >
                   <DialogTitle id="form-dialog-title">Create User</DialogTitle>
                   <DialogContent>
-                    Please upload JSON file of employees you would like to add.
+                    Please upload JSON file of employees you would like to add:
                   <TextField
                       margin="dense"
                       id="employees-json"
                       type='file'
                       fullWidth
                     />
+                    Or manually add an individual user:
+                    <TextField
+                    margin="dense"
+                    id="user-fname"
+                    label="First Name"
+                    type="text"
+                    // value={this.state.createUsers}
+                    // onChange={this.handleChange}
+                    fullWidth
+                  />
+                  <TextField
+                    margin="dense"
+                    id="user-lname"
+                    label="Last Name"
+                    type='text'
+                    fullWidth
+                  />
+                  <TextField
+                    margin="dense"
+                    id="user-email"
+                    label="Email Address"
+                    type='test'
+                    fullWidth
+                  />
+                  <TextField
+                    margin="dense"
+                    id="user-id"
+                    label="Employee ID Number"
+                    type='number'
+                    fullWidth
+                  />
 
                   </DialogContent>
                   <DialogActions>
