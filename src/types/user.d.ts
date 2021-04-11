@@ -1,14 +1,12 @@
-export type User = any
-/*
-export type FacebookUser = {
-  id: string,
-  name: string,
+export type User = {
+  firstName: string,
+  lastName: string,
+  companyId: number,
+  password: string,
+  positionTitle: string,
+  companyName: string,
+  isManager: boolean,
+  employeeId: number,
   email: string,
-  first_name: string,
-  last_name: string,
-  gender: string,
-  link: string,
-  locale: string,
-  timezone: number
+  startDate: string
 };
-*/
