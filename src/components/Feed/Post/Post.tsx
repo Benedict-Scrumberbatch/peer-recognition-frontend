@@ -1,29 +1,22 @@
-// POST component
-// component to recognize a person
+/*
+  POST component
+  component to recognize a person
+*/
 
 import React from 'react';
+// Material UI Styling
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Link from '@material-ui/core/Link';
-
-import Box from '@material-ui/core/Box';
-
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
 import { green, red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-
-import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
-import BackgroundStar from '../../assets/img/lime-green-star.png';
+// Material UI Components
+import Link from '@material-ui/core/Link'; // replace with react-router link for in-app routing
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+// Assets
+import PlaceholderProfileImg from '../../../assets/img/kitten_placeholder.jpg';
+import BackgroundStar from '../../../assets/img/lime-green-star.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -83,10 +76,10 @@ const ColorButton = withStyles((theme) => ({
   },
 }))(Button);
 
-export default function RecipeReviewCard(props: {recognition: any}) {
+export default function Post(props: {recognition: any}) {
   const classes = useStyles();
   const post = props.recognition;
-  console.log(post);
+  
   return (
     <Card className={classes.root}>
       <Box display="flex" flexDirection="row" style={{ marginTop: 8}}>
