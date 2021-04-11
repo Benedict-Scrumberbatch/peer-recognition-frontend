@@ -38,7 +38,12 @@ const useStyles = makeStyles((theme) => ({
       borderRadius: '15px'
   }
 }));
-
+ /** 
+ *  Special post component that displays the rockstar employee of the month at the top of the feed timeline.
+ * 
+ * 
+ * @public
+ */
 export default function RockstarCard() {
   const classes = useStyles();
   const PieChart = require("react-chartjs").Pie;

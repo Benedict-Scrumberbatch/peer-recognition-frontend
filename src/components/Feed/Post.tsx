@@ -82,6 +82,10 @@ const ColorButton = withStyles((theme) => ({
   },
 }))(Button);
 
+/**
+ * Component that displays an employee recognition on the feed timeline.
+ * 
+ */
 export default function RecipeReviewCard() {
   const classes = useStyles();
 
