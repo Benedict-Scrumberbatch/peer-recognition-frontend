@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 // Material UI Styling
 import { WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 // Material UI Comopnents
