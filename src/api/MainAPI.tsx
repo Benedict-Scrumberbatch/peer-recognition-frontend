@@ -1,6 +1,4 @@
-
 import HttpClient from './HTTPClient';
-import { User } from '../types/user';
 
 let API_URL: any;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
