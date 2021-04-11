@@ -2,22 +2,23 @@ import { useState, useEffect } from 'react';
 // Material UI Styling
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
-import { Grid, Modal, Dialog } from "@material-ui/core";
-import TextField from '@material-ui/core/TextField';
 // Material UI Comopnents
+import Link from '@material-ui/core/Link'; // replace with react-router-dom link for in-app routing
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
+import Dialog from '@material-ui/core/Dialog';
+import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+// Services
 import SettingsService from '../../api/SettingsService';
+// Assets
+import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
 
 const styles = (theme: Theme) => createStyles({
   paper: {
@@ -75,7 +76,6 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
   });
 
   useEffect(() => {
-
     const settingsAPI = new SettingsService();
     settingsAPI.getSettings()
       .then((response: any) => {
