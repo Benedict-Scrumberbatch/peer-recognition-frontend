@@ -20,6 +20,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Post from './Post';
 import Rockstar from './Rockstar';
 
+import RecognitionService from '../../api/RecognitionService';
+
 const styles = (theme: Theme) => createStyles({
   grow: {
     marginTop: theme.spacing(4)
@@ -107,13 +109,20 @@ class Profile extends Component<Props, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      postList: [{}, {}, {}, {}],
+      postList: [],
       open: false
     }
     this.handleOpen = this.handleOpen.bind(this)
     this.handleClose = this.handleClose.bind(this)
   }
 
+  async componentDidMount() {
+    const recognitionAPI = new RecognitionService();
+    const feed = await recognitionAPI.getFeed();
+    this.setState({
+      postList: feed
+    });
+  }
   handleOpen = () => {
     this.setState({
       open: true
@@ -128,6 +137,7 @@ class Profile extends Component<Props, any> {
 
   render() {
     const { classes } = this.props;
+    
     return (
       <Container maxWidth="lg">
         <div className={classes.grow} />
@@ -192,7 +202,7 @@ class Profile extends Component<Props, any> {
             // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
             return (
               <div key={idx} className={classes.postItem}>
-                <Post />
+                {typeof this.state.postList[idx] === undefined ? <div>Loading...</div> : <Post recognition = {this.state.postList[idx]}/>}
               </div>
             )
           })}

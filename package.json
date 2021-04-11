@@ -24,13 +24,17 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
     "typeorm": "^0.2.32",
+<<<<<<< HEAD
     "typescript": "^4.1.5",
+=======
+    "typescript": "^4.2.3",
+>>>>>>> b00faffb56d3f83e3e64efac65d60a990fcdc7d9
     "web-vitals": "^1.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -50,5 +54,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-app-rewire-alias": "^1.0.3",
+    "react-app-rewired": "^2.1.8"
   }
 }
