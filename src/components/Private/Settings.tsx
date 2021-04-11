@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 // Material UI Styling
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
@@ -47,268 +47,218 @@ const styles = (theme: Theme) => createStyles({
   }
 });
 
-
-type SettingsType = {
+interface SimpleProps extends WithStyles<typeof styles> {
   contactOpen: boolean, passwordOpen: boolean, deleteOpen: boolean, createOpen: boolean,
   createUsers: object, deleteUsers: object
-};
-interface Props extends WithStyles<typeof styles> { }
+}
 
-class Settings extends Component<Props, SettingsType> {
-  constructor(props: any) {
-    super(props)
-    this.state = {
-      contactOpen: false,
-      passwordOpen: false,
-      deleteOpen: false,
-      createOpen: false,
-      createUsers: {
-        firstName: "",
-        lastName: "",
-        companyId: 0,
-        password: "",
-        positionTitle: "",
-        companyName: "",
-        isManager: false,
-        employeeId: 0,
-        email: "",
-        startDate: ""
-      },
-      deleteUsers: {
-        companyId: 0,
-        employeeId: 0
-      }
-    }
-  }
+const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
+  const [contactOpen, setContactOpen] = useState(false);
+  const [passwordOpen, setPasswordOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [createUsers, setCreateUsers] = useState({
+    firstName: "",
+    lastName: "",
+    companyId: 0,
+    password: "",
+    positionTitle: "",
+    companyName: "",
+    isManager: false,
+    employeeId: 0,
+    email: "",
+    startDate: ""
+  });
+  const [deleteUsers, setDeleteUsers] = useState({
+    companyId: 0,
+    employeeId: 0
+  });
 
-  componentDidMount() {
+  useEffect(() => {
+
     const settingsAPI = new SettingsService();
     settingsAPI.getSettings()
       .then((response: any) => {
-        console.log(response);
-        this.setState({
-          createUsers: response
-        })
+        setCreateUsers(response)
       });
-  }
+  })
 
-  handleContactOpen = () => {
-    this.setState({
-      contactOpen: true
-    })
-  };
+  const handleContactOpen = () => setContactOpen(true)
+  const handleContactClose = () => setContactOpen(false)
+  const handlePasswordOpen = () => setPasswordOpen(true)
+  const handlePasswordClose = () => setPasswordOpen(false)
+  const handleDeleteUserOpen = () => setDeleteOpen(true)
+  const handleDeleteUserClose = () => setDeleteOpen(false)
+  const handleCreateUserOpen = () => setCreateOpen(true)
+  const handleCreateUserClose = () => setCreateOpen(false)
 
-  handleContactClose = () => {
-    this.setState({
-      contactOpen: false
-    })
-  };
-
-  handlePasswordOpen = () => {
-    this.setState({
-      passwordOpen: true
-    })
-  };
-
-  handlePasswordClose = () => {
-    this.setState({
-      passwordOpen: false
-    })
-  };
-
-  handleDeleteUserOpen = () => {
-    this.setState({
-      deleteOpen: true
-    })
-  };
-  handleDeleteUserClose = () => {
-    this.setState({
-      deleteOpen: false
-    })
-  };
-
-  handleCreateUserOpen = () => {
-    this.setState({
-      createOpen: true
-    })
-  };
-  handleCreateUserClose = () => {
-    this.setState({
-      createOpen: false
-    })
-  };
-
-  render() {
-    const { classes } = this.props;
-    return (
-      <Container component="main" maxWidth="sm">
-        <CssBaseline />
-        <Paper elevation={3} className={classes.paper}>
-          <div className={classes.wrapper}>
-            <Avatar alt="profile photo" src={PlaceholderProfileImg} className={classes.avatar} />
-            <Typography component="h1" variant="h4">
-              John Doe
-            </Typography>
-            <Typography>
-              <Link href="#" className={classes.profilePicLink}>Change profile picture</Link>
-            </Typography>
-            <Typography className={classes.statistics}>
-              Email: JDoe@ukg.com
-            </Typography>
-            <Typography>
-              Phone Number: (401)-867-5309
-            </Typography>
+  return (
+    <Container component="main" maxWidth="sm">
+      <CssBaseline />
+      <Paper elevation={3} className={classes.paper}>
+        <div className={classes.wrapper}>
+          <Avatar alt="profile photo" src={PlaceholderProfileImg} className={classes.avatar} />
+          <Typography component="h1" variant="h4">
+            John Doe
+          </Typography>
+          <Typography>
+            <Link href="#" className={classes.profilePicLink}>Change profile picture</Link>
+          </Typography>
+          <Typography className={classes.statistics}>
+            Email: JDoe@ukg.com
+          </Typography>
+          <Typography>
+            Phone Number: (401)-867-5309
+          </Typography>
 
 
-            <div id="edit-contact-info">
-              <Button variant="outlined" color="primary" className={classes.buttons} onClick={this.handleContactOpen}>
-                Edit Contact Info
-            </Button>
-              <Dialog open={this.state.contactOpen} onClose={this.handleContactClose} aria-labelledby="form-dialog-title" >
-                <DialogTitle id="form-dialog-title">Change Contact Info</DialogTitle>
+          <div id="edit-contact-info">
+            <Button variant="outlined" color="primary" className={classes.buttons} onClick={handleContactOpen}>
+              Edit Contact Info
+          </Button>
+            <Dialog open={contactOpen} onClose={handleContactClose} aria-labelledby="form-dialog-title" >
+              <DialogTitle id="form-dialog-title">Change Contact Info</DialogTitle>
+              <DialogContent>
+                <TextField disabled id="old-email" label="Old-Email" defaultValue="JDoe@ukg.com" />
+                <TextField
+                  margin="dense"
+                  id="new-email"
+                  label="New email"
+                  type="email"
+                  fullWidth
+                />
+                <TextField disabled id="old-phone-number" label="Old Phone Number" defaultValue="(401)-867-5309" />
+                <TextField
+                  margin="dense"
+                  id="new-phone-number"
+                  label="New Phone Number"
+                  type='number'
+                  fullWidth
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleContactClose}>
+                  Cancel
+        </Button>
+                <Button onClick={handleContactClose} >
+                  Save
+        </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+
+
+          <div id="edit-password">
+            <Button variant="outlined" color="primary" className={classes.buttons} onClick={handlePasswordOpen}>
+              Change Password
+          </Button>
+            <Dialog open={passwordOpen} onClose={handlePasswordClose} aria-labelledby="form-dialog-title" >
+              <DialogTitle id="form-dialog-title">Change Password</DialogTitle>
+              <DialogContent>
+                <TextField
+                  margin="dense"
+                  id="old-password"
+                  label="Old password"
+                  type="password"
+                  fullWidth
+                />
+                <TextField
+                  margin="dense"
+                  id="new-password"
+                  label="New Password"
+                  type='password'
+                  fullWidth
+                />
+                <TextField
+                  margin="dense"
+                  id="re-enter-new-password"
+                  label="Re-enter New Password"
+                  type='password'
+                  fullWidth
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handlePasswordClose}>
+                  Cancel
+        </Button>
+                <Button onClick={handlePasswordClose} >
+                  Save
+        </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+
+
+          <div id="admin-settings">
+
+
+            <div id="create-user">
+              <Button variant="outlined" color="primary" className={classes.buttons} onClick={handleCreateUserOpen}>
+                Create Users
+          </Button>
+              <Dialog open={createOpen} onClose={handleCreateUserClose} aria-labelledby="form-dialog-title" >
+                <DialogTitle id="form-dialog-title">Create User</DialogTitle>
                 <DialogContent>
-                  <TextField disabled id="old-email" label="Old-Email" defaultValue="JDoe@ukg.com" />
-                  <TextField
+                  Please upload JSON file of employees you would like to add.
+                <TextField
                     margin="dense"
-                    id="new-email"
-                    label="New email"
-                    type="email"
+                    id="employees-json"
+                    type='file'
                     fullWidth
                   />
-                  <TextField disabled id="old-phone-number" label="Old Phone Number" defaultValue="(401)-867-5309" />
+
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCreateUserClose}>
+                    Cancel
+        </Button>
+                  <Button onClick={handleCreateUserClose} >
+                    Save
+        </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
+
+
+            <div id="delete-user">
+              <Button variant="outlined" color="secondary" className={classes.buttons} onClick={handleDeleteUserOpen}>
+                Delete User
+          </Button>
+              <Dialog open={deleteOpen} onClose={handleDeleteUserClose} aria-labelledby="form-dialog-title" >
+                <DialogTitle id="form-dialog-title">Delete User</DialogTitle>
+                <DialogContent>
                   <TextField
                     margin="dense"
-                    id="new-phone-number"
-                    label="New Phone Number"
+                    id="company-ID"
+                    label="Company ID"
+                    type="number"
+                    fullWidth
+                  />
+                  <TextField
+                    margin="dense"
+                    id="employee-id"
+                    label="Employee ID"
                     type='number'
                     fullWidth
                   />
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={this.handleContactClose}>
+                  <Button onClick={handleDeleteUserClose}>
                     Cancel
-          </Button>
-                  <Button onClick={this.handleContactClose} >
+        </Button>
+                  <Button onClick={handleDeleteUserClose} >
                     Save
-          </Button>
+        </Button>
                 </DialogActions>
               </Dialog>
             </div>
-
-
-            <div id="edit-password">
-              <Button variant="outlined" color="primary" className={classes.buttons} onClick={this.handlePasswordOpen}>
-                Change Password
-            </Button>
-              <Dialog open={this.state.passwordOpen} onClose={this.handlePasswordClose} aria-labelledby="form-dialog-title" >
-                <DialogTitle id="form-dialog-title">Change Password</DialogTitle>
-                <DialogContent>
-                  <TextField
-                    margin="dense"
-                    id="old-password"
-                    label="Old password"
-                    type="password"
-                    fullWidth
-                  />
-                  <TextField
-                    margin="dense"
-                    id="new-password"
-                    label="New Password"
-                    type='password'
-                    fullWidth
-                  />
-                  <TextField
-                    margin="dense"
-                    id="re-enter-new-password"
-                    label="Re-enter New Password"
-                    type='password'
-                    fullWidth
-                  />
-                </DialogContent>
-                <DialogActions>
-                  <Button onClick={this.handlePasswordClose}>
-                    Cancel
-          </Button>
-                  <Button onClick={this.handlePasswordClose} >
-                    Save
-          </Button>
-                </DialogActions>
-              </Dialog>
-            </div>
-
-
-            <div id="admin-settings">
-
-
-              <div id="create-user">
-                <Button variant="outlined" color="primary" className={classes.buttons} onClick={this.handleCreateUserOpen}>
-                  Create Users
-            </Button>
-                <Dialog open={this.state.createOpen} onClose={this.handleCreateUserClose} aria-labelledby="form-dialog-title" >
-                  <DialogTitle id="form-dialog-title">Create User</DialogTitle>
-                  <DialogContent>
-                    Please upload JSON file of employees you would like to add.
-                  <TextField
-                      margin="dense"
-                      id="employees-json"
-                      type='file'
-                      fullWidth
-                    />
-
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={this.handleCreateUserClose}>
-                      Cancel
-          </Button>
-                    <Button onClick={this.handleCreateUserClose} >
-                      Save
-          </Button>
-                  </DialogActions>
-                </Dialog>
-              </div>
-
-
-              <div id="delete-user">
-                <Button variant="outlined" color="secondary" className={classes.buttons} onClick={this.handleDeleteUserOpen}>
-                  Delete User
-            </Button>
-                <Dialog open={this.state.deleteOpen} onClose={this.handleDeleteUserClose} aria-labelledby="form-dialog-title" >
-                  <DialogTitle id="form-dialog-title">Delete User</DialogTitle>
-                  <DialogContent>
-                    <TextField
-                      margin="dense"
-                      id="company-ID"
-                      label="Company ID"
-                      type="number"
-                      fullWidth
-                    />
-                    <TextField
-                      margin="dense"
-                      id="employee-id"
-                      label="Employee ID"
-                      type='number'
-                      fullWidth
-                    />
-                  </DialogContent>
-                  <DialogActions>
-                    <Button onClick={this.handleDeleteUserClose}>
-                      Cancel
-          </Button>
-                    <Button onClick={this.handleDeleteUserClose} >
-                      Save
-          </Button>
-                  </DialogActions>
-                </Dialog>
-              </div>
-            </div>
-
-
           </div>
-        </Paper>
-      </Container>
-    )
-  }
-}
 
 
-export default withStyles(styles, { withTheme: true })(Settings);
+        </div>
+      </Paper>
+    </Container>
+  )
+})
+
+export default Settings;
