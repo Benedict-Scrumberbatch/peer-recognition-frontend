@@ -19,7 +19,6 @@ const styles = (theme: Theme) => createStyles({
 });
 
 interface SimpleProps extends WithStyles<typeof styles> {
-  foo: number
 }
 
 const Footer = withStyles(styles)(({ classes }: SimpleProps) => {

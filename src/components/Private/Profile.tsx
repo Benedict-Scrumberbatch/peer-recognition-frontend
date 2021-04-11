@@ -46,7 +46,6 @@ const styles = (theme: Theme) => createStyles({
 });
 
 interface SimpleProps extends WithStyles<typeof styles> {
-  foo: number
 }
 
 const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
