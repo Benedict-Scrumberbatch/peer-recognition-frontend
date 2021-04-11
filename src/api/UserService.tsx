@@ -1,6 +1,6 @@
 import MainApiProtected from "./MainAPIProtected";
-import { Users } from "../dto/entity/users.entity";
-import { UserStats } from "../dto/interface/userstats.interface";
+import { Users } from "../dtos/entity/users.entity";
+import { UserStats } from "../dtos/interface/userstats.interface";
 
 export default class UserService extends MainApiProtected {
     public constructor() {
