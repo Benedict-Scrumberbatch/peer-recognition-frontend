@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 // Material UI Styling
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
@@ -31,27 +30,22 @@ const styles = (theme: Theme) => createStyles({
   }
 });
 
-interface Props extends WithStyles<typeof styles>{ }
-
-class Header extends Component<Props> {
-  constructor(props: any) {
-    super(props)
-  }
-
-  render() {
-    const { classes } = this.props;
-    return (
-      <div className={classes.grow}>
-        <AppBar position="static" className={classes.appBar}>
-          <Toolbar>
-            <img src={UKGLogoImg} alt="logo" className={classes.logo} />
-            <div className={classes.grow} />
-            <img src={PlaceholderProfileImg} alt="profile photo" className={classes.profileCircle} />
-          </Toolbar>
-        </AppBar>
-      </div>
-    )
-  }
+interface SimpleProps extends WithStyles<typeof styles> {
+  foo: number
 }
 
-export default withStyles(styles, { withTheme: true })(Header);
+const Header = withStyles(styles)(({ classes }: SimpleProps) => {
+  return (
+    <div className={classes.grow}>
+      <AppBar position="static" className={classes.appBar}>
+        <Toolbar>
+          <img src={UKGLogoImg} alt="logo" className={classes.logo} />
+          <div className={classes.grow} />
+          <img src={PlaceholderProfileImg} alt="profile photo" className={classes.profileCircle} />
+        </Toolbar>
+      </AppBar>
+    </div>
+  )
+});
+
+export default Header;
