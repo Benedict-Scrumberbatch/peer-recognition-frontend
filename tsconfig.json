@@ -6,6 +6,9 @@
       "dom.iterable",
       "esnext"
     ],
+    "paths": {
+      "typeorm": ["./node_modules/typeorm/typeorm-model-shim.js"]
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
