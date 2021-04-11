@@ -1,5 +1,5 @@
 // Implementation code where T is the returned data shape
-export function postLogin(url: string, username: string, password: string): Promise<User> {
+export function postLogin(url: string, username: string, password: string): Promise<any> {
   return fetch(url, {
     method: 'POST',
     headers: {

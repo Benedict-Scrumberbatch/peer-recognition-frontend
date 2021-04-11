@@ -14,7 +14,7 @@ class MainApi extends HttpClient {
     super(API_URL);
   }
 
-  public getUsers = () => this.instance.get<User[]>('/users');
+  public getUsers = () => this.instance.get<any[]>('/users');
   
-  public getUser = (id: string) => this.instance.get<User>(`/users/${id}`);
+  public getUser = (id: string) => this.instance.get<any>(`/users/${id}`);
 }
