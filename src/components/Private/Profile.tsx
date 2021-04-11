@@ -12,6 +12,9 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg'; 
 
+import UserService from '../../api/UserService';
+import { UserStats } from '../../dto/interface/userstats.interface';
+
 const styles = (theme: Theme) => createStyles({
   paper: {
     margin: theme.spacing(2, 0, 0, 0),
@@ -40,13 +43,30 @@ const styles = (theme: Theme) => createStyles({
   }
 });
 
-interface Props extends WithStyles<typeof styles>{ }
-/**
- * Component displaying user stats and info. 
- */
-class Profile extends Component<Props> {
+interface Props extends WithStyles<typeof styles>{}
+
+interface ProfileState {
+  stats: UserStats
+}
+
+class Profile extends Component<Props, ProfileState> {
   constructor(props: any) {
     super(props)
+    this.state = {
+      stats: {
+        numRecsReceived: 0,
+        numRecsSent: 0,
+        tagStats: [],
+      }
+    };
+  }
+
+  async componentDidMount() {
+    const userStatsAPI = new UserService();
+    const stats = await userStatsAPI.getStats();
+    this.setState({
+      stats: stats,
+    });
   }
 
   render() {
@@ -64,10 +84,13 @@ class Profile extends Component<Props> {
               <Link href="#" className={classes.profilePicLink}>Change profile picture</Link>
             </Typography>
             <Typography className={classes.statistics}> 
-              Recognitions Received: 32
+              Recognitions Received: {this.state.stats.numRecsReceived}
             </Typography>
             <Typography> 
-              Recognitions Given: 85
+              Recognitions Given: {this.state.stats.numRecsSent}
+            </Typography>
+            <Typography> 
+              Values Received: 
             </Typography>
             <Button variant="outlined" color="primary" className={classes.buttons}>
               View Recognitions

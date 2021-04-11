@@ -18,7 +18,7 @@ import Paper from '@material-ui/core/Paper';
 // Material UI Lab Components
 import Alert from '@material-ui/lab/Alert';
 // utils
-import { postLogin } from '../api/postLogin';
+import AuthLoginService from '../api/AuthLoginService';
 import auth from '../api/authHelper';
 
 const styles = (theme: Theme) => createStyles({
@@ -79,7 +79,7 @@ class Login extends Component<Props, MyState> {
     console.log(`username: ${this.state.usernameFieldValue}`)
     console.log(`password: ${this.state.passwordFieldValue}`)
     // {"username":"greg", "password":"password1"}
-    postLogin('http://localhost:4200/auth/login', this.state.usernameFieldValue, this.state.passwordFieldValue)
+    /* postLogin('http://localhost:4200/auth/login', this.state.usernameFieldValue, this.state.passwordFieldValue)
       .then((data: any) => {
         console.log(data);
         this.setState({ redirect: true });
@@ -91,7 +91,20 @@ class Login extends Component<Props, MyState> {
         // show error message
         console.log(error)
         this.setState({ error: error.message })
-      })
+      }) */
+      const loginAPI = new AuthLoginService();
+      loginAPI.postLogin(this.state.usernameFieldValue, this.state.passwordFieldValue)
+        .then((response: any) => {
+          this.setState({ redirect: true });
+          auth.authenticate(response, () => {
+            this.setState({ redirect: true });
+          });
+        })
+        .catch(error => {
+          // show error message
+          console.log(error)
+          this.setState({ error: error.message })
+        })
   }
 
   _handleUsernameFieldChange(e: any): void {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // Material UI Styling
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
-import {Grid, Modal, Dialog} from "@material-ui/core";
+import { Grid, Modal, Dialog } from "@material-ui/core";
 import TextField from '@material-ui/core/TextField';
 // Material UI Comopnents
 import Container from '@material-ui/core/Container';
@@ -12,10 +12,12 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg'; 
+import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+
+import SettingsService from '../../api/SettingsService';
 
 const styles = (theme: Theme) => createStyles({
   paper: {
@@ -46,47 +48,93 @@ const styles = (theme: Theme) => createStyles({
 });
 
 
-type State = { contactOpen: boolean, passwordOpen : boolean };
-interface Props extends WithStyles<typeof styles>{ }
+type SettingsType = {
+  contactOpen: boolean, passwordOpen: boolean, deleteOpen: boolean, createOpen: boolean,
+  createUsers: object, deleteUsers: object
+};
+interface Props extends WithStyles<typeof styles> { }
 
-/**
- * User settings component
- */
-class Settings extends Component<Props,State> {
+class Settings extends Component<Props, SettingsType> {
   constructor(props: any) {
     super(props)
     this.state = {
-        contactOpen : false,
-        passwordOpen : false,
+      contactOpen: false,
+      passwordOpen: false,
+      deleteOpen: false,
+      createOpen: false,
+      createUsers: {
+        firstName: "",
+        lastName: "",
+        companyId: 0,
+        password: "",
+        positionTitle: "",
+        companyName: "",
+        isManager: false,
+        employeeId: 0,
+        email: "",
+        startDate: ""
+      },
+      deleteUsers: {
+        companyId: 0,
+        employeeId: 0
+      }
     }
-    this.handleContactOpen = this.handleContactOpen.bind(this)
-    this.handleContactClose = this.handleContactClose.bind(this)
-    this.handlePasswordOpen = this.handlePasswordOpen.bind(this)
-    this.handlePasswordClose = this.handlePasswordClose.bind(this)
-    
+  }
+
+  componentDidMount() {
+    const settingsAPI = new SettingsService();
+    settingsAPI.getSettings()
+      .then((response: any) => {
+        console.log(response);
+        this.setState({
+          createUsers: response
+        })
+      });
   }
 
   handleContactOpen = () => {
     this.setState({
-        contactOpen : true
+      contactOpen: true
     })
   };
 
   handleContactClose = () => {
     this.setState({
-        contactOpen : false
+      contactOpen: false
     })
   };
 
   handlePasswordOpen = () => {
     this.setState({
-        passwordOpen : true
+      passwordOpen: true
     })
   };
 
   handlePasswordClose = () => {
     this.setState({
-        passwordOpen : false
+      passwordOpen: false
+    })
+  };
+
+  handleDeleteUserOpen = () => {
+    this.setState({
+      deleteOpen: true
+    })
+  };
+  handleDeleteUserClose = () => {
+    this.setState({
+      deleteOpen: false
+    })
+  };
+
+  handleCreateUserOpen = () => {
+    this.setState({
+      createOpen: true
+    })
+  };
+  handleCreateUserClose = () => {
+    this.setState({
+      createOpen: false
     })
   };
 
@@ -188,7 +236,72 @@ class Settings extends Component<Props,State> {
               </Dialog>
             </div>
 
-            
+
+            <div id="admin-settings">
+
+
+              <div id="create-user">
+                <Button variant="outlined" color="primary" className={classes.buttons} onClick={this.handleCreateUserOpen}>
+                  Create Users
+            </Button>
+                <Dialog open={this.state.createOpen} onClose={this.handleCreateUserClose} aria-labelledby="form-dialog-title" >
+                  <DialogTitle id="form-dialog-title">Create User</DialogTitle>
+                  <DialogContent>
+                    Please upload JSON file of employees you would like to add.
+                  <TextField
+                      margin="dense"
+                      id="employees-json"
+                      type='file'
+                      fullWidth
+                    />
+
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={this.handleCreateUserClose}>
+                      Cancel
+          </Button>
+                    <Button onClick={this.handleCreateUserClose} >
+                      Save
+          </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+
+
+              <div id="delete-user">
+                <Button variant="outlined" color="secondary" className={classes.buttons} onClick={this.handleDeleteUserOpen}>
+                  Delete User
+            </Button>
+                <Dialog open={this.state.deleteOpen} onClose={this.handleDeleteUserClose} aria-labelledby="form-dialog-title" >
+                  <DialogTitle id="form-dialog-title">Delete User</DialogTitle>
+                  <DialogContent>
+                    <TextField
+                      margin="dense"
+                      id="company-ID"
+                      label="Company ID"
+                      type="number"
+                      fullWidth
+                    />
+                    <TextField
+                      margin="dense"
+                      id="employee-id"
+                      label="Employee ID"
+                      type='number'
+                      fullWidth
+                    />
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={this.handleDeleteUserClose}>
+                      Cancel
+          </Button>
+                    <Button onClick={this.handleDeleteUserClose} >
+                      Save
+          </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
+            </div>
+
 
           </div>
         </Paper>
@@ -197,4 +310,5 @@ class Settings extends Component<Props,State> {
   }
 }
 
-export default withStyles(styles, { withTheme: true })(Settings);  
+
+export default withStyles(styles, { withTheme: true })(Settings);

@@ -28,7 +28,7 @@ export default class MainApiProtected extends HttpClient {
   };
 
   private _handleRequest = (config: AxiosRequestConfig) => {
-    const access_token = localStorage.getItem('access_token')
+    const access_token = localStorage.getItem('jwt')
     config.headers['Authorization'] = `Bearer ${access_token}`;
     // request.headers.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTIzNDU2Nzg5IiwibmFtZSI6IlNhbXBsZSIsImlhdCI6MTUxNjIzODIzfQ.ZEBwz4pWYGqgFJc6DIi7HdTN0z5Pfs4Lcv4ZNwMr1rs';
 
