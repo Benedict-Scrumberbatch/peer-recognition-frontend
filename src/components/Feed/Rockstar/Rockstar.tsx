@@ -7,7 +7,7 @@ import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 // Assets
-import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
+import PlaceholderProfileImg from '../../../assets/img/kitten_placeholder.jpg';
 
 const useStyles = makeStyles((theme) => ({
   root: {
