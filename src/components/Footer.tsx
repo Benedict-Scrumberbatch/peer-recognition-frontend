@@ -21,6 +21,9 @@ const styles = (theme: Theme) => createStyles({
 
 interface Props extends WithStyles<typeof styles>{ }
 
+/**
+ * Standard Footer visible on all screens of the application.
+ */
 class Footer extends Component<Props> {
   constructor(props: any) {
     super(props)

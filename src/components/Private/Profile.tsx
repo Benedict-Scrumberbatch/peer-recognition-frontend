@@ -41,7 +41,9 @@ const styles = (theme: Theme) => createStyles({
 });
 
 interface Props extends WithStyles<typeof styles>{ }
-
+/**
+ * Component displaying user stats and info. 
+ */
 class Profile extends Component<Props> {
   constructor(props: any) {
     super(props)

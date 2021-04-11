@@ -57,6 +57,9 @@ type MyState = {
   error: string
 };
 
+/**
+ *  Component visible on the opening screen responsible for handling user login and authorization.
+ */
 class Login extends Component<Props, MyState> {
   constructor(props: any) {
     super(props);

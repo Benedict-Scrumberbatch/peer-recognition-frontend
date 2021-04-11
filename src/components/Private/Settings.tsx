@@ -49,6 +49,9 @@ const styles = (theme: Theme) => createStyles({
 type State = { contactOpen: boolean, passwordOpen : boolean };
 interface Props extends WithStyles<typeof styles>{ }
 
+/**
+ * User settings component
+ */
 class Settings extends Component<Props,State> {
   constructor(props: any) {
     super(props)

@@ -32,7 +32,9 @@ const styles = (theme: Theme) => createStyles({
 });
 
 interface Props extends WithStyles<typeof styles>{ }
-
+/**
+ * Standard Header visible on all screens of the application.
+ */
 class Header extends Component<Props> {
   constructor(props: any) {
     super(props)

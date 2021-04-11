@@ -102,11 +102,16 @@ const StyledButton = withStyles({
 })(Button);
 
 interface Props extends WithStyles<typeof styles> { }
-
+/**
+ * Timeline feed visible on the feed tab containing all the recognition posts in the form of a list.
+ * 
+ * @public
+ */
 class Profile extends Component<Props, any> {
   constructor(props: any) {
     super(props);
     this.state = {
+      /** List containing all recognition posts */
       postList: [{}, {}, {}, {}],
       open: false
     }

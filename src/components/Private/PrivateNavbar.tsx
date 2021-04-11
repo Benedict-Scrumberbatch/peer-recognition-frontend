@@ -117,6 +117,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+/**
+ * 
+ * Navigation Menu that holds
+ *   - navbar (for settings)
+ *   - div to move all content down (so not obscured by navbar)
+ *   - sidebar for route navigation
+ * 
+ */
 export default function PersistentDrawerLeft(props: any) {
   const classes = useStyles();
   let history = useHistory();
