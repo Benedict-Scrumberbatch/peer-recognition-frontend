@@ -83,17 +83,6 @@ class Settings extends Component<Props, SettingsType> {
     }
   }
 
-  componentDidMount() {
-    const settingsAPI = new SettingsService();
-    settingsAPI.getSettings()
-      .then((response: any) => {
-        console.log(response);
-        this.setState({
-          createUsers: response
-        })
-      });
-  }
-
   handleContactOpen = () => {
     this.setState({
       contactOpen: true
@@ -139,6 +128,7 @@ class Settings extends Component<Props, SettingsType> {
       createOpen: false
     })
   };
+
   handleCreateUserSave = () => {
     this.setState({
       createOpen: false
