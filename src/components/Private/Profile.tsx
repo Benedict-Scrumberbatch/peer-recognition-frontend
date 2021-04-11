@@ -11,11 +11,11 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 // Services
 import UserService from '../../api/UserService';
-// Types
-import { UserStats } from "../../dtos/interface/userstats.interface";
 // Assets
 import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
 import { withStyles } from '@material-ui/styles';
+// Types
+import { UserStats } from "../../dtos/interface/userstats.interface";
 
 const styles = (theme: Theme) => createStyles({
   paper: {
