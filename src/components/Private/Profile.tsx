@@ -13,7 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg'; 
 
 import UserService from '../../api/UserService';
-import { UserStats } from '../../dto/interface/userstats.interface';
+import { UserStats } from '../../dtos/interface/userstats.interface';
 
 const styles = (theme: Theme) => createStyles({
   paper: {
