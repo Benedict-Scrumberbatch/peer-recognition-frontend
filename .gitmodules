@@ -1,3 +1,0 @@
-[submodule "src/dto"]
-	path = src/dto
-	url = https://github.com/Benedict-Scrumberbatch/peer-recognition-dtos.git
