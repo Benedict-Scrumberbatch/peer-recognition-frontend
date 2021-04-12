@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 // Material UI Styling
-import { Theme } from '@material-ui/core/styles/createMuiTheme';
-import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
+import { WithStyles, createStyles, Theme } from '@material-ui/core/styles';
 // Material UI Comopnents
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
@@ -10,10 +9,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
-import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg'; 
-
+// Services
 import UserService from '../../api/UserService';
-import { UserStats } from '../../dtos/interface/userstats.interface';
+// Assets
+import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
+import { withStyles } from '@material-ui/styles';
+// Types
+import { UserStats } from "../../dtos/interface/userstats.interface";
 
 const styles = (theme: Theme) => createStyles({
   paper: {
@@ -43,66 +45,56 @@ const styles = (theme: Theme) => createStyles({
   }
 });
 
-interface Props extends WithStyles<typeof styles>{}
-
-interface ProfileState {
-  stats: UserStats
+interface SimpleProps extends WithStyles<typeof styles> {
 }
 
-class Profile extends Component<Props, ProfileState> {
-  constructor(props: any) {
-    super(props)
-    this.state = {
-      stats: {
-        numRecsReceived: 0,
-        numRecsSent: 0,
-        tagStats: [],
-      }
-    };
-  }
+const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
+  // HOOKS
+  const [numRecsReceived, setNumRecsReceived] = useState(0);
+  const [numRecsSent, setNumRecsSent] = useState(0);
+  const [tagStats, setTagStats] = useState([]);
+  const [stats, setStats] = useState({
+    numRecsReceived: 5,
+    numRecsSent: 5
+  });
 
-  async componentDidMount() {
+  // API CALL (called every time data is updated)
+  useEffect(() => {
     const userStatsAPI = new UserService();
-    const stats = await userStatsAPI.getStats();
-    this.setState({
-      stats: stats,
-    });
-  }
+    const stats: any = userStatsAPI.getStats();
+    setStats(stats);
+  })
+  return (
+    <Container component="main" maxWidth="sm">
+      <CssBaseline />
+      <Paper elevation={3} className={classes.paper}>
+        <div className={classes.wrapper}>
+          <Avatar alt="profile photo" src={PlaceholderProfileImg} className={classes.avatar} />
+          <Typography component="h1" variant="h4">
+            John Doe
+            </Typography>
+          <Typography>
+            <Link href="#" className={classes.profilePicLink}>Change profile picture</Link>
+          </Typography>
+          <Typography className={classes.statistics}>
+            Recognitions Received: {stats.numRecsReceived}
+          </Typography>
+          <Typography>
+            Recognitions Given: {stats.numRecsSent}
+          </Typography>
+          <Typography>
+            Values Received:
+          </Typography>
+          <Button variant="outlined" color="primary" className={classes.buttons}>
+            View Recognitions
+          </Button>
+          <Button variant="contained" color="default" className={classes.buttons}>
+            Sign Out
+          </Button>
+        </div>
+      </Paper>
+    </Container>
+  )
+});
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <Container component="main" maxWidth="sm">
-        <CssBaseline />
-        <Paper elevation={3} className={classes.paper}>
-          <div className={classes.wrapper}>
-            <Avatar alt="profile photo" src={PlaceholderProfileImg} className={classes.avatar} />
-            <Typography component="h1" variant="h4">
-              John Doe
-            </Typography>
-            <Typography>
-              <Link href="#" className={classes.profilePicLink}>Change profile picture</Link>
-            </Typography>
-            <Typography className={classes.statistics}> 
-              Recognitions Received: {this.state.stats.numRecsReceived}
-            </Typography>
-            <Typography> 
-              Recognitions Given: {this.state.stats.numRecsSent}
-            </Typography>
-            <Typography> 
-              Values Received: 
-            </Typography>
-            <Button variant="outlined" color="primary" className={classes.buttons}>
-              View Recognitions
-            </Button>
-            <Button variant="contained" color="default" className={classes.buttons}>
-              Sign Out
-            </Button>
-          </div>
-        </Paper>
-      </Container>
-    )
-  }
-}
-
-export default withStyles(styles, { withTheme: true })(Profile);  
+export default Profile;
