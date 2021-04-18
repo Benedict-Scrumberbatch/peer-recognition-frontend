@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
+// Utility to combine classnames
+import clsx from 'clsx';
 // Material UI Styling
 import { makeStyles, useTheme, Theme } from '@material-ui/core/styles';
 // Material UI Components
-import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -117,15 +118,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export default function PersistentDrawerLeft(props: any) {
-  const classes = useStyles();
-  let history = useHistory();
-
-  function handleClick() {
-    history.push("/home");
-  }
-
-  const theme = useTheme();
+export default function PrivateNavbar(props: any) {
+  const classes = useStyles(); // Material UI Styling
+  const theme = useTheme(); // Material UI Theming
+  const history = useHistory(); // React Router history hook
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (open: any) => (event: any) => {

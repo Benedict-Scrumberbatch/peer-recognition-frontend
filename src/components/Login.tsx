@@ -72,7 +72,9 @@ class Login extends Component<Props, MyState> {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit() {
+  handleSubmit(e: any) {
+    e.preventDefault(); // prevent default page refresh
+
     console.log(`username: ${this.state.usernameFieldValue}`)
     console.log(`password: ${this.state.passwordFieldValue}`)
     // {"username":"greg", "password":"password1"}

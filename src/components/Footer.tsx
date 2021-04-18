@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 // Material UI Styling
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
@@ -19,25 +18,19 @@ const styles = (theme: Theme) => createStyles({
   },
 });
 
-interface Props extends WithStyles<typeof styles>{ }
-
-class Footer extends Component<Props> {
-  constructor(props: any) {
-    super(props)
-  }
-
-  render() {
-    const { classes } = this.props;
-    return (
-      <AppBar position="static" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="body1">
-            &copy; 2021 UKG
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    )
-  }
+interface SimpleProps extends WithStyles<typeof styles> {
 }
 
-export default withStyles(styles, { withTheme: true })(Footer);
+const Footer = withStyles(styles)(({ classes }: SimpleProps) => {
+  return (
+    <AppBar position="static" className={classes.appBar}>
+      <Toolbar>
+        <Typography variant="body1">
+          &copy; 2021 UKG
+        </Typography>
+      </Toolbar>
+    </AppBar>
+  )
+});
+
+export default Footer;
