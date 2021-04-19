@@ -51,10 +51,11 @@ const names = [
   'Trustworthy'
 ];
 
-function getStyles(name: string, personName: string[], theme: Theme) {
+function getStyles(name: string, tags: Tag[], theme: Theme) {
+  const aTag = tags.find((tag: Tag) => tag.value === name) 
   return {
     fontWeight:
-      personName.indexOf(name) === -1
+      aTag
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium,
   };
@@ -69,10 +70,10 @@ type CarProps = {
 const TagSelect: React.FC<CarProps> = ({ tags, setTags }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState<string[]>(["Understanding", "Kind", "Diligent"]);
+  // const [personName, setPersonName] = React.useState<string[]>(["Understanding", "Kind", "Diligent"]);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setPersonName(event.target.value as string[]);
+    setTags(event.target.value as string[]);
   };
 
   return (
@@ -83,7 +84,7 @@ const TagSelect: React.FC<CarProps> = ({ tags, setTags }) => {
           labelId="demo-mutiple-chip-label"
           id="demo-mutiple-chip"
           multiple
-          value={personName}
+          value={tags}
           onChange={handleChange}
           input={<Input id="select-multiple-chip" />}
           renderValue={(selected) => (
@@ -96,7 +97,7 @@ const TagSelect: React.FC<CarProps> = ({ tags, setTags }) => {
           MenuProps={MenuProps}
         >
           {names.map((name) => (
-            <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
+            <MenuItem key={name} value={name} style={getStyles(name, tags, theme)}>
               {name}
             </MenuItem>
           ))}
