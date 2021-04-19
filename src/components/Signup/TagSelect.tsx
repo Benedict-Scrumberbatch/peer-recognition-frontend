@@ -41,9 +41,11 @@ const MenuProps = {
 };
 
 const names = [
+  'Understanding',
+  'Kind',
+  'Diligent',
   'Sincere',
   'Honest',
-  'Understanding',
   'Loyalty',
   'Truthful',
   'Trustworthy'
@@ -67,7 +69,7 @@ type CarProps = {
 const TagSelect: React.FC<CarProps> = ({ tags, setTags }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [personName, setPersonName] = React.useState<string[]>([]);
+  const [personName, setPersonName] = React.useState<string[]>(["Understanding", "Kind", "Diligent"]);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setPersonName(event.target.value as string[]);
