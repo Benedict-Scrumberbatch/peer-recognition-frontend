@@ -7,6 +7,7 @@ import Login from './components/Login';
 import Feed from './components/Feed';
 import Settings from './components/Private/Settings';
 import Profile from './components/Private/Profile';
+import Signup from './components/Signup';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -32,6 +33,7 @@ function App () {
             <Route exact path="/" component={Login} />
             <Route path="/foo" component={Foo} />
             <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
             <PrivateRoute path="/feed" component={Feed} />
             <PrivateRoute path="/profile" component={Profile} />
             <PrivateRoute path="/settings" component={Settings} />
