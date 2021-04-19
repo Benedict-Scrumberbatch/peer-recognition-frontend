@@ -9,6 +9,6 @@ export default class AuthLoginService extends MainApi {
         return this.instance.post('/auth/login', {'username': username, 'password': password});
     };
     public postCreateCompany = (name: any, tags: Tag[]) => {
-        return this.instance.post('/company/create', {'name': name, 'tags': tags});
+        return this.instance.post('/company/create', {'companyId': 1, 'name': name, 'tags': tags});
     }
 }

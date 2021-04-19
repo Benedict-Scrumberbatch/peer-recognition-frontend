@@ -62,18 +62,18 @@ function getStyles(name: string, tags: Tag[], theme: Theme) {
 }
 
 // Declare the type of the props
-type CarProps = {
+type TagSelectProps = {
   tags: Tag[];
   setTags: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const TagSelect: React.FC<CarProps> = ({ tags, setTags }) => {
+const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
   const classes = useStyles();
   const theme = useTheme();
   // const [personName, setPersonName] = React.useState<string[]>(["Understanding", "Kind", "Diligent"]);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setTags(event.target.value as string[]);
+    setTags(event.target.value as Tag[]);
   };
 
   return (
