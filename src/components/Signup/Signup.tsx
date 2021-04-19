@@ -123,8 +123,8 @@ const Signup = withStyles(styles)(({ classes }: SimpleProps) => {
                 </Link>
               </Grid>
               <Grid item>
-                <Link to="/signup" >
-                  <Typography variant="body2">Don't have an account? Sign Up</Typography>
+                <Link to="/login" >
+                  <Typography variant="body2">Have an account? Log in</Typography>
                 </Link>
               </Grid>
             </Grid>
