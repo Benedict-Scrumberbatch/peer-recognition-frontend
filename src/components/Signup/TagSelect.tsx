@@ -79,7 +79,7 @@ const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
   return (
     <div>
       <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-chip-label">Tags</InputLabel>
+        <InputLabel id="demo-mutiple-chip-label">Core Values</InputLabel>
         <Select
           labelId="demo-mutiple-chip-label"
           id="demo-mutiple-chip"
