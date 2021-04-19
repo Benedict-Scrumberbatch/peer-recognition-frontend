@@ -1,6 +1,6 @@
 import { useState } from 'react'
 // Routing
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 // Material UI Styling
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
@@ -56,6 +56,7 @@ interface SimpleProps extends WithStyles<typeof styles> {
 
 // const Header = withStyles(styles)(({ classes }: SimpleProps) => {
 const Signup = withStyles(styles)(({ classes }: SimpleProps) => {
+  const history = useHistory();
   const [error, setError] = useState("")
   const [name, setUsername] = useState("")
   const [tags, setTags] = useState<Tag[]>([])
@@ -70,10 +71,9 @@ const Signup = withStyles(styles)(({ classes }: SimpleProps) => {
     const loginAPI = new AuthLoginService();
     loginAPI.postCreateCompany(name, tags)
       .then((response: any) => {
-        response = response.json()
-      })
-      .then((response: any) => {
         console.log(response);
+        alert(`Success! Company, ${name}, was created`)
+        history.push("/login");
       })
       .catch(error => {
         // show error message
