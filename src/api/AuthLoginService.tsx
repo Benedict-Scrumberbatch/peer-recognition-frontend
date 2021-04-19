@@ -1,6 +1,8 @@
 import MainApi from './MainAPI';
 import { Tag } from '../dtos/entity/tag.entity';
 
+let companyId = 1;
+
 export default class AuthLoginService extends MainApi {
     public constructor() {
         super();
@@ -9,6 +11,7 @@ export default class AuthLoginService extends MainApi {
         return this.instance.post('/auth/login', {'username': username, 'password': password});
     };
     public postCreateCompany = (name: any, tags: Tag[]) => {
-        return this.instance.post('/company/create', {'companyId': 1, 'name': name, 'tags': tags});
+        companyId += 1
+        return this.instance.post('/company/create', {'companyId': companyId, 'name': name, 'tags': tags});
     }
 }
