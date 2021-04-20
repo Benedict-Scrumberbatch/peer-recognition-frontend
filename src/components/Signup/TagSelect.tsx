@@ -1,10 +1,10 @@
 import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
 // types
 import { Tag } from '../../dtos/entity/tag.entity';
 // icons
@@ -68,7 +68,7 @@ const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
 
   return (
     <div>
-      <InputLabel id="demo-mutiple-chip-label">Core Values</InputLabel>
+      <Typography variant="h5" id="demo-mutiple-chip-label" style={{textAlign: 'center'}}>Core Values</Typography>
       <div className={classes.chips}>
         {tags.map((tag) => (
           <div key={tag.value} onClick={() => handleDeleteTag(tag.id)}>
@@ -76,6 +76,7 @@ const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
           </div>
         ))}
       </div>
+      <br />
       <div className={classes.flexRow}>
         <InputBase
           className={classes.input}
