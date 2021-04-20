@@ -88,8 +88,8 @@ const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
       <InputLabel id="demo-mutiple-chip-label">Core Values</InputLabel>
       <div className={classes.chips}>
         {tags.map((tag) => (
-          <div onClick={() => handleDeleteTag(tag.id)}>
-            <Chip key={tag.value} label={tag.value} className={classes.chip} />
+          <div key={tag.value} onClick={() => handleDeleteTag(tag.id)}>
+            <Chip label={tag.value} className={classes.chip} />
           </div>
         ))}
       </div>
