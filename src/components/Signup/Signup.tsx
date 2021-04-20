@@ -60,10 +60,10 @@ const Signup = withStyles(styles)(({ classes }: SimpleProps) => {
   const [error, setError] = useState("")
   const [name, setUsername] = useState("")
   const [tags, setTags] = useState<any[]>([
-    { value: 'Understanding'},
-    { value: 'Kind'},
-    { value: 'Diligent'},
-    { value: 'Sincere'}
+    { id: "1", value: 'Understanding'},
+    { id: "2", value: 'Kind'},
+    { id: "3", value: 'Diligent'},
+    { id: "4", value: 'Sincere'}
   ])
 
   const handleUsernameChange = (e: any): void => {
