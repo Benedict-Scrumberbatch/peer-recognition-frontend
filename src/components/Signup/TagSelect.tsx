@@ -78,43 +78,21 @@ const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
   const handleCreate = (event: React.ChangeEvent<{ value: unknown }>) => {
 
   }
+  const handleDeleteTag = (id: any) => {
+    setTags(tags.filter((tag) => tag.id !== id))
+  }
   console.log(tags)
 
   return (
     <div>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-mutiple-chip-label">Core Values</InputLabel>
-        <Select
-          labelId="demo-mutiple-chip-label"
-          id="demo-mutiple-chip"
-          multiple
-          value={tags}
-          onChange={handleChange}
-          input={<Input id="select-multiple-chip" />}
-          renderValue={(selected) => (
-            <div className={classes.chips}>
-              {(selected as any[]).map((tag) => (
-                <Chip key={tag.value} label={tag.value} className={classes.chip} />
-              ))}
-            </div>
-          )}
-          MenuProps={MenuProps}
-          inputProps={{ readOnly: true }}
-        >
-          {tags.map((tag: any) => {
-            console.log(tag)
-            const { value } = tag;
-            console.log(value)
-            return (
-              <MenuItem key={value} value={value} style={{
-                fontWeight: theme.typography.fontWeightRegular
-              }}>
-                {value}
-              </MenuItem>
-            )
-          })}
-        </Select>
-      </FormControl>
+      <InputLabel id="demo-mutiple-chip-label">Core Values</InputLabel>
+      <div className={classes.chips}>
+        {tags.map((tag) => (
+          <div onClick={() => handleDeleteTag(tag.id)}>
+            <Chip key={tag.value} label={tag.value} className={classes.chip} />
+          </div>
+        ))}
+      </div>
       <div className={classes.flexRow}>
         <InputBase
           className={classes.input}
