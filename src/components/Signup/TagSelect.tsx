@@ -1,10 +1,6 @@
 import React from 'react';
-import { createStyles, makeStyles, useTheme, Theme } from '@material-ui/core/styles';
-import Input from '@material-ui/core/Input';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import Chip from '@material-ui/core/Chip';
 import IconButton from '@material-ui/core/IconButton';
 import InputBase from '@material-ui/core/InputBase';
@@ -13,6 +9,7 @@ import Divider from '@material-ui/core/Divider';
 import { Tag } from '../../dtos/entity/tag.entity';
 // icons
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -50,18 +47,6 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-// <AddItem itemList={itemList} setItemList={setItemList} />
-// Declare the type of the props
 type TagSelectProps = {
   tags: any[];
   setTags: React.Dispatch<React.SetStateAction<any>>;
@@ -69,19 +54,17 @@ type TagSelectProps = {
 
 const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
   const classes = useStyles();
-  const theme = useTheme();
-  // const [personName, setPersonName] = React.useState<string[]>(["Understanding", "Kind", "Diligent"]);
+  const [value, setValue] = React.useState()
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setTags(event.target.value as any[]);
-  };
-  const handleCreate = (event: React.ChangeEvent<{ value: unknown }>) => {
-
-  }
   const handleDeleteTag = (id: any) => {
     setTags(tags.filter((tag) => tag.id !== id))
   }
-  console.log(tags)
+  const handleCreateTag = (tagValue: any) => {
+    setTags(tags.concat({
+      id: uuidv4(),
+      value: tagValue
+    }))
+  }
 
   return (
     <div>
@@ -96,11 +79,14 @@ const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
       <div className={classes.flexRow}>
         <InputBase
           className={classes.input}
-          placeholder="Search Google Maps"
-          inputProps={{ 'aria-label': 'search google maps' }}
+          placeholder="Add New Company Value"
+          inputProps={{ 'aria-label': 'add new company value' }}
+          onChange={(event: React.ChangeEvent<{ value: any }>) => {
+            setValue(event.target.value)
+          }}
         />
         <Divider className={classes.divider} orientation="vertical" />
-        <IconButton color="primary" className={classes.iconButton} aria-label="directions">
+        <IconButton color="primary" className={classes.iconButton} aria-label="directions" onClick={() => handleCreateTag(value)}>
           <ArrowForwardIosIcon />
         </IconButton>
       </div>
