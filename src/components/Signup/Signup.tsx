@@ -59,7 +59,12 @@ const Signup = withStyles(styles)(({ classes }: SimpleProps) => {
   const history = useHistory();
   const [error, setError] = useState("")
   const [name, setUsername] = useState("")
-  const [tags, setTags] = useState<Tag[]>([])
+  const [tags, setTags] = useState<any[]>([
+    { value: 'Understanding'},
+    { value: 'Kind'},
+    { value: 'Diligent'},
+    { value: 'Sincere'}
+  ])
 
   const handleUsernameChange = (e: any): void => {
     setUsername(e.target.value)
