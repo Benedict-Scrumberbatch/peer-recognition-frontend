@@ -6,8 +6,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Chip from '@material-ui/core/Chip';
+import IconButton from '@material-ui/core/IconButton';
+import InputBase from '@material-ui/core/InputBase';
+import Divider from '@material-ui/core/Divider';
 // types
 import { Tag } from '../../dtos/entity/tag.entity';
+// icons
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,6 +31,22 @@ const useStyles = makeStyles((theme: Theme) =>
     noLabel: {
       marginTop: theme.spacing(3),
     },
+    flexRow: {
+      padding: '2px 4px',
+      display: 'flex',
+      border: '1px solid #000000'
+    },
+    input: {
+      marginLeft: theme.spacing(1),
+      flex: 1,
+    },
+    iconButton: {
+      padding: 10,
+    },
+    divider: {
+      height: 28,
+      margin: 4,
+    },
   }),
 );
 
@@ -39,31 +60,10 @@ const MenuProps = {
     },
   },
 };
-
-const names = [
-  'Understanding',
-  'Kind',
-  'Diligent',
-  'Sincere',
-  'Honest',
-  'Loyalty',
-  'Truthful',
-  'Trustworthy'
-];
-
-function getStyles(name: string, tags: Tag[], theme: Theme) {
-  const aTag = tags.find((tag: Tag) => tag.value === name) 
-  return {
-    fontWeight:
-      aTag
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
+// <AddItem itemList={itemList} setItemList={setItemList} />
 // Declare the type of the props
 type TagSelectProps = {
-  tags: Tag[];
+  tags: any[];
   setTags: React.Dispatch<React.SetStateAction<any>>;
 }
 
@@ -73,8 +73,12 @@ const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
   // const [personName, setPersonName] = React.useState<string[]>(["Understanding", "Kind", "Diligent"]);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setTags(event.target.value as Tag[]);
+    setTags(event.target.value as any[]);
   };
+  const handleCreate = (event: React.ChangeEvent<{ value: unknown }>) => {
+
+  }
+  console.log(tags)
 
   return (
     <div>
@@ -89,20 +93,39 @@ const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
           input={<Input id="select-multiple-chip" />}
           renderValue={(selected) => (
             <div className={classes.chips}>
-              {(selected as string[]).map((value) => (
-                <Chip key={value} label={value} className={classes.chip} />
+              {(selected as any[]).map((tag) => (
+                <Chip key={tag.value} label={tag.value} className={classes.chip} />
               ))}
             </div>
           )}
           MenuProps={MenuProps}
+          inputProps={{ readOnly: true }}
         >
-          {names.map((name) => (
-            <MenuItem key={name} value={name} style={getStyles(name, tags, theme)}>
-              {name}
-            </MenuItem>
-          ))}
+          {tags.map((tag: any) => {
+            console.log(tag)
+            const { value } = tag;
+            console.log(value)
+            return (
+              <MenuItem key={value} value={value} style={{
+                fontWeight: theme.typography.fontWeightRegular
+              }}>
+                {value}
+              </MenuItem>
+            )
+          })}
         </Select>
       </FormControl>
+      <div className={classes.flexRow}>
+        <InputBase
+          className={classes.input}
+          placeholder="Search Google Maps"
+          inputProps={{ 'aria-label': 'search google maps' }}
+        />
+        <Divider className={classes.divider} orientation="vertical" />
+        <IconButton color="primary" className={classes.iconButton} aria-label="directions">
+          <ArrowForwardIosIcon />
+        </IconButton>
+      </div>
     </div>
   );
 }
