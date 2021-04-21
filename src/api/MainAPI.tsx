@@ -9,7 +9,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   // production code
 }
 
-class MainApi extends HttpClient {
+export default class MainApi extends HttpClient {
   public constructor() {
     super(API_URL);
   }
