@@ -1,25 +1,23 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 // Material UI Styling
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { fade, createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 // Material UI Comopnents
 import TextField from '@material-ui/core/TextField';
-import {Grid, Modal, Dialog} from "@material-ui/core";
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import SearchBar from "material-ui-search-bar";
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
+import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
 // Custom Components
-// import Searchbar from './Searchbar';
 import Post from './Post';
 import Rockstar from './Rockstar';
-
+// Services
 import RecognitionService from '../../api/RecognitionService';
 
 const styles = (theme: Theme) => createStyles({
@@ -103,122 +101,103 @@ const StyledButton = withStyles({
 
 })(Button);
 
-interface Props extends WithStyles<typeof styles> { }
+
+interface SimpleProps extends WithStyles<typeof styles> { 
+  foo: number
+}
 /**
  * Timeline feed visible on the feed tab containing all the recognition posts in the form of a list.
  * 
  * @public
  */
-class Profile extends Component<Props, any> {
-  constructor(props: any) {
-    super(props);
-    this.state = {
-<<<<<<< HEAD
-      /** List containing all recognition posts */
-      postList: [{}, {}, {}, {}],
-=======
-      postList: [],
->>>>>>> origin/master
-      open: false
-    }
-    this.handleOpen = this.handleOpen.bind(this)
-    this.handleClose = this.handleClose.bind(this)
+
+const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
+  const [postList, setPostList] = useState([]);
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => {
+    setOpen(true)
+  }
+  const handleClose = () => {
+    setOpen(false)
   }
 
-  async componentDidMount() {
+  useEffect(() => {
     const recognitionAPI = new RecognitionService();
-    const feed = await recognitionAPI.getFeed();
-    this.setState({
-      postList: feed
-    });
-  }
-  handleOpen = () => {
-    this.setState({
-      open: true
-    })
-  };
+    const feed: any = recognitionAPI.getFeed();
+    setPostList(feed)
+  })
 
-  handleClose = () => {
-    this.setState({
-      open: false
-    })
-  };
-
-  render() {
-    const { classes } = this.props;
-    
-    return (
-      <Container maxWidth="lg">
-        <div className={classes.grow} />
-        <Container maxWidth="md" className={classes.searchWrapper}>
-          <div className={classes.searchWrapper}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
+  return (
+    <Container maxWidth="lg">
+      <div className={classes.grow} />
+      <Container maxWidth="md" className={classes.searchWrapper}>
+        <div className={classes.searchWrapper}>
+          <div className={classes.searchIcon}>
+            <SearchIcon />
+          </div>
+          <InputBase
+            placeholder="Search…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            inputProps={{ 'aria-label': 'search' }}
+          />
+        </div>
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth maxWidth="md">
+          <DialogTitle id="form-dialog-title">Create New Post</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Search for Employee Name
+          </DialogContentText>
+            <SearchBar
             />
-          </div>
-          <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title" fullWidth maxWidth="md">
-            <DialogTitle id="form-dialog-title">Create New Post</DialogTitle>
-            <DialogContent>
-              <DialogContentText>
-                Search for Employee Name
+            <TextField
+              autoFocus
+              margin="dense"
+              id="multiline-recognition"
+              label="Type in recognition..."
+              multiline
+              rows={6}
+              variant="outlined"
+              fullWidth
+            />
+            <DialogContentText>
+              Core Values Shown
           </DialogContentText>
-              <SearchBar
-              />
-              <TextField
-                autoFocus
-                margin="dense"
-                id="multiline-recognition"
-                label="Type in recognition..."
-                multiline
-                rows={6}
-                variant="outlined"
-                fullWidth
-              />
-              <DialogContentText>
-                Core Values Shown
-          </DialogContentText>
-              <SearchBar
-                style={{ width: '25%' }}
-              />
-            </DialogContent>
-            <DialogActions>
-              <StyledButton onClick={this.handleClose}>
-                Cancel
+            <SearchBar
+              style={{ width: '25%' }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <StyledButton onClick={handleClose}>
+              Cancel
           </StyledButton>
-              <StyledButton onClick={this.handleClose} >
-                Create Post
+            <StyledButton onClick={handleClose} >
+              Create Post
           </StyledButton>
-            </DialogActions>
-          </Dialog>
-        </Container>
-        <div className={classes.buttonList}>
-          <StyledButton onClick={this.handleOpen} className={classes.buttonItem}>{"Create a Post"} </StyledButton>
-          <StyledButton className={classes.buttonItem}>{"See My Posts"} </StyledButton>
-        </div>
-        <div className={classes.postList}>
-          <div className={classes.postItem}>
-            <Rockstar />
-          </div>
-          {this.state.postList.map((val: any, idx: number) => {
-            // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
-            return (
-              <div key={idx} className={classes.postItem}>
-                {typeof this.state.postList[idx] === undefined ? <div>Loading...</div> : <Post recognition = {this.state.postList[idx]}/>}
-              </div>
-            )
-          })}
-        </div>
+          </DialogActions>
+        </Dialog>
       </Container>
-    )
-  }
-}
+      <div className={classes.buttonList}>
+        <StyledButton onClick={handleOpen} className={classes.buttonItem}>{"Create a Post"} </StyledButton>
+        <StyledButton className={classes.buttonItem}>{"See My Posts"} </StyledButton>
+      </div>
+      <div className={classes.postList}>
+        <div className={classes.postItem}>
+          <Rockstar />
+        </div>
+        {postList.map((val: any, idx: number) => {
+          // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
+          return (
+            <div key={idx} className={classes.postItem}>
+              {typeof postList[idx] === undefined ? <div>Loading...</div> : <Post recognition={postList[idx]} />}
+            </div>
+          )
+        })}
+      </div>
+    </Container>
+  )
+});
 
-export default withStyles(styles, { withTheme: true })(Profile);
+export default Feed;
