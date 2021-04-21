@@ -102,9 +102,14 @@ const StyledButton = withStyles({
 })(Button);
 
 
-interface SimpleProps extends WithStyles<typeof styles> {
+interface SimpleProps extends WithStyles<typeof styles> { 
   foo: number
 }
+/**
+ * Timeline feed visible on the feed tab containing all the recognition posts in the form of a list.
+ * 
+ * @public
+ */
 
 const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
   const [postList, setPostList] = useState([]);
