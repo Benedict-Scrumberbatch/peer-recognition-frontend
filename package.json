@@ -56,7 +56,6 @@
     "@types/uuid": "^8.3.0",
     "react-app-rewire-alias": "^1.0.3",
     "react-app-rewired": "^2.1.8",
-    "react-styleguidist": "^11.1.6",
-    "webpack": "^4.44.2"
+    "react-styleguidist": "^11.1.6"
   }
 }
