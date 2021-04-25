@@ -15,6 +15,7 @@ import UserService from '../../api/UserService';
 import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
 // Types
 import { UserStats } from "../../dtos/interface/userstats.interface";
+import { TagStats } from '../../dtos/entity/tagstats.entity';
 
 const styles = (theme: Theme) => createStyles({
   paper: {
@@ -49,20 +50,22 @@ interface SimpleProps extends WithStyles<typeof styles> {
 
 const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
   // HOOKS
-  const [numRecsReceived, setNumRecsReceived] = useState(0);
-  const [numRecsSent, setNumRecsSent] = useState(0);
-  const [tagStats, setTagStats] = useState([]);
-  const [stats, setStats] = useState({
-    numRecsReceived: 5,
-    numRecsSent: 5
-  });
+  const initialTagStats: TagStats[] = []
+  const initialStats: UserStats = {
+    numRecsReceived: 0,
+    numRecsSent: 0,
+    tagStats: initialTagStats
+  }
+  const [stats, setStats] = useState(initialStats);
 
   // API CALL (called every time data is updated)
   useEffect(() => {
     const userStatsAPI = new UserService();
-    const stats: any = userStatsAPI.getStats();
-    setStats(stats);
-  })
+    userStatsAPI.getStats().then(
+      (stats: UserStats) => setStats(stats)
+
+    )
+  }, [stats])
   return (
     <Container component="main" maxWidth="sm">
       <CssBaseline />

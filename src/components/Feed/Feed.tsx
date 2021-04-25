@@ -19,6 +19,7 @@ import Post from './Post';
 import Rockstar from './Rockstar';
 // Services
 import RecognitionService from '../../api/RecognitionService';
+import { Recognition } from '../../dtos/entity/recognition.entity';
 
 const styles = (theme: Theme) => createStyles({
   grow: {
@@ -112,7 +113,8 @@ interface SimpleProps extends WithStyles<typeof styles> {
  */
 
 const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
-  const [postList, setPostList] = useState([]);
+  const initialPostList: Recognition[] = [];
+  const [postList, setPostList] = useState(initialPostList);
   const [open, setOpen] = useState(false)
   const handleOpen = () => {
     setOpen(true)
@@ -123,9 +125,10 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
 
   useEffect(() => {
     const recognitionAPI = new RecognitionService();
-    const feed: any = recognitionAPI.getFeed();
-    setPostList(feed)
-  })
+    recognitionAPI.getFeed().then(
+      (feed: Recognition[]) => setPostList(feed)
+    );
+  }, [postList])
 
   return (
     <Container maxWidth="lg">
