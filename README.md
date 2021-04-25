@@ -5,7 +5,7 @@ The Frontend Application for Team Benedict Scrumberbatch's Peer Recognition Soft
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-#### Available Scripts  
+#### Available Scripts
 
 In the project directory, you can run:
 
