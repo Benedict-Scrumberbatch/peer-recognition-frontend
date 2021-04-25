@@ -5,7 +5,7 @@ import { AxiosRequestConfig } from 'axios';
 let API_URL: any;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
   // dev code
-  API_URL = "http://localhost:4200"
+  API_URL = "http://ec2-18-207-97-175.compute-1.amazonaws.com:4200"
 } else {
   // production code
   API_URL = process.env.REACT_APP_API_URL;
