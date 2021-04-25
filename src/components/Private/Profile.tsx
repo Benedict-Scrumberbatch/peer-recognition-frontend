@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 // Material UI Styling
-import { WithStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { WithStyles, createStyles, Theme, withStyles } from '@material-ui/core/styles';
 // Material UI Comopnents
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
@@ -13,7 +13,6 @@ import Paper from '@material-ui/core/Paper';
 import UserService from '../../api/UserService';
 // Assets
 import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
-import { withStyles } from '@material-ui/styles';
 // Types
 import { UserStats } from "../../dtos/interface/userstats.interface";
 
