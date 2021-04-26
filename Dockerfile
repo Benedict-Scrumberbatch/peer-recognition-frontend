@@ -6,16 +6,15 @@ RUN mkdir -p /usr/src/app/frontend
 # Set working directory so that all
 # subsequent command runs in this folder
 WORKDIR /usr/src/app/frontend
-ARG PORT=3000
+ARG PORT
 ENV PORT=$PORT
 # Copy package json and install dependencies
 COPY package*.json ./
 RUN npm install
-RUN npm install -g serve
 # Copy our app
 COPY . .
 RUN npm run build
 # Expose port to access server
-EXPOSE 3000
+EXPOSE $PORT
 # Command to run our app
-CMD ["serve", "-s", "build", "-l", $PORT]
+CMD ["npm", "run", "start:dev"]
