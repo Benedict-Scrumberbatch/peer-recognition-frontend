@@ -13,52 +13,16 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # Checkout the repository and initialize submodules
-  initialize-git:
-    # The type of runner that the job will run on
+  # generate auto documentation and push to github pages
+  github-pages-documentaion:
     runs-on: ubuntu-latest
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
         uses: actions/checkout@v2
       - run: git submodule init
-      - run: git submodule update
-      - name: publish artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: source
-          path: ./
-      # npm install here and cache to speed up docker build process?
-      # cache results on npm install for faster deployments
-      - uses: c-hive/gha-npm-cache@v1
-      - run: npm install
-  
-  # Run node/npm set-up tasks
-  node-npm-actions:
-    needs: initialize-git
-    runs-on: ubuntu-latest
-    steps:
-      - name: download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: source
+      - run: git submodule update   
       - name: Setup Node.js environment
-        uses: actions/setup-node@v2.1.5
-      # cache results on npm install for faster deployments
-      - uses: c-hive/gha-npm-cache@v1
-      - run: npm install
-      # # - run: npm run build # might not need to run build at all in this stage
-
-  # generate auto documentation and push to github pages
-  github-pages-documentaion:
-    needs: node-npm-actions
-    runs-on: ubuntu-latest
-    steps:
-      - name: download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: source
+        uses: actions/setup-node@v2.1.5   
       - uses: c-hive/gha-npm-cache@v1
       - run: npm install
       # - run: npm run docs
@@ -76,26 +40,26 @@ jobs:
 
   # test application before deploying
   testing-application:
-    needs: node-npm-actions
     runs-on: ubuntu-latest
     steps:
-      - name: download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: source
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: git submodule init
+      - run: git submodule update   
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.5   
       - uses: c-hive/gha-npm-cache@v1
       - run: npm install
       - run: npm run test
 
   # Push docker image to github packages
   docker-github-packages:
-    needs: initialize-git
     runs-on: ubuntu-latest
     steps:
-      - name: download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: source
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: git submodule init
+      - run: git submodule update     
       - uses: c-hive/gha-npm-cache@v1
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v1
@@ -108,13 +72,12 @@ jobs:
 
   # Push docker image to heroku
   docker-heroku:
-    needs: initialize-git
     runs-on: ubuntu-latest
     steps:
-      - name: download artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: source
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: git submodule init
+      - run: git submodule update     
       - uses: c-hive/gha-npm-cache@v1
       - name: Deploy Docker Image to Heroku App
         uses: jctaveras/heroku-deploy@v2.1.3
