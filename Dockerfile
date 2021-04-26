@@ -6,7 +6,7 @@ RUN mkdir -p /usr/src/app/frontend
 # Set working directory so that all
 # subsequent command runs in this folder
 WORKDIR /usr/src/app/frontend
-ARG PORT=3000
+ARG PORT
 ENV PORT=$PORT
 # Copy package json and install dependencies
 COPY package*.json ./
