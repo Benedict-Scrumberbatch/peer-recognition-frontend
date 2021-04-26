@@ -54,6 +54,8 @@ interface SimpleProps extends WithStyles<typeof styles> {
 }
 
 const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
+  const triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
+
   const [contactOpen, setContactOpen] = useState(false);
   const [passwordOpen, setPasswordOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -81,7 +83,7 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
       .then((response: any) => {
         setCreateUsers(response)
       });
-  })
+  }, [triggerUseEffect])
 
   const handleContactOpen = () => setContactOpen(true)
   const handleContactClose = () => setContactOpen(false)

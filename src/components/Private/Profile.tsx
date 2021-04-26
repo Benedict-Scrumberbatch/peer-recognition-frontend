@@ -49,6 +49,7 @@ interface SimpleProps extends WithStyles<typeof styles> {
 }
 
 const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
+  const triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
   // HOOKS
   const initialTagStats: TagStats[] = []
   const initialStats: UserStats = {
@@ -65,7 +66,7 @@ const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
       (stats: UserStats) => setStats(stats)
 
     )
-  }, [stats])
+  }, [triggerUseEffect])
   return (
     <Container component="main" maxWidth="sm">
       <CssBaseline />

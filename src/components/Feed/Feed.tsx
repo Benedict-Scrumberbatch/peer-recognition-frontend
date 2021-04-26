@@ -113,6 +113,7 @@ interface SimpleProps extends WithStyles<typeof styles> {
  */
 
 const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
+  const triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
   const initialPostList: Recognition[] = [];
   const [postList, setPostList] = useState(initialPostList);
   const [open, setOpen] = useState(false)
@@ -128,7 +129,7 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
     recognitionAPI.getFeed().then(
       (feed: Recognition[]) => setPostList(feed)
     );
-  }, [postList])
+  }, [triggerUseEffect])
 
   return (
     <Container maxWidth="lg">
