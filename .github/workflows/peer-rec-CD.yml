@@ -29,6 +29,9 @@ jobs:
         with:
           name: source
           path: ./
+      # npm install here and cache to speed up docker build process?
+      - uses: c-hive/gha-npm-cache@v1
+      - run: npm install
   
   # Run node/npm set-up tasks
   node-npm-actions:
@@ -42,7 +45,6 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.1.5
         # cache results on npm install for faster deployments
-      - uses: c-hive/gha-npm-cache@v1
       - run: npm install
       # # - run: npm run build # might not need to run build at all in this stage
 
