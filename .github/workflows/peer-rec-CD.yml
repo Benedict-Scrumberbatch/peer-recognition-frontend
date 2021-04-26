@@ -53,32 +53,39 @@ jobs:
       - run: npm install
       - run: npm run test
 
-  # Push docker image to github packages
-  docker-github-packages:
+# Push docker image for app to github packages
+  docker-app-github-packages:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - run: git submodule init
-      - run: git submodule update     
+      - run: git submodule update --init --recursive      
       - uses: c-hive/gha-npm-cache@v1
-      - name: Push to GitHub Packages
-        uses: docker/build-push-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
         with:
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
-          repository: benedict-scrumberbatch/peer-recognition-frontend-deployment-image
-          tag_with_ref: true
-
-  # Push docker image to heroku
-  docker-heroku:
+          username: Benedict-Scrumberbatch
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile 
+          push: true
+          tags: ghcr.io/benedict-scrumberbatch/peer-recognition-frontend-docker-image:latest
+  
+  # Push app docker image to heroku
+  app-docker-heroku:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - run: git submodule init
-      - run: git submodule update     
+      - run: git submodule update --init --recursive      
       - uses: c-hive/gha-npm-cache@v1
       - name: Deploy Docker Image to Heroku App
         uses: AkhileshNS/heroku-deploy@v3.12.12
@@ -88,4 +95,5 @@ jobs:
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }} # you aplication name
           usedocker: true
           stack: container
-      
+
+  
