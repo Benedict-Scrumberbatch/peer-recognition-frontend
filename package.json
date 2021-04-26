@@ -32,10 +32,14 @@
     "web-vitals": "^1.1.0"
   },
   "scripts": {
-    "start:prod": "env-cmd -f .env-production cross-env-shell serve -s build -l $PORT",
     "start": "env-cmd -f .env-development react-app-rewired start",
-    "build": "env-cmd -f .env-production react-app-rewired build",
     "test": "env-cmd -f .env-test react-app-rewired test",
+    "build": "env-cmd -f .env-production react-app-rewired build",
+    "start:prod": "env-cmd -f .env-production cross-env-shell serve -s build -l $PORT",
+    "build:aws": "env-cmd -f .env-production-aws react-app-rewired build",
+    "start:prod:aws": "env-cmd -f .env-production-aws cross-env-shell serve -s build -l $PORT",
+    "build:heroku": "env-cmd -f .env-production-heroku react-app-rewired build",
+    "start:prod:heroku": "env-cmd -f .env-production-heroku cross-env-shell serve -s build -l $PORT",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

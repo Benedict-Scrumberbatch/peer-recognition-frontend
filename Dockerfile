@@ -17,5 +17,5 @@ RUN npm run build
 # Expose port to access server
 EXPOSE $PORT
 # Command to run our app
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "start:prod:aws"]
 
