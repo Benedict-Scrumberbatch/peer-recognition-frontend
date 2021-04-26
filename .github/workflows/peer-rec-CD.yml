@@ -69,6 +69,8 @@ jobs:
           registry: ghcr.io
           repository: benedict-scrumberbatch/peer-recognition-frontend-deployment-image
           tag_with_ref: true
+      - run: docker images
+      - run: docker ps -a
 
   # Push docker image to heroku
   docker-heroku:
@@ -86,4 +88,6 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }} # your heroku api key
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }} # you aplication name
           usedocker: true
+      - run: docker images
+      - run: docker ps -a
       
