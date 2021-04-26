@@ -11,6 +11,8 @@ ENV PORT=$PORT
 # Copy package json and install dependencies
 COPY package*.json ./
 RUN npm install
+RUN npm install -g env-cmd
+RUN npm install -g serve
 # Copy our app
 COPY . .
 RUN npm run build
