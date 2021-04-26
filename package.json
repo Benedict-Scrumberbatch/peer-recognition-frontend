@@ -35,11 +35,11 @@
     "start": "env-cmd -f .env-development react-app-rewired start",
     "test": "env-cmd -f .env-test react-app-rewired test",
     "build": "env-cmd -f .env-production react-app-rewired build",
-    "start:prod": "env-cmd -f .env-production cross-env-shell serve -s build -l $PORT",
+    "start:prod": "env-cmd -f .env-production cross-env-shell serve -s build -l ${PORT:-3000}",
     "build:aws": "env-cmd -f .env-production-aws react-app-rewired build",
-    "start:prod:aws": "env-cmd -f .env-production-aws cross-env-shell serve -s build -l $PORT",
+    "start:prod:aws": "env-cmd -f .env-production-aws cross-env-shell serve -s build -l ${PORT:-3000}",
     "build:heroku": "env-cmd -f .env-production-heroku react-app-rewired build",
-    "start:prod:heroku": "env-cmd -f .env-production-heroku cross-env-shell serve -s build -l $PORT",
+    "start:prod:heroku": "env-cmd -f .env-production-heroku cross-env-shell serve -s build -l ${PORT:-3000}",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
