@@ -17,6 +17,7 @@
     "@types/react-router-dom": "^5.1.7",
     "axios": "^0.21.1",
     "chart.js": "^1.1.1",
+    "cross-var": "^1.1.0",
     "env-cmd": "^10.1.0",
     "material-ui-search-bar": "^1.0.0",
     "react": "^17.0.1",
@@ -31,7 +32,7 @@
     "web-vitals": "^1.1.0"
   },
   "scripts": {
-    "start:prod": "env-cmd -f .env-production serve -s build -l 3000",
+    "start:prod": "cross-var env-cmd -f .env-production serve -s build -l $PORT",
     "start": "env-cmd -f .env-development react-app-rewired start",
     "build": "env-cmd -f .env-production react-app-rewired build",
     "test": "env-cmd -f .env-test react-app-rewired test",
