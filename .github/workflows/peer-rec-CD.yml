@@ -55,7 +55,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: source
-        - run: npm install
+      - run: npm install
       # - run: npm run docs
       # - name: GitHub Pages
       #   # You may pin to the exact commit or the version.
