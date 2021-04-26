@@ -6,6 +6,8 @@ RUN mkdir -p /usr/src/app/frontend
 # Set working directory so that all
 # subsequent command runs in this folder
 WORKDIR /usr/src/app/frontend
+ARG PORT=3000
+ENV PORT=$PORT
 # Copy package json and install dependencies
 COPY package*.json ./
 RUN npm install
@@ -15,4 +17,4 @@ RUN npm run build
 # Expose port to access server
 EXPOSE 3000
 # Command to run our app
-CMD [ "npm", "run", "start:prod" ]
+CMD ["env-cmd", "-f", ".env-production", "serve", "-s", "build", "-l", $PORT]
