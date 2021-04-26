@@ -40,6 +40,14 @@ jobs:
           registry: ghcr.io
           repository: benedict-scrumberbatch/peer-recognition-frontend-deployment-image
           tag_with_ref: true
+      - name: Deploy Docker Image to Heroku App
+        uses: jctaveras/heroku-deploy@v2.1.3
+        with:
+          email: ${{ secrets.HEROKU_EMAIL }} # your heroku email
+          api_key: ${{ secrets.HEROKU_API_KEY }} # your heroku api key
+          app_name: ${{ secrets.HEROKU_APP_NAME }} # you aplication name
+          dockerfile_path: './' # set the path to the folder where the Dockerfile is located
+          options:  # Docker Build Options
 
 #       - run: npm run test
       # - name: GitHub Pages
