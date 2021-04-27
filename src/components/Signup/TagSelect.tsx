@@ -9,6 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import { Tag } from '../../dtos/entity/tag.entity';
 // icons
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import ClearIcon from '@material-ui/icons/Clear';
+// generate UUIDs
 import { v4 as uuidv4 } from 'uuid';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -68,12 +70,10 @@ const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
 
   return (
     <div>
-      <Typography variant="h5" id="demo-mutiple-chip-label" style={{textAlign: 'center'}}>Core Values</Typography>
+      <Typography variant="h5" id="demo-mutiple-chip-label" style={{ textAlign: 'center' }}>Core Values</Typography>
       <div className={classes.chips}>
         {tags.map((tag) => (
-          <div key={tag.value} onClick={() => handleDeleteTag(tag.id)}>
-            <Chip label={tag.value} className={classes.chip} />
-          </div>
+          <Chip label={tag.value} className={classes.chip} onDelete={() => handleDeleteTag(tag.id)} deleteIcon={<ClearIcon />} />
         ))}
       </div>
       <br />
