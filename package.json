@@ -37,7 +37,7 @@
     "build": "env-cmd -f .env-production react-app-rewired build",
     "start:prod": "env-cmd -f .env-production cross-env-shell serve -s build -l ${PORT:-3000}",
     "build:aws": "env-cmd -f .env-production-aws react-app-rewired build",
-    "start:prod:aws": "env-cmd -f .env-production-aws cross-env-shell serve -s build -l ${PORT:-3000}",
+    "start:prod:aws": "env-cmd -f .env-production-aws cross-env-shell serve -s build -l 3000",
     "build:heroku": "env-cmd -f .env-production-heroku react-app-rewired build",
     "start:prod:heroku": "env-cmd -f .env-production-heroku cross-env-shell serve -s build -l ${PORT:-3000}",
     "eject": "react-scripts eject"
