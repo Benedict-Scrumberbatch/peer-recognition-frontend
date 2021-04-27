@@ -111,31 +111,31 @@ jobs:
           tags: ghcr.io/benedict-scrumberbatch/peer-recognition-fronend-aws-docker-image:latest
 
 aws-ecs-deployment:
-    runs-on: ubuntu-latest
-    needs: docker-app-aws-github-packages
-    steps:
-      - run: echo "skipping due to failing auth credentials"
-      # - name: Checkout
-      #   uses: actions/checkout@v2
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-      #     aws-region: us-east-2
-      # - run: aws ecs list-clusters
-      # - run: aws ecs list-services --cluster ECS-Deployment-Cluster
-      # # alternative to storing task def in repo would be to download at execution
-      # # - name: Download task definition
-      # #   run: |
-      # #     aws ecs describe-task-definition --task-definition my-task-definition-family --query taskDefinition > task-definition.json
-      # - name: Deploy to Amazon ECS
-      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      #   with:
-      #     task-definition: ecs-task-definition.json
-      #     service: ECS-Deployment-Service
-      #     cluster: ECS-Deployment-Cluster
-      #     wait-for-service-stability: true  
+  runs-on: ubuntu-latest
+  needs: docker-app-aws-github-packages
+  steps:
+    - run: echo "skipping due to failing auth credentials"
+    # - name: Checkout
+    #   uses: actions/checkout@v2
+    # - name: Configure AWS credentials
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+    #     aws-region: us-east-2
+    # - run: aws ecs list-clusters
+    # - run: aws ecs list-services --cluster ECS-Deployment-Cluster
+    # # alternative to storing task def in repo would be to download at execution
+    # # - name: Download task definition
+    # #   run: |
+    # #     aws ecs describe-task-definition --task-definition my-task-definition-family --query taskDefinition > task-definition.json
+    # - name: Deploy to Amazon ECS
+    #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+    #   with:
+    #     task-definition: ecs-task-definition.json
+    #     service: ECS-Deployment-Service
+    #     cluster: ECS-Deployment-Cluster
+    #     wait-for-service-stability: true  
 
   # Push app docker image to heroku
   app-docker-heroku:
