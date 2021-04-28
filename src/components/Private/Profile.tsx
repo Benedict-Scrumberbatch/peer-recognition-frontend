@@ -16,6 +16,7 @@ import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
 // Types
 import { UserStats } from "../../dtos/interface/userstats.interface";
 import { TagStats } from '../../dtos/entity/tagstats.entity';
+import { useParams } from 'react-router-dom';
 
 const styles = (theme: Theme) => createStyles({
   paper: {
@@ -48,8 +49,13 @@ const styles = (theme: Theme) => createStyles({
 interface SimpleProps extends WithStyles<typeof styles> {
 }
 
+interface ParamTypes {
+  id: string
+}
+
 const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
   const triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
+  const params = useParams<ParamTypes>();
   // HOOKS
   const initialTagStats: TagStats[] = []
   const initialStats: UserStats = {
@@ -62,10 +68,13 @@ const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
   // API CALL (called every time data is updated)
   useEffect(() => {
     const userStatsAPI = new UserService();
-    userStatsAPI.getStats().then(
+    userStatsAPI.getStats(params.id).then(
       (stats: UserStats) => setStats(stats)
-
     )
+    .catch((err) => {
+      alert("No such profile");
+      console.log("Profile request error");
+    })
   }, [triggerUseEffect])
   return (
     <Container component="main" maxWidth="sm">

@@ -35,7 +35,7 @@ function App () {
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <PrivateRoute path="/feed" component={Feed} />
-            <PrivateRoute path="/profile" component={Profile} />
+            <PrivateRoute path="/profile/:id" component={Profile} />
             <PrivateRoute path="/settings" component={Settings} />
             <Route path="/404" component={NotFound} />
           </Switch>
