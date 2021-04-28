@@ -155,7 +155,8 @@ jobs:
           usedocker: true
           stack: container      
           docker_build_args: |
-            NPM_BUILD_SCRIPT=build:heroku
-            NPM_RUN_SCRIPT=start:prod:heroku
-
-  
+            NPM_BUILD_SCRIPT
+            NPM_RUN_SCRIPT
+        env:
+          NPM_BUILD_SCRIPT: build:heroku
+          NPM_RUN_SCRIPT: start:prod:heroku
