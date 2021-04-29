@@ -13,9 +13,37 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # generate auto documentation and push to github pages
+  build-application:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - run: git submodule init
+    - run: git submodule update   
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.1.5   
+    - uses: c-hive/gha-npm-cache@v1
+    - run: npm install
+    - run: npm run build
+
+  # test application before deploying
+  test-application:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: git submodule init
+      - run: git submodule update   
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.5   
+      - uses: c-hive/gha-npm-cache@v1
+      - run: npm install
+      - run: npm run test
+
+ # generate auto documentation and push to github pages
   github-pages-documentaion:
     runs-on: ubuntu-latest
+    needs: [build-application, test-application]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -39,22 +67,10 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.REPO_TOKEN_ACTIONS }}
 
-  # test application before deploying
-  testing-application:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - run: git submodule init
-      - run: git submodule update   
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2.1.5   
-      - uses: c-hive/gha-npm-cache@v1
-      - run: npm install
-      - run: npm run test
-
+  # Push localhost docker image for app to github packages
   docker-app-localhost-github-packages:
     runs-on: ubuntu-latest
+    needs: [build-application, test-application]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -83,6 +99,7 @@ jobs:
 
 # Push aws docker image for app to github packages
   docker-app-aws-github-packages:
+    needs: [build-application, test-application]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -140,6 +157,7 @@ jobs:
   # Push app docker image to heroku
   app-docker-heroku:
     runs-on: ubuntu-latest
+    needs: [build-application, test-application]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
