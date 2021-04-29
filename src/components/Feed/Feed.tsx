@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 // Material UI Styling
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
-import { fade, createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
+import { fade, createStyles, withStyles, WithStyles, responsiveFontSizes } from "@material-ui/core/styles";
 // Material UI Comopnents
 import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
@@ -14,12 +14,18 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import InfiniteScroll from 'react-infinite-scroll-component';
 // Custom Components
 import Post from './Post';
 import Rockstar from './Rockstar';
 // Services
 import RecognitionService from '../../api/RecognitionService';
 import { Recognition } from '../../dtos/entity/recognition.entity';
+import { Users } from '../../dtos/entity/users.entity';
+import UserService from '../../api/UserService';
+import { Tag } from '../../dtos/entity/tag.entity';
+import { CircularProgress } from '@material-ui/core';
 
 const styles = (theme: Theme) => createStyles({
   grow: {
@@ -103,7 +109,7 @@ const StyledButton = withStyles({
 })(Button);
 
 
-interface SimpleProps extends WithStyles<typeof styles> { 
+interface SimpleProps extends WithStyles<typeof styles> {
   foo: number
 }
 /**
@@ -115,14 +121,104 @@ interface SimpleProps extends WithStyles<typeof styles> {
 const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
   const triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
   const initialPostList: Recognition[] = [];
+  const userService = new UserService();
   const [postList, setPostList] = useState(initialPostList);
-  const [open, setOpen] = useState(false)
+
+  //Create Rec Consts
+  const [userList, setUserList] = useState<Users[]>([]);
+  const [userQuery, setUserQuery] = useState("");
+  const [targetUser, setTargetUser] = useState<Users | null>(null);
+  const [userSearchOpen, setUserSearchOpen] = useState(false);
+  const [recMsg, setRecMsg] = useState("");
+  const [open, setOpen] = useState(false);
+  const [tagSearchOpen, setTagSearchOpen] = useState(false);
+  const [userSearchPage, setUserSearchPage] = useState(1);
+  const [tagOptions, setTagOptions] = useState<Tag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+  const tagLoading = tagSearchOpen && tagOptions.length === 0;
+
+
   const handleOpen = () => {
-    setOpen(true)
+    setOpen(true);
   }
   const handleClose = () => {
-    setOpen(false)
+    setOpen(false);
   }
+
+  const handleUserPaging = () => {
+    (async () => {
+      const userApi = new UserService();
+      const response = await userApi.searchUsers(userQuery, userSearchPage, 12);
+      if (response.length > 0) {
+        setUserSearchPage(userSearchPage + 1);
+        setUserList(userList.concat(response));
+      }
+    })();
+  }
+
+  const handleCreateRec = async () => {
+    try {
+      if (targetUser && recMsg.length > 0 && selectedTags.length > 0) {
+        const recognitionApi = new RecognitionService()
+        const response = await recognitionApi.createPost(targetUser, recMsg, selectedTags);
+        handleClose();
+      }
+      else {
+        alert("Please fill out all fields.");
+      }
+    } catch (e) {
+      alert(`An Error Occured: ${e}`);
+    }
+  }
+
+
+  useEffect(() => {
+    let active = true;
+
+    if (!tagLoading) {
+      return undefined;
+    }
+
+    (async () => {
+      const recognitionApi = new RecognitionService();
+      const response = await recognitionApi.getAllTags();
+
+      if (active) {
+        setTagOptions(response);
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [tagLoading]);
+
+  useEffect(() => {
+    let active = true;
+    if (userSearchOpen) {
+      (async () => {
+        const userApi = new UserService();
+        const response = await userApi.searchUsers(userQuery, 1, 12);
+        if (response.length > 0) {
+          setUserSearchPage(userSearchPage + 1);
+        }
+
+        if (active) {
+          setUserList(response);
+        }
+      })();
+    }
+    return () => {
+      active = false;
+    };
+  }, [userQuery, userSearchOpen]);
+
+  useEffect(() => {
+    if (!userSearchOpen) {
+      setUserList([]);
+    }
+  }, [userSearchOpen]);
+
 
   useEffect(() => {
     const recognitionAPI = new RecognitionService();
@@ -151,10 +247,49 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth maxWidth="md">
           <DialogTitle id="form-dialog-title">Create New Post</DialogTitle>
           <DialogContent>
-            <DialogContentText>
-              Search for Employee Name
-          </DialogContentText>
-            <SearchBar
+            <Autocomplete
+              id="user-search"
+              size='small'
+              open={userSearchOpen}
+              onOpen={() => {
+                setUserSearchPage(1);
+                setUserSearchOpen(true);
+              }}
+              onClose={() => {
+                setUserSearchPage(1);
+                setUserSearchOpen(false);
+              }}
+              ListboxProps={{
+                onScroll: (event: React.SyntheticEvent) => {
+                  const listboxNode = event.currentTarget;
+                  if (listboxNode.scrollTop + listboxNode.clientHeight === listboxNode.scrollHeight) {
+                    handleUserPaging();
+                  }
+                }
+              }}
+              value={targetUser}
+              onChange={(event: any, newValue: Users | null) => {
+                setTargetUser(newValue);
+              }}
+              inputValue={userQuery}
+              onInputChange={(event, newInputValue) => {
+                setUserSearchPage(1);
+                setUserQuery(newInputValue);
+              }}
+              getOptionSelected={(userOption: Users, selected: Users) => userOption.employeeId === selected.employeeId}
+              getOptionLabel={(userOption) => userOption.firstName + " " + userOption.lastName}
+              options={userList}
+              loading={false}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Find User"
+                  variant="outlined"
+                  InputProps={{
+                    ...params.InputProps,
+                  }}
+                />
+              )}
             />
             <TextField
               autoFocus
@@ -164,20 +299,52 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
               multiline
               rows={6}
               variant="outlined"
+              onChange={e => setRecMsg(e.target.value)}
               fullWidth
             />
             <DialogContentText>
-              Core Values Shown
-          </DialogContentText>
-            <SearchBar
-              style={{ width: '25%' }}
+            </DialogContentText>
+            <Autocomplete
+              multiple
+              id="tag-search"
+              open={tagSearchOpen}
+              onOpen={() => {
+                setTagSearchOpen(true);
+              }}
+              onClose={() => {
+                setTagSearchOpen(false);
+              }}
+              value={selectedTags}
+              onChange={(event: any, newValues: Tag[]) => {
+                setSelectedTags(newValues);
+              }}
+              getOptionSelected={(tagOption: Tag, selected: Tag) => tagOption.value === selected.value}
+              getOptionLabel={(tagOption) => tagOption.value}
+              options={tagOptions}
+              loading={tagLoading}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Choose Company Values"
+                  variant="outlined"
+                  InputProps={{
+                    ...params.InputProps,
+                    endAdornment: (
+                      <Fragment>
+                        {tagLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                        {params.InputProps.endAdornment}
+                      </Fragment>
+                    ),
+                  }}
+                />
+              )}
             />
           </DialogContent>
           <DialogActions>
             <StyledButton onClick={handleClose}>
               Cancel
           </StyledButton>
-            <StyledButton onClick={handleClose} >
+            <StyledButton onClick={handleCreateRec}>
               Create Post
           </StyledButton>
           </DialogActions>

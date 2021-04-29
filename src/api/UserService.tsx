@@ -9,7 +9,7 @@ export default class UserService extends MainApiProtected {
         super();
     }
 
-    public getUserProfile = async (): Promise<Users> =>  {
+    public getUserProfile = async (): Promise<Users> => {
         if (!this.userProfile) {
             this.userProfile = await this.instance.get('users/profile');
         }
@@ -20,5 +20,10 @@ export default class UserService extends MainApiProtected {
         console.log('stats')
         const userProfile = await this.getUserProfile();
         return await this.instance.get('/users/stats/' + this.userProfile.employeeId);
+    };
+
+    public searchUsers = async (query: string, page = 1, limit = 10): Promise<Users[]> => {
+        let result = await this.instance.get(encodeURI(`/users/search?search=${query}&page=${page}&limit=${limit}`));
+        return result.items;
     };
 }
