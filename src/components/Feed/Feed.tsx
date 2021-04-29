@@ -148,9 +148,8 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
   const handleUserPaging = () => {
     (async () => {
       const userApi = new UserService();
-      const response = await userApi.searchUsers(userQuery, userSearchPage, 12);
+      const response = await userApi.searchUserNext();
       if (response.length > 0) {
-        setUserSearchPage(userSearchPage + 1);
         setUserList(userList.concat(response));
       }
     })();
@@ -198,10 +197,7 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
     if (userSearchOpen) {
       (async () => {
         const userApi = new UserService();
-        const response = await userApi.searchUsers(userQuery, 1, 12);
-        if (response.length > 0) {
-          setUserSearchPage(userSearchPage + 1);
-        }
+        const response = await userApi.searchUsers(userQuery);
 
         if (active) {
           setUserList(response);
@@ -260,6 +256,7 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
                 setUserSearchOpen(false);
               }}
               ListboxProps={{
+                style: { maxHeight: 300, overflow: 'auto' },
                 onScroll: (event: React.SyntheticEvent) => {
                   const listboxNode = event.currentTarget;
                   if (listboxNode.scrollTop + listboxNode.clientHeight === listboxNode.scrollHeight) {
