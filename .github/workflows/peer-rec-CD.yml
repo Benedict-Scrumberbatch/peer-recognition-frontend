@@ -13,20 +13,22 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build-application:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - run: git submodule init
-    - run: git submodule update   
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v2.1.5   
-    - uses: c-hive/gha-npm-cache@v1
-    - run: npm install
-    - run: npm run build
 
-  # test application before deploying
+  # verify application builds before deployment
+  build-application:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - run: git submodule init
+      - run: git submodule update   
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.5   
+      - uses: c-hive/gha-npm-cache@v1
+      - run: npm install
+      - run: npm run build
+
+  # verify application tests all pass before deploying
   test-application:
     runs-on: ubuntu-latest
     steps:
