@@ -1,7 +1,7 @@
 {
   "name": "@Benedict-Scrumberbatch/peer-recognition-frontend",
   "repository": "https://github.com/Benedict-Scrumberbatch/peer-recognition",
-  "version": "latest",
+  "version": "0.1.0",
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
