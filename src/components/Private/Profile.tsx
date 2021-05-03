@@ -86,7 +86,7 @@ const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
             Recognitions Given: {stats.numRecsSent}
           </Typography>
           <Typography>
-            Values Received:
+            Values Received: {stats.tagStats}
           </Typography>
           <Button variant="outlined" color="primary" className={classes.buttons}>
             View Recognitions
