@@ -82,6 +82,7 @@ jobs:
         uses: jgierer12/npm-auth-gpr@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: c-hive/gha-npm-cache@v1
       - run: npm install
       - run: npm publish 
      
