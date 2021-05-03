@@ -86,16 +86,7 @@ jobs:
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-            NPM_REGISTRY_URL: https://npm.pkg.github.com
-      # - name: authenticate github package registry 
-      #   uses: jgierer12/npm-auth-gpr@v1
-      #   with:
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      # - uses: c-hive/gha-npm-cache@v1
-      # - run: npm install
-      # - run: npm publish 
-     
-
+            NPM_REGISTRY_URL: https://npm.pkg.github.com   
 
   # Push localhost docker image for app to github packages
   docker-app-localhost-github-packages:
