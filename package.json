@@ -2,6 +2,9 @@
   "name": "@Benedict-Scrumberbatch/peer-recognition-frontend",
   "repository": "https://github.com/Benedict-Scrumberbatch/peer-recognition",
   "version": "0.1.0",
+  "description": "Frontend application for Benedict Scrumberbatch's Peer Recognition Software",
+  "author": "Benedict-Scrumberbatch",
+  "license": "UNLICENSED",
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
