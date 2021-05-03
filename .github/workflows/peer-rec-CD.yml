@@ -69,6 +69,19 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.REPO_TOKEN_ACTIONS }}
 
+  # publish npm package
+  publish-npm-package:
+    - name: Authenticate npm with the GPR
+      runs-on: ubuntu-latest
+      needs: [build-application, test-application]
+      step:
+        - name: login to github registry
+          uses: jgierer12/npm-auth-gpr@v1.0.1
+          with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+        - run: npm install
+        - run: npm publish
+
   # Push localhost docker image for app to github packages
   docker-app-localhost-github-packages:
     runs-on: ubuntu-latest
