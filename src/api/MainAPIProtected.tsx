@@ -2,13 +2,12 @@
 import HttpClient from './HTTPClient';
 import { AxiosRequestConfig } from 'axios';
 
-let API_URL: any;
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-  // dev code
-  API_URL = "http://localhost:4200"
-} else {
-  // production code
+let API_URL: string;
+if (process.env.REACT_APP_API_URL) {
   API_URL = process.env.REACT_APP_API_URL;
+  // production code
+} else {
+  API_URL = "http://localhost:4200"
 }
 
 export default class MainApiProtected extends HttpClient {

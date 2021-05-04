@@ -96,10 +96,7 @@ class Login extends Component<Props, MyState> {
       const loginAPI = new AuthLoginService();
       loginAPI.postLogin(this.state.usernameFieldValue, this.state.passwordFieldValue)
         .then((response: any) => {
-          this.setState({ redirect: true });
-          auth.authenticate(response, () => {
-            this.setState({ redirect: true });
-          });
+          auth.authenticate(response, () => { this.setState({ redirect: true }); });
         })
         .catch(error => {
           // show error message
@@ -128,7 +125,7 @@ class Login extends Component<Props, MyState> {
   }
 
   render() {
-    if (auth.isAuthenticated() || this.state.redirect) {
+    if (this.state.redirect || auth.isAuthenticated()) {
       return <Redirect to='/profile' />;
     }
 

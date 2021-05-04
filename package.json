@@ -1,7 +1,10 @@
 {
-  "name": "peer-recognition",
+  "name": "@Benedict-Scrumberbatch/peer-recognition-frontend",
+  "repository": "https://github.com/Benedict-Scrumberbatch/peer-recognition",
   "version": "0.1.0",
-  "private": true,
+  "description": "Frontend application for Benedict Scrumberbatch's Peer Recognition Software",
+  "author": "Benedict-Scrumberbatch",
+  "license": "UNLICENSED",
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
@@ -17,6 +20,7 @@
     "@types/react-router-dom": "^5.1.7",
     "axios": "^0.21.1",
     "chart.js": "^1.1.1",
+    "cross-env": "^7.0.3",
     "env-cmd": "^10.1.0",
     "material-ui-search-bar": "^1.0.0",
     "react": "^17.0.1",
@@ -32,10 +36,14 @@
     "web-vitals": "^1.1.0"
   },
   "scripts": {
-    "start:prod": "env-cmd -f .env-production serve -s build -l 3000",
     "start": "env-cmd -f .env-development react-app-rewired start",
-    "build": "react-app-rewired build",
     "test": "env-cmd -f .env-test react-app-rewired test",
+    "build": "env-cmd -f .env-production react-app-rewired build",
+    "start:prod": "env-cmd -f .env-production cross-env-shell serve -s build -l ${PORT:-3000}",
+    "build:aws": "env-cmd -f .env-production-aws react-app-rewired build",
+    "start:prod:aws": "env-cmd -f .env-production-aws cross-env-shell serve -s build -l 3000",
+    "build:heroku": "env-cmd -f .env-production-heroku react-app-rewired build",
+    "start:prod:heroku": "env-cmd -f .env-production-heroku cross-env-shell serve -s build -l ${PORT:-3000}",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -57,6 +65,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.13.15",
     "@types/uuid": "^8.3.0",
     "react-app-rewire-alias": "^1.0.3",
     "react-app-rewired": "^2.1.8",
