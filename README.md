@@ -14,7 +14,7 @@ In the project directory, you can run:
 Download 'Debugger for Chrome' extension in Vscode. To start the debugger, make sure the frontend is running with npm run start and the server is up. Then select run->Start debugging in vscode. A new chrome window should appear for debugging. 
 
 ###### `npm start`
-
+ 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 

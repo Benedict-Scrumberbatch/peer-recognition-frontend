@@ -1,5 +1,5 @@
 # Base image
-FROM node:13-alpine
+FROM node:current-alpine
 # Make folder to put our files in
 RUN mkdir -p /usr/src/app
 RUN mkdir -p /usr/src/app/frontend
