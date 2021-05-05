@@ -8,6 +8,8 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 // Assets
 import PlaceholderProfileImg from '../../../assets/img/kitten_placeholder.jpg';
+import { Pie } from 'react-chartjs-2';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,7 +43,72 @@ const useStyles = makeStyles((theme) => ({
 
 export default function RockstarCard() {
   const classes = useStyles();
-  const PieChart = require("react-chartjs").Pie;
+  const chartColors = [
+    "#336699",
+    "#99CCFF",
+    "#999933",
+    "#666699",
+    "#CC9933",
+    "#006666",
+    "#3399FF",
+    "#993300",
+    "#CCCC99",
+    "#666666",
+    "#FFCC66",
+    "#6699CC",
+    "#663366",
+    "#9999CC",
+    "#CCCCCC",
+    "#669999",
+    "#CCCC66",
+    "#CC6600",
+    "#9999FF",
+    "#0066CC",
+    "#99CCCC",
+    "#999999",
+    "#FFCC00",
+    "#009999",
+    "#99CC33",
+    "#FF9900",
+    "#999966",
+    "#66CCCC",
+    "#339966",
+    "#CCCC33",
+    "#003f5c",
+    "#665191",
+    "#a05195",
+    "#d45087",
+    "#2f4b7c",
+    "#f95d6a",
+    "#ff7c43",
+    "#ffa600",
+    "#EF6F6C",
+    "#465775",
+    "#56E39F",
+    "#59C9A5",
+    "#5B6C5D",
+    "#0A2342",
+    "#2CA58D",
+    "#84BC9C",
+    "#CBA328",
+    "#F46197",
+    "#DBCFB0",
+    "#545775"
+  ];
+
+  
+  const data = {
+    maintainAspectRatio: false,
+    responsive: false,
+    labels: ["a", "b", "c", "d"],
+    datasets: [
+      {
+        data: [300, 50, 100, 50],
+        backgroundColor: chartColors,
+        hoverBackgroundColor: chartColors
+      }
+    ]
+  };
   return (
     <Card className={classes.root}>
       <Box display="flex" flexDirection="row" style={{ marginTop: 3}}>
@@ -80,28 +147,12 @@ export default function RockstarCard() {
             </Box>
             </div>
             </div>
-            <div> <PieChart 
-            data = {[
-                {
-                    value: 45,
-                    color:"yellowgreen",
-                    highlight: "#FF5A5E",
-                    label: "Value1"
-                },
-                {
-                    value: 35,
-                    color: "aqua",
-                    highlight: "#5AD3D1",
-                    label: "Value2"
-                },
-                {
-                    value: 20,
-                    color: "pink",
-                    highlight: "#FFC870",
-                    label: "Value3"
-                }
-            ]}
-            /></div>
+            <div> 
+            <Pie
+            type='pie'
+            data={data}
+          />
+            </div>
             <div style={{position: 'relative', top: '-70px'}}>
             <div> <Typography variant="h5">
               Some Quotes:
