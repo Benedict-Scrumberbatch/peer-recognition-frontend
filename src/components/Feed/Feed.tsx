@@ -355,7 +355,7 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
         <div className={classes.postItem}>
           <Rockstar />
         </div>
-        {postList.map((val: any, idx: number) => {
+        {postList.map((val, idx) => {
           // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
           return (
             <div key={idx} className={classes.postItem}>

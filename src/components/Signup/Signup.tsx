@@ -59,11 +59,11 @@ const Signup = withStyles(styles)(({ classes }: SimpleProps) => {
   const history = useHistory();
   const [error, setError] = useState("")
   const [name, setUsername] = useState("")
-  const [tags, setTags] = useState<any[]>([
-    { id: "1", value: 'Understanding' },
-    { id: "2", value: 'Kind' },
-    { id: "3", value: 'Diligent' },
-    { id: "4", value: 'Sincere' }
+  const [tags, setTags] = useState<Tag[]>([
+    { tagId: 1, value: 'Understanding' },
+    { tagId: 2, value: 'Kind' },
+    { tagId: 3, value: 'Diligent' },
+    { tagId: 4, value: 'Sincere' }
   ])
 
   const handleUsernameChange = (e: any): void => {
@@ -75,7 +75,7 @@ const Signup = withStyles(styles)(({ classes }: SimpleProps) => {
 
     const loginAPI = new AuthLoginService();
     loginAPI.postCreateCompany(name, tags)
-      .then((response: any) => {
+      .then((response) => {
         console.log(response);
         alert(`Success! Company, ${name}, was created`)
         history.push("/login");

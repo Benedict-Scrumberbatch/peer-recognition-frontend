@@ -77,25 +77,10 @@ class Login extends Component<Props, MyState> {
   handleSubmit(e: any) {
     e.preventDefault(); // prevent default page refresh
 
-    console.log(`username: ${this.state.usernameFieldValue}`)
-    console.log(`password: ${this.state.passwordFieldValue}`)
-    // {"username":"greg", "password":"password1"}
-    /* postLogin('http://localhost:4200/auth/login', this.state.usernameFieldValue, this.state.passwordFieldValue)
-      .then((data: any) => {
-        console.log(data);
-        this.setState({ redirect: true });
-        auth.authenticate(data, () => {
-          this.setState({ redirect: true });
-        });
-      })
-      .catch(error => {
-        // show error message
-        console.log(error)
-        this.setState({ error: error.message })
-      }) */
+    
       const loginAPI = new AuthLoginService();
       loginAPI.postLogin(this.state.usernameFieldValue, this.state.passwordFieldValue)
-        .then((response: any) => {
+        .then((response) => {
           auth.authenticate(response, () => { this.setState({ redirect: true }); });
         })
         .catch(error => {

@@ -1,3 +1,4 @@
+import { Users } from '../dtos/entity/users.entity';
 import HttpClient from './HTTPClient';
 
 let API_URL: string;
@@ -13,7 +14,7 @@ export default class MainApi extends HttpClient {
     super(API_URL);
   }
 
-  public getUsers = () => this.instance.get<any[]>('/users');
+  public getUsers = () => this.instance.get<Users[]>('/users');
   
-  public getUser = (id: string) => this.instance.get<any>(`/users/${id}`);
+  public getUser = (id: string) => this.instance.get<Users>(`/users/${id}`);
 }
