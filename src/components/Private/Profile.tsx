@@ -17,6 +17,7 @@ import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
 import { UserStats } from "../../dtos/interface/userstats.interface";
 import { TagStats } from '../../dtos/entity/tagstats.entity';
 import { useParams } from 'react-router-dom';
+import { Users } from '../../dtos/entity/users.entity';
 
 const styles = (theme: Theme) => createStyles({
   paper: {
@@ -43,6 +44,9 @@ const styles = (theme: Theme) => createStyles({
   },
   buttons: {
     margin: theme.spacing(2, 0, 0, 0)
+  },
+  tagStyles: {
+    textAlign: 'center'
   }
 });
 
@@ -63,14 +67,25 @@ const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
     numRecsSent: 0,
     tagStats: initialTagStats
   }
+  const initialUser: Users = new Users();
   const [stats, setStats] = useState(initialStats);
+  const [user, setUser] = useState(initialUser);
 
   // API CALL (called every time data is updated)
   useEffect(() => {
     const userStatsAPI = new UserService();
-    userStatsAPI.getStats(params.id).then(
-      (stats: UserStats) => setStats(stats)
-    )
+    userStatsAPI.getUserId(params.id)
+    .then((user: Users) => {
+      setUser(user);
+    })
+    .catch((err) => {
+      alert("No such profile");
+      console.log("User error");
+    })
+    userStatsAPI.getStats(params.id)
+    .then((stats: UserStats) => {
+      setStats(stats);
+    })
     .catch((err) => {
       alert("No such profile");
       console.log("Profile request error");
@@ -83,26 +98,26 @@ const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
         <div className={classes.wrapper}>
           <Avatar alt="profile photo" src={PlaceholderProfileImg} className={classes.avatar} />
           <Typography component="h1" variant="h4">
-            John Doe
+            {user.firstName} {user.lastName}
             </Typography>
-          <Typography>
-            <Link href="#" className={classes.profilePicLink}>Change profile picture</Link>
-          </Typography>
           <Typography className={classes.statistics}>
             Recognitions Received: {stats.numRecsReceived}
           </Typography>
           <Typography>
             Recognitions Given: {stats.numRecsSent}
           </Typography>
-          <Typography>
-            Values Received:
+          <br></br>
+          <Typography className={classes.tagStyles}>
+            Values Received: {
+              stats.tagStats.map((val: TagStats, idx: number) => {
+                return (
+                  <Typography key={idx} >
+                    {val.tag.value}: Recieved: {val.countReceived}, Sent: {val.countSent}
+                  </Typography>
+                )
+              })
+            }
           </Typography>
-          <Button variant="outlined" color="primary" className={classes.buttons}>
-            View Recognitions
-          </Button>
-          <Button variant="contained" color="default" className={classes.buttons}>
-            Sign Out
-          </Button>
         </div>
       </Paper>
     </Container>

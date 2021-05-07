@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 // Utility to combine classnames
 import clsx from 'clsx';
@@ -27,6 +27,8 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
 // api
 import auth from '../../api/authHelper';
+import UserService from '../../api/UserService';
+import { Users } from '../../dtos/entity/users.entity';
 /*
   Navigation Menu holds
     - navbar (for settings)
@@ -37,7 +39,7 @@ import auth from '../../api/authHelper';
 const drawerWidth = 240;
 
 const routeData = [
-  { text: "Profile", link: '/profile', iconFunc: () => { return <AccountBoxIcon /> } },
+  { text: "Profile", link: `/profile`, iconFunc: () => { return <AccountBoxIcon /> } },
   { text: "Settings", link: "/settings", iconFunc: () => { return <SettingsIcon /> } },
   { text: "Feed", link: "/feed", iconFunc: () => { return <DynamicFeedIcon /> } },
 ]
@@ -119,10 +121,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export default function PrivateNavbar(props: any) {
+  const triggerUseEffect = true;
   const classes = useStyles(); // Material UI Styling
   const theme = useTheme(); // Material UI Theming
   const history = useHistory(); // React Router history hook
-  const [open, setOpen] = React.useState(false);
+  const initialUser: Users = new Users();
+  const [open, setOpen] = useState(false);
+  const [user, setUser] = useState(initialUser);
 
   const toggleDrawer = (open: any) => (event: any) => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -130,6 +135,18 @@ export default function PrivateNavbar(props: any) {
     }
     setOpen(open)
   };
+
+  useEffect(() => {
+    const userStatsAPI = new UserService();
+    userStatsAPI.getUserProfile()
+    .then((user: Users) => {
+      setUser(user);
+    })
+    .catch((err) => {
+      alert("No such profile");
+      console.log("User error");
+    })
+  }, [triggerUseEffect])
 
   return (
     <div>
@@ -181,6 +198,9 @@ export default function PrivateNavbar(props: any) {
           <Divider />
           <List>
             {routeData.map((obj: any, idx: Number) => {
+              if (obj.text === "Profile") {                
+                obj.link = `/profile/${user.employeeId}`
+              }
               return (
                 <Link to={obj.link} key={obj.text + idx} style={{ textDecoration: 'none', color: 'black' }}>
                   <li>
