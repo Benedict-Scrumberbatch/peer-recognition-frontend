@@ -11,6 +11,10 @@ export default class RecognitionService extends MainApiProtected {
         return await this.instance.get('/recognitions/all');
     };
 
+    public getRec = async (id: string): Promise<Recognition> => {
+        return await this.instance.get(`/recognitions/${id}`);
+    };
+
     public getAllTags = async (): Promise<Tag[]> => {
         return await this.instance.get('/tag');
     };
