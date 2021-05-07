@@ -13,10 +13,8 @@ export default class UserService extends MainApiProtected {
         return await this.instance.get('users/profile');
     };
 
-    public getStats = async (): Promise<UserStats> => {
-        console.log('stats')
-        const userProfile = await this.getUserProfile();
-        return await this.instance.get('/users/stats/' + userProfile.employeeId);
+    public getStats = async (id: string): Promise<UserStats> => {
+        return await this.instance.get(encodeURI(`/users/stats/${id}`));
     };
 
     public searchUsers = async (query: string, page = 1, limit = 10): Promise<UserPagination> => {
@@ -26,5 +24,9 @@ export default class UserService extends MainApiProtected {
     public searchUserNext = async(url: string): Promise<UserPagination> => {
             return await this.instance.get(encodeURI(url));
 
+    }
+
+    public getUserId = async (id: string): Promise<Users> => {
+        return await this.instance.get(`/users/employeeId/${id}`);
     }
 }
