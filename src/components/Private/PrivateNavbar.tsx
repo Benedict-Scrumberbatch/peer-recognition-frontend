@@ -124,7 +124,7 @@ export default function PrivateNavbar(props: any) {
   const history = useHistory(); // React Router history hook
   const [open, setOpen] = React.useState(false);
 
-  const toggleDrawer = (open: any) => (event: any) => {
+  const toggleDrawer = (open: boolean) => (event: any) => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
@@ -180,7 +180,7 @@ export default function PrivateNavbar(props: any) {
           </div>
           <Divider />
           <List>
-            {routeData.map((obj: any, idx: Number) => {
+            {routeData.map((obj, idx) => {
               return (
                 <Link to={obj.link} key={obj.text + idx} style={{ textDecoration: 'none', color: 'black' }}>
                   <li>

@@ -79,10 +79,11 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
 
   useEffect(() => {
     const settingsAPI = new SettingsService();
-    settingsAPI.getSettings()
-      .then((response: any) => {
-        setCreateUsers(response)
-      });
+    // not a real endpoint
+    // settingsAPI.getSettings()
+    //   .then((response) => {
+    //     setCreateUsers(response)
+    //   });
   }, [triggerUseEffect])
 
   const handleContactOpen = () => setContactOpen(true)
