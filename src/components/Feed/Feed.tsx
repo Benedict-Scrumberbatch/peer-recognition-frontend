@@ -27,6 +27,7 @@ import UserService from '../../api/UserService';
 import { Tag } from '../../dtos/entity/tag.entity';
 import { CircularProgress } from '@material-ui/core';
 
+
 const styles = (theme: Theme) => createStyles({
   grow: {
     marginTop: theme.spacing(4)
@@ -120,9 +121,13 @@ interface SimpleProps extends WithStyles<typeof styles> {
 
 const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
   const triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
-  const initialPostList: Recognition[] = [];
-  const userService = new UserService();
-  const [postList, setPostList] = useState(initialPostList);
+  const userApi = new UserService();
+  const recApi = new RecognitionService();
+  const [postList, setPostList] = useState<Recognition[]>([]);
+  const [nextPostUrl, setNextPostUrl] = useState<string>('');
+  const [totalPostCount, setPostCount] = useState<number>(0);
+  const [morePostBool, setPostBool] = useState<boolean>(true);
+
 
   //Create Rec Consts
   const [userList, setUserList] = useState<Users[]>([]);
@@ -147,7 +152,6 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
 
   const handleUserPaging = () => {
     (async () => {
-      const userApi = new UserService();
       const response = await userApi.searchUserNext();
       if (response.length > 0) {
         setUserList(userList.concat(response));
@@ -155,11 +159,41 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
     })();
   }
 
+  const handleFeedPaging = () => {
+    (async () => {
+      console.log(nextPostUrl);
+      const response = await recApi.searchRecsNext(nextPostUrl);
+      console.log(response)
+      if (response.items.length > 0) {
+        setPostList(postList.concat(response.items));
+        setPostCount(response.meta.totalItems);
+        if (response.links.next !== "") {
+          setNextPostUrl(response.links.next);
+        } else {
+          setPostBool(false);
+        }      }
+    })();
+  }
+
+  const initPostList = () => {
+    recApi.paginatedRecs().then(
+      response => {
+        console.log(response);
+        setPostList(response.items);
+        setPostCount(response.meta.totalItems);
+        if (response.links.next !== "") {
+          setNextPostUrl(response.links.next);
+        } else {
+          setPostBool(false);
+        }
+      }
+    );
+  }
+
   const handleCreateRec = async () => {
     try {
       if (targetUser && recMsg.length > 0 && selectedTags.length > 0) {
-        const recognitionApi = new RecognitionService()
-        const response = await recognitionApi.createPost(targetUser, recMsg, selectedTags);
+        const response = await recApi.createPost(targetUser, recMsg, selectedTags);
         handleClose();
       }
       else {
@@ -179,8 +213,7 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
     }
 
     (async () => {
-      const recognitionApi = new RecognitionService();
-      const response = await recognitionApi.getAllTags();
+      const response = await recApi.getAllTags();
 
       if (active) {
         setTagOptions(response);
@@ -196,7 +229,6 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
     let active = true;
     if (userSearchOpen) {
       (async () => {
-        const userApi = new UserService();
         const response = await userApi.searchUsers(userQuery);
 
         if (active) {
@@ -217,10 +249,7 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
 
 
   useEffect(() => {
-    const recognitionAPI = new RecognitionService();
-    recognitionAPI.getFeed().then(
-      (feed: Recognition[]) => setPostList(feed)
-    );
+    initPostList();
   }, [triggerUseEffect])
 
   return (
@@ -355,14 +384,27 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
         <div className={classes.postItem}>
           <Rockstar />
         </div>
-        {postList.map((val, idx) => {
+        <InfiniteScroll
+        dataLength={totalPostCount} //This is important field to render the next data
+        next={handleFeedPaging}
+        scrollableTarget="content-scroll"
+        hasMore={morePostBool}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+      {postList.map((val, idx) => {
           // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
           return (
             <div key={idx} className={classes.postItem}>
               {typeof postList[idx] === undefined ? <div>Loading...</div> : <Post recognition={postList[idx]} />}
             </div>
           )
-        })}
+        })}    
+        </InfiniteScroll>
       </div>
     </Container>
   )

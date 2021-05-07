@@ -17,7 +17,10 @@ const NotFound: FunctionComponent<{}> = () => <h1>Not Found</h1>;
 
 const useStyles = makeStyles((theme) => ({
   content: {
-    minHeight: '80vh'
+    height: '70vh',
+  },
+  appBarSpacerTop: {
+    height: '8vh',
   },
 }));
 
@@ -28,6 +31,7 @@ function App () {
     <div>
       <BrowserRouter>
         <Header />
+        <div className={classes.appBarSpacerTop} />
         <div className={classes.content}>
           <Switch>
             <Route exact path="/" component={Login} />
