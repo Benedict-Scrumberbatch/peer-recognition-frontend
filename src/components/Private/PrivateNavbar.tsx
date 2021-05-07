@@ -129,7 +129,7 @@ export default function PrivateNavbar(props: any) {
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState(initialUser);
 
-  const toggleDrawer = (open: any) => (event: any) => {
+  const toggleDrawer = (open: boolean) => (event: any) => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
@@ -197,7 +197,7 @@ export default function PrivateNavbar(props: any) {
           </div>
           <Divider />
           <List>
-            {routeData.map((obj: any, idx: Number) => {
+            {routeData.map((obj, idx) => {
               if (obj.text === "Profile") {                
                 obj.link = `/profile/${user.employeeId}`
               }

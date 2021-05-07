@@ -15,7 +15,7 @@ export default class RecognitionService extends MainApiProtected {
         return await this.instance.get('/tag');
     };
 
-    public createPost = async (targetUser: Users, message: string, tags: Tag[]): Promise<any> => {
+    public createPost = async (targetUser: Users, message: string, tags: Tag[]): Promise<Recognition> => {
         return this.instance.post('/recognitions/create', {
             "empTo": targetUser,
             "msg": message,
