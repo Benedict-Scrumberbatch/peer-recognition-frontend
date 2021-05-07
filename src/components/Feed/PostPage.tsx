@@ -125,90 +125,25 @@ interface SimpleProps extends WithStyles<typeof styles> {
 
 
 const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
-  const triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
+  let triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
   const params = useParams<ParamTypes>();
   const initialPost: Recognition = new Recognition();
   const [post, setPost] = useState(initialPost);
 
   //Create Rec Consts
-  const [userList, setUserList] = useState<Users[]>([]);
-  const [userQuery, setUserQuery] = useState("");
-  const [targetUser, setTargetUser] = useState<Users | null>(null);
-  const [userSearchOpen, setUserSearchOpen] = useState(false);
-  const [recMsg, setRecMsg] = useState("");
-  const [open, setOpen] = useState(false);
-  const [tagSearchOpen, setTagSearchOpen] = useState(false);
-  const [userSearchPage, setUserSearchPage] = useState(1);
-  const [tagOptions, setTagOptions] = useState<Tag[]>([]);
-  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
-  const tagLoading = tagSearchOpen && tagOptions.length === 0;
+  const [userCommemt, setUserComment] = useState("");
 
-
-  const handleUserPaging = () => {
-    // (async () => {
-    //   const userApi = new UserService();
-    //   const response = await userApi.searchUserNext();
-    //   if (response.length > 0) {
-    //     setUserList(userList.concat(response));
-    //   }
-    // })();
-  }
 
   const handleCreateComment = async () => {
-
+    // send the comment, then reload the data once sent
+    triggerUseEffect = !triggerUseEffect
   }
 
 
   useEffect(() => {
-    let active = true;
-
-    if (!tagLoading) {
-      return undefined;
-    }
-
-    (async () => {
-      const recognitionApi = new RecognitionService();
-      const response = await recognitionApi.getAllTags();
-
-      if (active) {
-        setTagOptions(response);
-      }
-    })();
-
-    return () => {
-      active = false;
-    };
-  }, [tagLoading]);
-
-  useEffect(() => {
-    let active = true;
-    if (userSearchOpen) {
-      (async () => {
-        const userApi = new UserService();
-        const response = await userApi.searchUsers(userQuery);
-
-        if (active) {
-          setUserList(response);
-        }
-      })();
-    }
-    return () => {
-      active = false;
-    };
-  }, [userQuery, userSearchOpen]);
-
-  useEffect(() => {
-    if (!userSearchOpen) {
-      setUserList([]);
-    }
-  }, [userSearchOpen]);
-
-
-  useEffect(() => {
-    console.log(post);
     const recognitionAPI = new RecognitionService();
     recognitionAPI.getRec(params.id).then(
-      (rec: Recognition) => {setPost(rec); console.log(post)}
+      (rec: Recognition) => {setPost(rec);}
     );
   }, [triggerUseEffect])
 

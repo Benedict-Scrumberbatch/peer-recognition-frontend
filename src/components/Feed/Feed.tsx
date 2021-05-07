@@ -127,6 +127,7 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
   const [nextPostUrl, setNextPostUrl] = useState<string>('');
   const [totalPostCount, setPostCount] = useState<number>(0);
   const [morePostBool, setPostBool] = useState<boolean>(true);
+  const [nextUserUrl, setNextUserUrl] = useState<string>('');
 
 
   //Create Rec Consts
@@ -152,9 +153,10 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
 
   const handleUserPaging = () => {
     (async () => {
-      const response = await userApi.searchUserNext();
-      if (response.length > 0) {
-        setUserList(userList.concat(response));
+      const response = await userApi.searchUserNext(nextUserUrl);
+      if (response.items.length > 0) {
+        setUserList(userList.concat(response.items));
+        setNextUserUrl(response.links.next);
       }
     })();
   }
@@ -232,7 +234,8 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
         const response = await userApi.searchUsers(userQuery);
 
         if (active) {
-          setUserList(response);
+          setUserList(response.items);
+          setNextUserUrl(response.links.next);
         }
       })();
     }
@@ -244,6 +247,7 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
   useEffect(() => {
     if (!userSearchOpen) {
       setUserList([]);
+      setNextUserUrl('');
     }
   }, [userSearchOpen]);
 
