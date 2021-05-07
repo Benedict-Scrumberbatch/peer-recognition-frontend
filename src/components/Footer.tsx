@@ -12,8 +12,11 @@ const styles = (theme: Theme) => createStyles({
   },
   appBar: {
     backgroundColor: "white",
-    paddingBottom: theme.spacing(1),
+    // paddingBottom: theme.spacing(1),
     color: 'black',
+    height: '7vh',
+    position: 'fixed',
+    bottom: 0,
     alignItems: 'center',
   },
 });

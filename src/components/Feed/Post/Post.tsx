@@ -87,7 +87,7 @@ export default function Post(props: {recognition: Recognition}) {
         <div>
           <img src={PlaceholderProfileImg} alt="profile" className={classes.profilePhoto} />
           <Typography variant="body2" color="textSecondary" style={{ marginLeft: 20 }}>
-              {(new Date(post.postDate)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              {(new Date(post.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </Typography>
         </div>
         <div>

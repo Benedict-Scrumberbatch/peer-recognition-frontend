@@ -52,9 +52,11 @@ const useStyles = makeStyles((theme: Theme) =>
 type TagSelectProps = {
   tags: Tag[];
   setTags: React.Dispatch<React.SetStateAction<Tag[]>>;
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
+const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags, count, setCount }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState('');
 
@@ -63,9 +65,10 @@ const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
   }
   const handleCreateTag = (tagValue: string) => {
     setTags(tags.concat({
-      tagId: 6,
+      tagId: count,
       value: tagValue
-    }))
+    }));
+    setCount(count + 1);
   }
 
   return (
