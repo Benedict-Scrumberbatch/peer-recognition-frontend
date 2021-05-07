@@ -15,7 +15,9 @@ const styles = (theme: Theme) => createStyles({
   appBar: {
     backgroundColor: "white",
     color: "black",
-    paddingTop: theme.spacing(1),
+    position: "fixed",
+    top: 0,
+    height: '8vh',
     paddingBottom: theme.spacing(1)
   },
   logo: {
@@ -23,8 +25,8 @@ const styles = (theme: Theme) => createStyles({
     maxWidth: 160
   },
   profileCircle: {
-    width: '80px',
-    height: '80px',
+    width: '60px',
+    height: '60px',
     borderRadius: '50%',
     objectFit: 'cover'
   }

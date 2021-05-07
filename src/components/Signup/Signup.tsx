@@ -65,6 +65,8 @@ const Signup = withStyles(styles)(({ classes }: SimpleProps) => {
     { tagId: 3, value: 'Diligent' },
     { tagId: 4, value: 'Sincere' }
   ])
+  const [count, setCount] = useState(5)
+
 
   const handleUsernameChange = (e: any): void => {
     setUsername(e.target.value)
@@ -110,7 +112,7 @@ const Signup = withStyles(styles)(({ classes }: SimpleProps) => {
               value={name}
               onChange={handleUsernameChange}
             />
-            <TagSelect tags={tags} setTags={setTags} />
+            <TagSelect tags={tags} setTags={setTags} count={count} setCount={setCount}/>
             <Button
               type="submit"
               fullWidth

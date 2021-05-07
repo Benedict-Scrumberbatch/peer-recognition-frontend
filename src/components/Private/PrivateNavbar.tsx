@@ -112,14 +112,17 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: theme.spacing(9),
     },
   },
-  appBarSpacer: theme.mixins.toolbar,
+
+  appBarSpacerBottom: {
+    height: '15vh',
+  },
   content: {
     flexGrow: 1,
-    height: '100vh',
+    height: '84vh',
     overflow: 'auto',
+    // marginBottom: '15vh'
   },
 }));
-
 export default function PrivateNavbar(props: any) {
   const triggerUseEffect = true;
   const classes = useStyles(); // Material UI Styling
@@ -217,9 +220,9 @@ export default function PrivateNavbar(props: any) {
           </List>
         </div>
       </Drawer>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
+      <main className={classes.content} id="content-scroll">
         {props.children}
+      <div className={classes.appBarSpacerBottom} />
       </main>
     </div>
   );
