@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { BrowserRouter, Switch, Route, Redirect} from 'react-router-dom'
 import PrivateRoute from './components/Private/PrivateRoute';
 import Header from './components/Header';
@@ -8,8 +8,8 @@ import Feed from './components/Feed';
 import Settings from './components/Private/Settings';
 import Profile from './components/Private/Profile';
 import Signup from './components/Signup';
-
 import { makeStyles } from '@material-ui/core/styles';
+import ProfileContext from './context/ProfileContext';
 
 
 const Foo: FunctionComponent<{}> = () => <h1>Foo Page</h1>;
@@ -23,8 +23,9 @@ const useStyles = makeStyles((theme) => ({
 
 function App () {
   const classes = useStyles();
-  
+  const userProfile = useState({});
   return (
+    <ProfileContext.Provider value = {userProfile}>
     <div>
       <BrowserRouter>
         <Header />
@@ -43,6 +44,7 @@ function App () {
         <Footer />
       </BrowserRouter>
     </div>
+    </ProfileContext.Provider> 
   );
 }
 
