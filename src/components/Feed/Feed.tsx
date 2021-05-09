@@ -359,6 +359,7 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
           // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
           return (
             <div key={idx} className={classes.postItem}>
+              console.log(postList[idx])
               {typeof postList[idx] === undefined ? <div>Loading...</div> : <Post recognition={postList[idx]} />}
             </div>
           )
