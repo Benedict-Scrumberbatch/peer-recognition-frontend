@@ -19,6 +19,8 @@ import PlaceholderProfileImg from '../../../assets/img/kitten_placeholder.jpg';
 import BackgroundStar from '../../../assets/img/lime-green-star.png';
 import { Recognition } from '../../../dtos/entity/recognition.entity';
 
+import { Divider, Avatar, Grid, Paper } from "@material-ui/core";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 900,
@@ -34,6 +36,13 @@ const useStyles = makeStyles((theme) => ({
   profilePhoto: {
     width: '125px',
     height: '125px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+    padding: 20,
+  },
+  usercommentPhoto: {
+    width: theme.spacing(10),
+    height: theme.spacing(10),
     borderRadius: '50%',
     objectFit: 'cover',
     padding: 20,
@@ -104,6 +113,23 @@ export default function Post(props: {recognition: Recognition}) {
               {post.msg}
             </Typography>
             
+
+
+            <div> <Typography variant="h5" color="textSecondary" component="p" style={{ marginTop: 12 }}>
+              Comments:
+            </Typography> </div>
+            <Paper style={{ padding: "40px 20px" }}>
+              <Grid container wrap="nowrap" spacing={2}>
+              <div><img src={PlaceholderProfileImg} alt="profile photo" className={classes.usercommentPhoto} /> </div> 
+              <p style={{ textAlign: "right" }}>
+                LOL totally agree.{" "}
+              </p>
+              </Grid>
+              <h4 style={{ margin: 0, textAlign: "left" }}>John Doe</h4>
+            </Paper>
+
+
+
             {post.tags.map((tag, idx) => {
               return (
                 <ColorButton key={idx} variant="contained" color="primary" className={classes.buttons} disableElevation>

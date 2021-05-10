@@ -2,6 +2,7 @@ import { RecognitionPagination } from "../dtos/dto/pagination.dto";
 import { Recognition } from "../dtos/entity/recognition.entity";
 import { Tag } from "../dtos/entity/tag.entity";
 import { Users } from "../dtos/entity/users.entity";
+import { Comment } from "../dtos/entity/comment.entity";
 import MainApiProtected from "./MainAPIProtected";
 
 export default class RecognitionService extends MainApiProtected {
@@ -25,6 +26,12 @@ export default class RecognitionService extends MainApiProtected {
             "empTo": targetUser,
             "msg": message,
             "tags": tags
+        });
+    }
+
+    public createComment = async (id: string, comment: string): Promise<Comment> => {
+        return await this.instance.post(`/recognitions/${id}/comment`, {
+            "msg": comment
         });
     }
 

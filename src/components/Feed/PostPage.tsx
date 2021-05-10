@@ -154,6 +154,7 @@ const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
    
         <div className={classes.postItem}>
               {!post.recId ? <div>Loading...</div> : <Post recognition={post} />}
+
         </div>
         
       </div>
