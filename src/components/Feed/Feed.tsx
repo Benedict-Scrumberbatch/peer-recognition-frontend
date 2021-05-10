@@ -27,6 +27,7 @@ import UserService from '../../api/UserService';
 import { Tag } from '../../dtos/entity/tag.entity';
 import { CircularProgress } from '@material-ui/core';
 
+
 const styles = (theme: Theme) => createStyles({
   grow: {
     marginTop: theme.spacing(4)
@@ -120,9 +121,16 @@ interface SimpleProps extends WithStyles<typeof styles> {
 
 const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
   const triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
-  const initialPostList: Recognition[] = [];
-  const userService = new UserService();
-  const [postList, setPostList] = useState(initialPostList);
+  const userApi = new UserService();
+  const recApi = new RecognitionService();
+  const [postList, setPostList] = useState<Recognition[]>([]);
+  const [nextPostUrl, setNextPostUrl] = useState<string>('');
+  const [totalPostCount, setPostCount] = useState<number>(0);
+  const [morePostBool, setPostBool] = useState<boolean>(true);
+  const [nextUserUrl, setNextUserUrl] = useState<string>('');
+  const [userRecQuery, setRecQuery] = useState("");
+
+
 
   //Create Rec Consts
   const [userList, setUserList] = useState<Users[]>([]);
@@ -132,7 +140,6 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
   const [recMsg, setRecMsg] = useState("");
   const [open, setOpen] = useState(false);
   const [tagSearchOpen, setTagSearchOpen] = useState(false);
-  const [userSearchPage, setUserSearchPage] = useState(1);
   const [tagOptions, setTagOptions] = useState<Tag[]>([]);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const tagLoading = tagSearchOpen && tagOptions.length === 0;
@@ -147,19 +154,53 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
 
   const handleUserPaging = () => {
     (async () => {
-      const userApi = new UserService();
-      const response = await userApi.searchUserNext();
-      if (response.length > 0) {
-        setUserList(userList.concat(response));
+      const response = await userApi.searchUserNext(nextUserUrl);
+      if (response.items.length > 0) {
+        setUserList(userList.concat(response.items));
+        setNextUserUrl(response.links.next);
       }
     })();
+  }
+
+  const handleFeedPaging = () => {
+    (async () => {
+      console.log('paging');
+      console.log(nextPostUrl);
+      const response = await recApi.searchRecsNext(nextPostUrl);
+      console.log(response)
+      if (response.items.length > 0) {
+        setPostList(postList.concat(response.items));
+        setPostCount(response.meta.totalItems);
+        if (response.links.next !== "") {
+          setNextPostUrl(response.links.next);
+        } else {
+          setPostBool(false);
+        }      }
+    })();
+  }
+
+  const initPostList = () => {
+    console.log('init post');
+    setPostBool(false);
+    recApi.paginatedRecs().then(
+      response => {
+        console.log(response);
+        setPostList(response.items);
+        setPostCount(response.meta.totalItems);
+        setNextPostUrl(response.links.next);
+        if (response.links.next !== "") {
+          setPostBool(true);
+        } else {
+          setPostBool(false);
+        }
+      }
+    );
   }
 
   const handleCreateRec = async () => {
     try {
       if (targetUser && recMsg.length > 0 && selectedTags.length > 0) {
-        const recognitionApi = new RecognitionService()
-        const response = await recognitionApi.createPost(targetUser, recMsg, selectedTags);
+        const response = await recApi.createPost(targetUser, recMsg, selectedTags);
         handleClose();
       }
       else {
@@ -179,8 +220,7 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
     }
 
     (async () => {
-      const recognitionApi = new RecognitionService();
-      const response = await recognitionApi.getAllTags();
+      const response = await recApi.getAllTags();
 
       if (active) {
         setTagOptions(response);
@@ -196,11 +236,11 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
     let active = true;
     if (userSearchOpen) {
       (async () => {
-        const userApi = new UserService();
         const response = await userApi.searchUsers(userQuery);
 
         if (active) {
-          setUserList(response);
+          setUserList(response.items);
+          setNextUserUrl(response.links.next);
         }
       })();
     }
@@ -212,15 +252,13 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
   useEffect(() => {
     if (!userSearchOpen) {
       setUserList([]);
+      setNextUserUrl('');
     }
   }, [userSearchOpen]);
 
 
   useEffect(() => {
-    const recognitionAPI = new RecognitionService();
-    recognitionAPI.getFeed().then(
-      (feed: Recognition[]) => setPostList(feed)
-    );
+    initPostList();
   }, [triggerUseEffect])
 
   return (
@@ -233,6 +271,24 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
           </div>
           <InputBase
             placeholder="Search…"
+            onChange={(async (event: any) => {
+                console.log('rec change')
+                setRecQuery(event.target.value);
+                if (event.target.value === "") {
+                  initPostList()
+                } else {
+                  const response = await recApi.searchRecs(event.target.value);
+                  setPostList(response.items);
+                  setPostCount(response.meta.totalItems);
+                  setNextPostUrl(response.links.next);
+                  if (response.links.next !== "") {
+                    setPostBool(true);
+                  } else {
+                    setPostBool(false);
+                  }
+                }
+              })
+            }
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
@@ -248,11 +304,9 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
               size='small'
               open={userSearchOpen}
               onOpen={() => {
-                setUserSearchPage(1);
                 setUserSearchOpen(true);
               }}
               onClose={() => {
-                setUserSearchPage(1);
                 setUserSearchOpen(false);
               }}
               ListboxProps={{
@@ -270,7 +324,6 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
               }}
               inputValue={userQuery}
               onInputChange={(event, newInputValue) => {
-                setUserSearchPage(1);
                 setUserQuery(newInputValue);
               }}
               getOptionSelected={(userOption: Users, selected: Users) => userOption.employeeId === selected.employeeId}
@@ -349,20 +402,32 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
       </Container>
       <div className={classes.buttonList}>
         <StyledButton onClick={handleOpen} className={classes.buttonItem}>{"Create a Post"} </StyledButton>
-        <StyledButton className={classes.buttonItem}>{"See My Posts"} </StyledButton>
       </div>
       <div className={classes.postList}>
         <div className={classes.postItem}>
           <Rockstar />
         </div>
-        {postList.map((val: any, idx: number) => {
+        <InfiniteScroll
+        dataLength={totalPostCount} //This is important field to render the next data
+        next={handleFeedPaging}
+        scrollableTarget="content-scroll"
+        hasMore={morePostBool}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+      {postList.map((val, idx) => {
           // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
           return (
             <div key={idx} className={classes.postItem}>
               {typeof postList[idx] === undefined ? <div>Loading...</div> : <Post recognition={postList[idx]} />}
             </div>
           )
-        })}
+        })}    
+        </InfiniteScroll>
       </div>
     </Container>
   )

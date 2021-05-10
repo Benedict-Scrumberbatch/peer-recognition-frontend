@@ -50,22 +50,25 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type TagSelectProps = {
-  tags: any[];
-  setTags: React.Dispatch<React.SetStateAction<any>>;
+  tags: Tag[];
+  setTags: React.Dispatch<React.SetStateAction<Tag[]>>;
+  count: number;
+  setCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
+const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags, count, setCount }) => {
   const classes = useStyles();
-  const [value, setValue] = React.useState()
+  const [value, setValue] = React.useState('');
 
-  const handleDeleteTag = (id: any) => {
-    setTags(tags.filter((tag) => tag.id !== id))
+  const handleDeleteTag = (id: number) => {
+    setTags(tags.filter((tag) => tag.tagId !== id))
   }
-  const handleCreateTag = (tagValue: any) => {
+  const handleCreateTag = (tagValue: string) => {
     setTags(tags.concat({
-      id: uuidv4(),
+      tagId: count,
       value: tagValue
-    }))
+    }));
+    setCount(count + 1);
   }
 
   return (
@@ -73,7 +76,7 @@ const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags }) => {
       <Typography variant="h5" id="demo-mutiple-chip-label" style={{ textAlign: 'center' }}>Core Values</Typography>
       <div className={classes.chips}>
         {tags.map((tag) => (
-          <Chip label={tag.value} className={classes.chip} onDelete={() => handleDeleteTag(tag.id)} deleteIcon={<ClearIcon />} />
+          <Chip label={tag.value} className={classes.chip} onDelete={() => handleDeleteTag(tag.tagId)} deleteIcon={<ClearIcon />} />
         ))}
       </div>
       <br />

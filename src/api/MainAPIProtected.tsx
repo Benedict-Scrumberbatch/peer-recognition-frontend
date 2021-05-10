@@ -1,6 +1,9 @@
 // axios + TypeScript code from article: https://levelup.gitconnected.com/enhance-your-http-request-with-axios-and-typescript-f52a6c6c2c8e
 import HttpClient from './HTTPClient';
 import { AxiosRequestConfig } from 'axios';
+import AuthLoginService from './AuthLoginService';
+import auth from './authHelper';
+
 
 let API_URL: string;
 if (process.env.REACT_APP_API_URL) {
@@ -11,6 +14,7 @@ if (process.env.REACT_APP_API_URL) {
 }
 
 export default class MainApiProtected extends HttpClient {
+
   public constructor() {
     super(API_URL);
 
@@ -25,10 +29,27 @@ export default class MainApiProtected extends HttpClient {
   };
 
   private _handleRequest = (config: AxiosRequestConfig) => {
-    const access_token = localStorage.getItem('jwt')
-    config.headers['Authorization'] = `Bearer ${access_token}`;
-    // request.headers.Authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMTIzNDU2Nzg5IiwibmFtZSI6IlNhbXBsZSIsImlhdCI6MTUxNjIzODIzfQ.ZEBwz4pWYGqgFJc6DIi7HdTN0z5Pfs4Lcv4ZNwMr1rs';
-
-    return config;
+    const access_token = localStorage.getItem('access_token');
+    const accessTokenExpiration = localStorage.getItem('access_token_expire');
+    const refreshTokenExpiration = localStorage.getItem('refresh_token_expire');
+    if (accessTokenExpiration && new Date() >= new Date(accessTokenExpiration)) {
+      // if (refreshTokenExpiration && new Date() < new Date(refreshTokenExpiration)) {
+        const loginAPI = new AuthLoginService();
+        return loginAPI.getRefreshToken()
+        .then((response) => {
+          localStorage.setItem('access_token', response.access_token);
+          localStorage.setItem('access_token_expire', response.accessTokenExpire);
+          config.headers['Authorization'] = `Bearer ${response.access_token}`;
+          return config;
+        });
+      // } else {
+      //   // auth.signout(() => history.push("/"))
+      // }
+      
+    }
+    else {
+      config.headers['Authorization'] = `Bearer ${access_token}`;
+      return config;
+    }
   };
 }

@@ -10,14 +10,17 @@ import Profile from './components/Private/Profile';
 import Signup from './components/Signup';
 
 import { makeStyles } from '@material-ui/core/styles';
+import PostPage from './components/Feed/PostPage';
 
 
-const Foo: FunctionComponent<{}> = () => <h1>Foo Page</h1>;
 const NotFound: FunctionComponent<{}> = () => <h1>Not Found</h1>;
 
 const useStyles = makeStyles((theme) => ({
   content: {
-    minHeight: '80vh'
+    height: '70vh',
+  },
+  appBarSpacerTop: {
+    height: '8vh',
   },
 }));
 
@@ -28,14 +31,16 @@ function App () {
     <div>
       <BrowserRouter>
         <Header />
+        <div className={classes.appBarSpacerTop} />
         <div className={classes.content}>
           <Switch>
             <Route exact path="/" component={Login} />
-            <Route path="/foo" component={Foo} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
             <PrivateRoute path="/feed" component={Feed} />
-            <PrivateRoute path="/profile" component={Profile} />
+            <PrivateRoute path="/profile/:id" component={Profile} />
+            <PrivateRoute path="/recognition/:id" component={PostPage} />
+            {/* <PrivateRoute path="/profile" component={Profile} /> */}
             <PrivateRoute path="/settings" component={Settings} />
             <Route path="/404" component={NotFound} />
           </Switch>

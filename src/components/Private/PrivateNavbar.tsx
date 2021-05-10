@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 // Utility to combine classnames
 import clsx from 'clsx';
@@ -36,6 +36,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 // api
 import auth from '../../api/authHelper';
 import Post from '../Feed/Post';
+import UserService from '../../api/UserService';
+import { Users } from '../../dtos/entity/users.entity';
 /*
   Navigation Menu holds
     - navbar (for settings)
@@ -46,7 +48,7 @@ import Post from '../Feed/Post';
 const drawerWidth = 1000;
 
 const routeData = [
-  { text: "Profile", link: '/profile', iconFunc: () => { return <AccountBoxIcon /> } },
+  { text: "Profile", link: `/profile`, iconFunc: () => { return <AccountBoxIcon /> } },
   { text: "Settings", link: "/settings", iconFunc: () => { return <SettingsIcon /> } },
   { text: "Feed", link: "/feed", iconFunc: () => { return <DynamicFeedIcon /> } },
 ]
@@ -126,22 +128,30 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: theme.spacing(9),
     },
   },
-  appBarSpacer: theme.mixins.toolbar,
+  appBarSpacer: {
+    height: '15vh',
+  },
+  appBarSpacerBottom: {
+    height: '15vh',
+  },
   content: {
     flexGrow: 1,
-    height: '100vh',
+    height: '84vh',
     overflow: 'auto',
+    // marginBottom: '15vh'
   },
 }));
-
 export default function PrivateNavbar(props: any) {
+  const triggerUseEffect = true;
   const classes = useStyles(); // Material UI Styling
   const theme = useTheme(); // Material UI Theming
   const history = useHistory(); // React Router history hook
-  const [open, setOpen] = React.useState(false);
-  const [notificationOpen, setNotificationOpen] = React.useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const initialUser: Users = new Users();
+  const [open, setOpen] = useState(false);
+  const [user, setUser] = useState(initialUser);
 
-  const toggleDrawer = (open: any) => (event: any) => {
+  const toggleDrawer = (open: boolean) => (event: any) => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
@@ -155,6 +165,17 @@ export default function PrivateNavbar(props: any) {
     setNotificationOpen(open);
   };
 
+  useEffect(() => {
+    const userStatsAPI = new UserService();
+    userStatsAPI.getUserProfile()
+    .then((user: Users) => {
+      setUser(user);
+    })
+    .catch((err) => {
+      alert("No such profile");
+      console.log("User error");
+    })
+  }, [triggerUseEffect])
 
   return (
     <div>
@@ -215,7 +236,10 @@ export default function PrivateNavbar(props: any) {
           </div>
           <Divider />
           <List>
-            {routeData.map((obj: any, idx: Number) => {
+            {routeData.map((obj, idx) => {
+              if (obj.text === "Profile") {                
+                obj.link = `/profile/${user.employeeId}`
+              }
               return (
                 <Link to={obj.link} key={obj.text + idx} style={{ textDecoration: 'none', color: 'black' }}>
                   <li>
@@ -286,15 +310,16 @@ export default function PrivateNavbar(props: any) {
             </CardContent>
             <CardActions>
               <Button>
-                <Post recognition={{msg:"some message here", tags: ["tag1", "tag2"], postDate: '14-12-9', empTo: {firstName: 'john', lastName: 'Snow'}, empFrom: {firstName: 'Bob', lastName: 'Marley'}}}></Post>
+                <Post recognition={{msg:"some message here", tags: [{tagId: 1, value:"tag1"}, {tagId: 2, value: "tag2"}], empTo: {firstName: 'john', lastName: 'Snow'}, empFrom: {firstName: 'Bob', lastName: 'Marley'}}}></Post>
               </Button>
             </CardActions>
           </Card>
         </div>
       </Drawer>
-      <main className={classes.content}>
+      <main className={classes.content} id="content-scroll">
         <div className={classes.appBarSpacer} />
         {props.children}
+      <div className={classes.appBarSpacerBottom} />
       </main>
     </div>
   );

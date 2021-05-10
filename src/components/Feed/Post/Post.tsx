@@ -17,6 +17,7 @@ import Typography from '@material-ui/core/Typography';
 // Assets
 import PlaceholderProfileImg from '../../../assets/img/kitten_placeholder.jpg';
 import BackgroundStar from '../../../assets/img/lime-green-star.png';
+import { Recognition } from '../../../dtos/entity/recognition.entity';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,7 +77,7 @@ const ColorButton = withStyles((theme) => ({
   },
 }))(Button);
 
-export default function Post(props: {recognition: any}) {
+export default function Post(props: {recognition: Recognition}) {
   const classes = useStyles();
   const post = props.recognition;
   
@@ -86,7 +87,7 @@ export default function Post(props: {recognition: any}) {
         <div>
           <img src={PlaceholderProfileImg} alt="profile" className={classes.profilePhoto} />
           <Typography variant="body2" color="textSecondary" style={{ marginLeft: 20 }}>
-              {(new Date(post.postDate)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              {(new Date(post.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </Typography>
         </div>
         <div>
@@ -103,7 +104,7 @@ export default function Post(props: {recognition: any}) {
               {post.msg}
             </Typography>
             
-            {post.tags.map((tag: any, idx: number) => {
+            {post.tags.map((tag, idx) => {
               return (
                 <ColorButton key={idx} variant="contained" color="primary" className={classes.buttons} disableElevation>
                   {tag.value}
