@@ -40,13 +40,6 @@ const useStyles = makeStyles((theme) => ({
     objectFit: 'cover',
     padding: 20,
   },
-  usercommentPhoto: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
-    borderRadius: '50%',
-    objectFit: 'cover',
-    padding: 20,
-  },
   media: {
     height: 0,
     paddingTop: '56.25%', // 16:9
@@ -122,30 +115,35 @@ export default function Post(props: {recognition: Recognition}) {
             <Paper style={{ padding: "40px 20px" }}>
               <Grid container wrap="nowrap" spacing={2}>
                 <Grid item>
-                  <img src={PlaceholderProfileImg} alt="profile photo" className={classes.usercommentPhoto} /> 
+                  <Avatar alt="profile photo" src={PlaceholderProfileImg} />                
                 </Grid>
                 <Grid item>
                   <h4 style={{ margin: 0, textAlign: "left" }}>John Doe</h4>
-                  <p style={{ textAlign: "left", color: "gray" }}>
-                    posted {(new Date(post.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                  </p>
                   <p style={{ textAlign: "left" }}>
-                    LOL totally agree.{" "}
+                    LOL IKR?{" "}
                   </p>  
                 </Grid>
+                <Grid item>
+                  <p style={{ margin: 0, textAlign: "left", color: "gray" }}>
+                    posted {(new Date(post.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                  </p>
+                </Grid>
               </Grid>
+
               <Grid container wrap="nowrap" spacing={2}>
                 <Grid item>
-                  <img src={PlaceholderProfileImg} alt="profile photo" className={classes.usercommentPhoto} /> 
+                  <Avatar alt="profile photo" src={PlaceholderProfileImg} />                
                 </Grid>
                 <Grid item>
                   <h4 style={{ margin: 0, textAlign: "left" }}>Chad Doe</h4>
-                  <p style={{ textAlign: "left", color: "gray" }}>
+                  <p style={{ textAlign: "left" }}>
+                    Yee yeet.{" "}
+                  </p>  
+                </Grid>
+                <Grid item>
+                  <p style={{ margin: 0, textAlign: "left", color: "gray" }}>
                     posted {(new Date(post.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                   </p>
-                  <p style={{ textAlign: "left" }}>
-                    Yeehaw!{" "}
-                  </p>  
                 </Grid>
               </Grid>
             </Paper>
