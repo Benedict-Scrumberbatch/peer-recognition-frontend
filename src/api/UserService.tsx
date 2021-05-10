@@ -1,6 +1,8 @@
 import MainApiProtected from "./MainAPIProtected";
 import { Users } from "../dtos/entity/users.entity";
 import { UserStats } from "../dtos/interface/userstats.interface";
+import ProfileContext from "../context/ProfileContext";
+
 
 export default class UserService extends MainApiProtected {
     userProfile: Users;
@@ -9,6 +11,9 @@ export default class UserService extends MainApiProtected {
     public constructor() {
         super();
     }
+
+    static contextType = ProfileContext;
+    //const { userProfile, setUserProfile } = this.context;
 
     public getUserProfile = async (): Promise<Users> => {
         if (!this.userProfile) {
