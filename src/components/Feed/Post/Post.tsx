@@ -20,6 +20,13 @@ import BackgroundStar from '../../../assets/img/lime-green-star.png';
 import { Recognition } from '../../../dtos/entity/recognition.entity';
 
 import { Divider, Avatar, Grid, Paper } from "@material-ui/core";
+import { Theme } from '@material-ui/core/styles/createMuiTheme';
+import { fade, createStyles, WithStyles, responsiveFontSizes } from "@material-ui/core/styles";
+import InputBase from '@material-ui/core/InputBase';
+import CreateIcon from '@material-ui/icons/Create';
+import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,6 +39,38 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: 'contain',
     backgroundPosition: 'right', 
     width: '56.25rem',
+  },
+  searchWrapper: {
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.primary.light, 0.03),
+    '&:hover': {
+      backgroundColor: fade(theme.palette.primary.light, 0.05),
+    },
+    paddingLeft: theme.spacing(0),
+    paddingRight: theme.spacing(0),
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputRoot: {
+    color: 'inherit',
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '100ch',
+    },
   },
   profilePhoto: {
     width: '125px',
@@ -147,6 +186,26 @@ export default function Post(props: {recognition: Recognition}) {
                 </Grid>
               </Grid>
             </Paper>
+            <div className={classes.searchWrapper}>
+              <TextField
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <CreateIcon />
+                  </InputAdornment>
+                ),
+              }}
+              autoFocus
+              margin="dense"
+              id="multiline-recognition"
+              label="Write your comment..."
+              multiline
+              rows={2}
+              variant="outlined"
+              // onChange={e => setRecMsg(e.target.value)}
+              fullWidth
+            />
+            </div>
 
 
 

@@ -210,19 +210,6 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
       alert(`An Error Occured: ${e}`);
     }
   }
-  // const handleCreateComment = async () => {
-  //   try {
-  //     if (targetUser && recMsg.length > 0 && selectedTags.length > 0) {
-  //       const response = await recApi.createPost(targetUser, recMsg, selectedTags);
-  //       handleClose();
-  //     }
-  //     else {
-  //       alert("Please fill out all fields.");
-  //     }
-  //   } catch (e) {
-  //     alert(`An Error Occured: ${e}`);
-  //   }
-  // }
 
   useEffect(() => {
     let active = true;
