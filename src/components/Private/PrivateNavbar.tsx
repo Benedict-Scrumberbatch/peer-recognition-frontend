@@ -25,8 +25,17 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
+import ClearIcon from '@material-ui/icons/Clear';
+
 // api
 import auth from '../../api/authHelper';
+import Post from '../Feed/Post';
 import UserService from '../../api/UserService';
 import { Users } from '../../dtos/entity/users.entity';
 /*
@@ -36,7 +45,7 @@ import { Users } from '../../dtos/entity/users.entity';
     - sidebar for route navigation
 */
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 const routeData = [
   { text: "Profile", link: `/profile`, iconFunc: () => { return <AccountBoxIcon /> } },
@@ -48,10 +57,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
   },
-  toolbarIcon: {
+  toolbarRightIcon: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+  },
+  toolbarLeftIcon: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
     padding: '0 8px',
     ...theme.mixins.toolbar,
   },
@@ -93,7 +109,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   drawerPaper: {
-    position: 'relative',
+    // position: 'relative',
     whiteSpace: 'nowrap',
     width: drawerWidth,
     transition: theme.transitions.create('width', {
@@ -112,7 +128,9 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: theme.spacing(9),
     },
   },
-
+  appBarSpacer: {
+    height: '15vh',
+  },
   appBarSpacerBottom: {
     height: '15vh',
   },
@@ -128,6 +146,7 @@ export default function PrivateNavbar(props: any) {
   const classes = useStyles(); // Material UI Styling
   const theme = useTheme(); // Material UI Theming
   const history = useHistory(); // React Router history hook
+  const [notificationOpen, setNotificationOpen] = useState(false);
   const initialUser: Users = new Users();
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState(initialUser);
@@ -137,6 +156,13 @@ export default function PrivateNavbar(props: any) {
       return;
     }
     setOpen(open)
+  };
+
+  const toggleNotifications = (open: any) => (event: any) => {
+    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setNotificationOpen(open);
   };
 
   useEffect(() => {
@@ -180,12 +206,22 @@ export default function PrivateNavbar(props: any) {
               <Button variant="contained" onClick={() => auth.signout(() => history.push("/"))}>Signout</Button>
             </div>
           }
+          <IconButton
+            edge="end"
+            color="inherit"
+            aria-label="open notifications"
+            onClick={toggleNotifications(true)}
+            className={clsx(classes.menuButton, notificationOpen && classes.menuButtonHidden)}
+          >
+            <NotificationsIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
         classes={{
           paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
         }}
+        anchor="left"
         open={open}
       >
         <div
@@ -193,9 +229,9 @@ export default function PrivateNavbar(props: any) {
           onClick={toggleDrawer(false)}
           onKeyDown={toggleDrawer(false)}
         >
-          <div className={classes.toolbarIcon}>
+          <div className={classes.toolbarRightIcon}>
             <IconButton onClick={toggleDrawer(false)}>
-              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+              <ChevronLeftIcon />
             </IconButton>
           </div>
           <Divider />
@@ -220,7 +256,68 @@ export default function PrivateNavbar(props: any) {
           </List>
         </div>
       </Drawer>
+      <Drawer
+        classes={{
+          paper: clsx(classes.drawerPaper, !notificationOpen && classes.drawerPaperClose),
+        }}
+        anchor="right"
+        open={notificationOpen}
+      >
+        <div
+          role="presentation"
+          onClick={toggleNotifications(false)}
+          onKeyDown={toggleNotifications(false)}
+        >
+          <div className={classes.toolbarLeftIcon}>
+            <IconButton onClick={toggleNotifications(false)}>
+              <ChevronRightIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          <Card variant="outlined">
+          <CardHeader
+              action={
+                <IconButton aria-label="dismiss">
+                  <ClearIcon />
+                </IconButton>
+              }
+              title="NotificationTitle"
+              subheader="September 14, 2016"
+            />
+            <CardContent>
+              <Typography  color="textSecondary" gutterBottom>
+                Notification Description
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button size="small">Learn More</Button>
+            </CardActions>
+          </Card>
+          <Card variant="outlined">
+          <CardHeader
+              action={
+                <IconButton aria-label="dismiss">
+                  <ClearIcon />
+                </IconButton>
+              }
+              title="NotificationTitle"
+              subheader="September 14, 2016"
+            />
+            <CardContent>
+              <Typography  color="textSecondary" gutterBottom>
+                Notification Description
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button>
+                {/* <Post recognition={{msg:"some message here", tags: [{tagId: 1, value:"tag1"}, {tagId: 2, value: "tag2"}], empTo: {firstName: 'john', lastName: 'Snow'}, empFrom: {firstName: 'Bob', lastName: 'Marley'}}}></Post> */}
+              </Button>
+            </CardActions>
+          </Card>
+        </div>
+      </Drawer>
       <main className={classes.content} id="content-scroll">
+        <div className={classes.appBarSpacer} />
         {props.children}
       <div className={classes.appBarSpacerBottom} />
       </main>

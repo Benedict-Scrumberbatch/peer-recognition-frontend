@@ -29,6 +29,8 @@ import UserService from '../../api/UserService';
 import { Tag } from '../../dtos/entity/tag.entity';
 import { Avatar, CircularProgress, Grid, InputAdornment, Paper, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
+import { ReturnRockstarDto } from '../../dtos/dto/rockstar-stats.dto';
+import RockstarService from '../../api/RockstarService';
 
 
 
@@ -128,11 +130,11 @@ interface SimpleProps extends WithStyles<typeof styles> {
 }
 
 
-const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
+const RockstarPage = withStyles(styles)(({ classes }: SimpleProps) => {
   let triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
   const params = useParams<ParamTypes>();
-  const initialPost: Recognition = new Recognition();
-  const [post, setPost] = useState(initialPost);
+  const initialRockstar: ReturnRockstarDto = new ReturnRockstarDto();
+  const [rockstar, setRockstar] = useState(initialRockstar);
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -142,12 +144,12 @@ const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
     setOpen(false);
   }
   const [commentMsg, setcommentMsg] = useState("");
-  const recApi = new RecognitionService();
+  const rockstarApi = new RockstarService();
   const handleCreateComment = async () => {
     try {
       if (commentMsg.length > 0) {
-        const response = await recApi.createComment(post.recId, commentMsg);
-        triggerUseEffect = !triggerUseEffect
+        // const response = await recApi.createComment(post.recId, commentMsg);
+        // triggerUseEffect = !triggerUseEffect
   handleClose();    }
       else {
         alert("Please fill out all fields.");
@@ -164,9 +166,9 @@ const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
 
 
   useEffect(() => {
-    const recognitionAPI = new RecognitionService();
-    recognitionAPI.getRec(params.id).then(
-      (rec: Recognition) => {console.log(rec); setPost(rec);}
+    console.log(params.id);
+    rockstarApi.getRockstar().then(
+      (rockstar: ReturnRockstarDto) => {console.log(rockstar); setRockstar(rockstar);}
     );
   }, [triggerUseEffect])
 
@@ -176,18 +178,18 @@ const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
       <div className={classes.postList}>
    
         <div className={classes.postItem}>
-              {!post.recId ? <div>Loading...</div> : <Post recognition={post} />}
+              {!rockstar.rockstar ? <div>Loading...</div> : <Rockstar rockstar={rockstar} />}
         </div>
         
       </div>
 
       <Container>
       <div> 
-      {!post.recId ? <div>Loading...</div> : <div><div> <Typography variant="h5" color="textSecondary" component="p" style={{ marginTop: 12 }}>
+      {!rockstar.rockstar ? <div>Loading...</div> : <div><div> <Typography variant="h5" color="textSecondary" component="p" style={{ marginTop: 12 }}>
               Comments:
             </Typography> </div>
             <Paper style={{ padding: "40px 20px" }}>
-              {post.comments.map((comment, idx)=> {
+              {/* {post.comments.map((comment, idx)=> {
               return (
               <Grid container wrap="nowrap" spacing={2}>
                 <Grid item>
@@ -205,7 +207,7 @@ const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
                   </p>
                 </Grid>
               </Grid>
-              )})}
+              )})} */}
 
             </Paper>
             <div className={classes.searchWrapper}>
@@ -238,4 +240,4 @@ const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
   )
 });
 
-export default PostPage;
+export default RockstarPage;

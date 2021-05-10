@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 // Material UI Styling
 import { WithStyles, createStyles, Theme, withStyles } from '@material-ui/core/styles';
+import Post from '../Feed/Post';
 // Material UI Comopnents
 import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
@@ -18,6 +20,8 @@ import { UserStats } from "../../dtos/interface/userstats.interface";
 import { TagStats } from '../../dtos/entity/tagstats.entity';
 import { useParams } from 'react-router-dom';
 import { Users } from '../../dtos/entity/users.entity';
+import { Recognition } from '../../dtos/entity/recognition.entity';
+import RecognitionService from '../../api/RecognitionService';
 
 const styles = (theme: Theme) => createStyles({
   paper: {
@@ -47,6 +51,9 @@ const styles = (theme: Theme) => createStyles({
   },
   tagStyles: {
     textAlign: 'center'
+  },
+  postItem: {
+    padding: theme.spacing(1)
   }
 });
 
@@ -60,6 +67,8 @@ interface ParamTypes {
 const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
   const triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
   const params = useParams<ParamTypes>();
+  const recApi = new RecognitionService();
+
   // HOOKS
   const initialTagStats: TagStats[] = []
   const initialStats: UserStats = {
@@ -70,6 +79,45 @@ const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
   const initialUser: Users = new Users();
   const [stats, setStats] = useState(initialStats);
   const [user, setUser] = useState(initialUser);
+  const [postList, setPostList] = useState<Recognition[]>([]);
+  const [nextPostUrl, setNextPostUrl] = useState<string>('');
+  const [totalPostCount, setPostCount] = useState<number>(0);
+  const [morePostBool, setPostBool] = useState<boolean>(true);
+
+  const handleFeedPaging = () => {
+    (async () => {
+      console.log('paging');
+      console.log(nextPostUrl);
+      const response = await recApi.searchRecsNext(nextPostUrl);
+      console.log(response)
+      if (response.items.length > 0) {
+        setPostList(postList.concat(response.items));
+        setPostCount(response.meta.totalItems);
+        if (response.links.next !== "") {
+          setNextPostUrl(response.links.next);
+        } else {
+          setPostBool(false);
+        }      }
+    })();
+  }
+
+  const initPostList = () => {
+    console.log('init post');
+    setPostBool(false);
+    recApi.employeeRecs(params.id).then(
+      response => {
+        console.log(response);
+        setPostList(response.items);
+        setPostCount(response.meta.totalItems);
+        setNextPostUrl(response.links.next);
+        if (response.links.next !== "") {
+          setPostBool(true);
+        } else {
+          setPostBool(false);
+        }
+      }
+    );
+  }
 
   // API CALL (called every time data is updated)
   useEffect(() => {
@@ -82,6 +130,7 @@ const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
       alert("No such profile");
       console.log("User error");
     })
+    initPostList();
     userStatsAPI.getStats(params.id)
     .then((stats: UserStats) => {
       setStats(stats);
@@ -120,6 +169,29 @@ const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
           </Typography>
         </div>
       </Paper>
+      <Container>
+      <InfiniteScroll
+        dataLength={totalPostCount} //This is important field to render the next data
+        next={handleFeedPaging}
+        scrollableTarget="content-scroll"
+        hasMore={morePostBool}
+        loader={<h4>Loading...</h4>}
+        endMessage={
+          <p style={{ textAlign: 'center' }}>
+            <b>Yay! You have seen it all</b>
+          </p>
+        }
+      >
+      {postList.map((val, idx) => {
+          // const { nameFrom, titleFrom, nameTo, titleTo, date } = val;
+          return (
+            <div key={idx} className={classes.postItem}>
+              {typeof postList[idx] === undefined ? <div>Loading...</div> : <Post recognition={postList[idx]} />}
+            </div>
+          )
+        })}    
+        </InfiniteScroll>
+      </Container>
     </Container>
   )
 });

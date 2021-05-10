@@ -6,9 +6,16 @@ import CardContent from '@material-ui/core/CardContent';
 import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
+import { useHistory } from 'react-router-dom';
 // Assets
 import PlaceholderProfileImg from '../../../assets/img/kitten_placeholder.jpg';
+import Carousel from 'react-material-ui-carousel'
 import { Pie } from 'react-chartjs-2';
+import RockstarService from '../../../api/RockstarService';
+import { Rockstar } from '../../../dtos/entity/rockstar.entity';
+import { ReturnRockstarDto } from '../../../dtos/dto/rockstar-stats.dto';
+import React from 'react';
+import Post from '../Post';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,8 +48,21 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function RockstarCard() {
+export default function RockstarCard(props: {rockstar: ReturnRockstarDto}) {
   const classes = useStyles();
+  const rockstarDTO = props.rockstar;
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+  const rockstarStats = rockstarDTO.rockstarStats;
+  const tagVal:String[] = [];
+  const tagCount:number[] = [];
+  if (rockstarStats) {
+    rockstarStats.forEach((stat)=>{
+      tagVal.push(stat.tag.value);
+      tagCount.push(stat.countReceived);
+    })
+  }
+  const history = useHistory(); // React Router history hook
+
   const chartColors = [
     "#336699",
     "#99CCFF",
@@ -100,17 +120,17 @@ export default function RockstarCard() {
   const data = {
     maintainAspectRatio: false,
     responsive: false,
-    labels: ["a", "b", "c", "d"],
+    labels: tagVal,
     datasets: [
       {
-        data: [300, 50, 100, 50],
+        data: tagCount,
         backgroundColor: chartColors,
         hoverBackgroundColor: chartColors
       }
     ]
   };
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} onClick={(event: any)=> {if (rockstarDTO.rockstar) {history.push(`/rockstar/${rockstarDTO.rockstar.rockstarID}`)}}}>
       <Box display="flex" flexDirection="row" style={{ marginTop: 3}}>
         <div>
           <CardContent> 
@@ -118,7 +138,7 @@ export default function RockstarCard() {
               Rockstar of the Month
             </Typography>
             <Typography variant="h5" style = {{marginLeft : 15, color: '#f39c12'}}>
-              February
+              {rockstarDTO.rockstar ? months[rockstarDTO.rockstar.month-1] : 'No Rockstar'}
             </Typography> 
             <div className = {classes.wrapper}>
             <div>
@@ -126,25 +146,12 @@ export default function RockstarCard() {
             <div><img src={PlaceholderProfileImg} alt="profile photo" className={classes.profilePhoto} /> </div>
             <div>
             <div><Typography variant="h6" style={{ display: 'inline-block' }}>
-              <Link href="#" color="inherit" style={{ textDecoration: 'none' }}>John Doe</Link>
+              <Link href="#" color="inherit" style={{ textDecoration: 'none' }}> { rockstarDTO.rockstar ? `${rockstarDTO.rockstar.rockstar.firstName} ${rockstarDTO.rockstar.rockstar.lastName}` : 'FistName LastName'}</Link>
             </Typography></div>
             <div><Typography variant="body2" color="textSecondary">
-              Engineer at UKG
+              {rockstarDTO.rockstar ? `${rockstarDTO.rockstar.rockstar.positionTitle}` : 'PsotionTitle'}
             </Typography></div>
             </div>
-            </div>
-            <div className={classes.wrapper} >
-            <Box className={classes.tagStyle} style= {{backgroundColor: 'yellowgreen'}}>
-              <div style= {{textAlign: 'center'}}> Value1 </div>
-            </Box>
-            &nbsp;
-            <Box className={classes.tagStyle} style= {{backgroundColor: 'aqua'}}>
-              <div style= {{textAlign: 'center'}}> Value2 </div>
-            </Box>
-            &nbsp;
-            <Box className={classes.tagStyle} style= {{backgroundColor: 'pink'}}>
-              <div style= {{textAlign: 'center'}}> Value3 </div>
-            </Box>
             </div>
             </div>
             <div> 
@@ -157,10 +164,12 @@ export default function RockstarCard() {
             <div> <Typography variant="h5">
               Some Quotes:
             </Typography> </div>
-            <div> 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in ex enim. Duis eu erat urna.</div>
-            <div> 2. Nulla consequat, urna tincidunt mollis dapibus, 
-                    lacus libero tincidunt erat, non varius sapien.</div>
-            <div> 3. Fusce viverra blandit purus ac pellentesque. Nullam sed nisl erat.</div>
+
+            <Carousel>
+            {
+                (rockstarDTO.rockstar &&  rockstarDTO.rockstar.recognitions) ? rockstarDTO.rockstar.recognitions.map( (item, i) => <Post key={i} recognition={item} /> ) : <div>default rec goes here</div>
+            }
+             </Carousel>
             </div>
             </div>
           </CardContent>

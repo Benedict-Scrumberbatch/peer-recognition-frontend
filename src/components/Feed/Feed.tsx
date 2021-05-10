@@ -26,7 +26,12 @@ import { Users } from '../../dtos/entity/users.entity';
 import UserService from '../../api/UserService';
 import { Tag } from '../../dtos/entity/tag.entity';
 import { CircularProgress } from '@material-ui/core';
+import RockstarService from '../../api/RockstarService';
+import { ReturnRockstarDto } from '../../dtos/dto/rockstar-stats.dto';
 
+
+const imgLink =
+  "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
 
 const styles = (theme: Theme) => createStyles({
   grow: {
@@ -123,11 +128,15 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
   const triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
   const userApi = new UserService();
   const recApi = new RecognitionService();
+  const rockstarApi = new RockstarService();
   const [postList, setPostList] = useState<Recognition[]>([]);
   const [nextPostUrl, setNextPostUrl] = useState<string>('');
   const [totalPostCount, setPostCount] = useState<number>(0);
   const [morePostBool, setPostBool] = useState<boolean>(true);
   const [nextUserUrl, setNextUserUrl] = useState<string>('');
+  const initialrockstar = new ReturnRockstarDto()
+  const [rockstar, setRockstar] = useState<ReturnRockstarDto>(initialrockstar);
+
 
 
   //Create Rec Consts
@@ -138,7 +147,6 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
   const [recMsg, setRecMsg] = useState("");
   const [open, setOpen] = useState(false);
   const [tagSearchOpen, setTagSearchOpen] = useState(false);
-  const [userSearchPage, setUserSearchPage] = useState(1);
   const [tagOptions, setTagOptions] = useState<Tag[]>([]);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const tagLoading = tagSearchOpen && tagOptions.length === 0;
@@ -163,6 +171,7 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
 
   const handleFeedPaging = () => {
     (async () => {
+      console.log('paging');
       console.log(nextPostUrl);
       const response = await recApi.searchRecsNext(nextPostUrl);
       console.log(response)
@@ -178,13 +187,16 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
   }
 
   const initPostList = () => {
+    console.log('init post');
+    setPostBool(false);
     recApi.paginatedRecs().then(
       response => {
         console.log(response);
         setPostList(response.items);
         setPostCount(response.meta.totalItems);
+        setNextPostUrl(response.links.next);
         if (response.links.next !== "") {
-          setNextPostUrl(response.links.next);
+          setPostBool(true);
         } else {
           setPostBool(false);
         }
@@ -205,7 +217,6 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
       alert(`An Error Occured: ${e}`);
     }
   }
-
 
   useEffect(() => {
     let active = true;
@@ -254,6 +265,9 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
 
   useEffect(() => {
     initPostList();
+    rockstarApi.getRockstar().then((response) => {
+      setRockstar(response)
+    })
   }, [triggerUseEffect])
 
   return (
@@ -266,6 +280,23 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
           </div>
           <InputBase
             placeholder="Search…"
+            onChange={(async (event: any) => {
+                console.log('rec change')
+                if (event.target.value === "") {
+                  initPostList()
+                } else {
+                  const response = await recApi.searchRecs(event.target.value);
+                  setPostList(response.items);
+                  setPostCount(response.meta.totalItems);
+                  setNextPostUrl(response.links.next);
+                  if (response.links.next !== "") {
+                    setPostBool(true);
+                  } else {
+                    setPostBool(false);
+                  }
+                }
+              })
+            }
             classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
@@ -281,11 +312,9 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
               size='small'
               open={userSearchOpen}
               onOpen={() => {
-                setUserSearchPage(1);
                 setUserSearchOpen(true);
               }}
               onClose={() => {
-                setUserSearchPage(1);
                 setUserSearchOpen(false);
               }}
               ListboxProps={{
@@ -303,7 +332,6 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
               }}
               inputValue={userQuery}
               onInputChange={(event, newInputValue) => {
-                setUserSearchPage(1);
                 setUserQuery(newInputValue);
               }}
               getOptionSelected={(userOption: Users, selected: Users) => userOption.employeeId === selected.employeeId}
@@ -382,11 +410,10 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
       </Container>
       <div className={classes.buttonList}>
         <StyledButton onClick={handleOpen} className={classes.buttonItem}>{"Create a Post"} </StyledButton>
-        <StyledButton className={classes.buttonItem}>{"See My Posts"} </StyledButton>
       </div>
       <div className={classes.postList}>
         <div className={classes.postItem}>
-          <Rockstar />
+          <Rockstar rockstar={rockstar} />
         </div>
         <InfiniteScroll
         dataLength={totalPostCount} //This is important field to render the next data
