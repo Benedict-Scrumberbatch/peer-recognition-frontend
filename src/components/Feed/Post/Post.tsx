@@ -196,39 +196,26 @@ export default function Post(props: {recognition: Recognition}) {
               Comments:
             </Typography> </div>
             <Paper style={{ padding: "40px 20px" }}>
+              {post.comments.map((comment, idx)=> {
+              return (
               <Grid container wrap="nowrap" spacing={2}>
                 <Grid item>
                   <Avatar alt="profile photo" src={PlaceholderProfileImg} />                
                 </Grid>
                 <Grid item>
-                  <h4 style={{ margin: 0, textAlign: "left" }}>John Doe</h4>
+                  <h4 style={{ margin: 0, textAlign: "left" }}>[Placeholder]</h4>
                   <p style={{ textAlign: "left" }}>
-                    LOL IKR?{" "}
+                    {comment.msg}
                   </p>  
                 </Grid>
                 <Grid item>
                   <p style={{ margin: 0, textAlign: "left", color: "gray" }}>
-                    posted {(new Date(post.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                    posted {(new Date(comment.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                   </p>
                 </Grid>
               </Grid>
+              )})}
 
-              <Grid container wrap="nowrap" spacing={2}>
-                <Grid item>
-                  <Avatar alt="profile photo" src={PlaceholderProfileImg} />                
-                </Grid>
-                <Grid item>
-                  <h4 style={{ margin: 0, textAlign: "left" }}>Chad Doe</h4>
-                  <p style={{ textAlign: "left" }}>
-                    Yee yeet.{" "}
-                  </p>  
-                </Grid>
-                <Grid item>
-                  <p style={{ margin: 0, textAlign: "left", color: "gray" }}>
-                    posted {(new Date(post.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                  </p>
-                </Grid>
-              </Grid>
             </Paper>
             <div className={classes.searchWrapper}>
               <TextField
