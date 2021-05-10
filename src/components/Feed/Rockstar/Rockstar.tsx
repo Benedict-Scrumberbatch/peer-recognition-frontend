@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 // Assets
 import PlaceholderProfileImg from '../../../assets/img/kitten_placeholder.jpg';
 import { Pie } from 'react-chartjs-2';
+import RockstarService from '../../../api/RockstarService';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -41,8 +42,18 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function RockstarCard() {
+export default async function RockstarCard() {
   const classes = useStyles();
+  const rockstarService = new RockstarService();
+  const rockstarDTO = await rockstarService.getRockstar();
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+  const rockstarStats = rockstarDTO.rockstarStats;
+  const tagVal:String[] = [];
+  const tagCount:number[] = [];
+  rockstarStats.forEach((stat)=>{
+    tagVal.push(stat.tag.value);
+    tagCount.push(stat.countReceived);
+  })
   const chartColors = [
     "#336699",
     "#99CCFF",
@@ -100,10 +111,10 @@ export default function RockstarCard() {
   const data = {
     maintainAspectRatio: false,
     responsive: false,
-    labels: ["a", "b", "c", "d"],
+    labels: tagVal,
     datasets: [
       {
-        data: [300, 50, 100, 50],
+        data: tagCount,
         backgroundColor: chartColors,
         hoverBackgroundColor: chartColors
       }
@@ -118,7 +129,7 @@ export default function RockstarCard() {
               Rockstar of the Month
             </Typography>
             <Typography variant="h5" style = {{marginLeft : 15, color: '#f39c12'}}>
-              February
+              {months[rockstarDTO.rockstar.month-1]}
             </Typography> 
             <div className = {classes.wrapper}>
             <div>
@@ -126,25 +137,12 @@ export default function RockstarCard() {
             <div><img src={PlaceholderProfileImg} alt="profile photo" className={classes.profilePhoto} /> </div>
             <div>
             <div><Typography variant="h6" style={{ display: 'inline-block' }}>
-              <Link href="#" color="inherit" style={{ textDecoration: 'none' }}>John Doe</Link>
+              <Link href="#" color="inherit" style={{ textDecoration: 'none' }}>{rockstarDTO.rockstar.rockstar.firstName} {rockstarDTO.rockstar.rockstar.lastName}</Link>
             </Typography></div>
             <div><Typography variant="body2" color="textSecondary">
-              Engineer at UKG
+              {rockstarDTO.rockstar.rockstar.positionTitle}
             </Typography></div>
             </div>
-            </div>
-            <div className={classes.wrapper} >
-            <Box className={classes.tagStyle} style= {{backgroundColor: 'yellowgreen'}}>
-              <div style= {{textAlign: 'center'}}> Value1 </div>
-            </Box>
-            &nbsp;
-            <Box className={classes.tagStyle} style= {{backgroundColor: 'aqua'}}>
-              <div style= {{textAlign: 'center'}}> Value2 </div>
-            </Box>
-            &nbsp;
-            <Box className={classes.tagStyle} style= {{backgroundColor: 'pink'}}>
-              <div style= {{textAlign: 'center'}}> Value3 </div>
-            </Box>
             </div>
             </div>
             <div> 
