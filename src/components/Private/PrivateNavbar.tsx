@@ -45,7 +45,7 @@ import { Users } from '../../dtos/entity/users.entity';
     - sidebar for route navigation
 */
 
-const drawerWidth = 1000;
+const drawerWidth = 300;
 
 const routeData = [
   { text: "Profile", link: `/profile`, iconFunc: () => { return <AccountBoxIcon /> } },

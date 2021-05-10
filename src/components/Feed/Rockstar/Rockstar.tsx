@@ -13,6 +13,8 @@ import { Pie } from 'react-chartjs-2';
 import RockstarService from '../../../api/RockstarService';
 import { Rockstar } from '../../../dtos/entity/rockstar.entity';
 import { ReturnRockstarDto } from '../../../dtos/dto/rockstar-stats.dto';
+import React from 'react';
+import Post from '../Post';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -159,10 +161,12 @@ export default function RockstarCard(props: {rockstar: ReturnRockstarDto}) {
             <div> <Typography variant="h5">
               Some Quotes:
             </Typography> </div>
-            <div> 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris in ex enim. Duis eu erat urna.</div>
-            <div> 2. Nulla consequat, urna tincidunt mollis dapibus, 
-                    lacus libero tincidunt erat, non varius sapien.</div>
-            <div> 3. Fusce viverra blandit purus ac pellentesque. Nullam sed nisl erat.</div>
+
+            <Carousel>
+            {
+                (rockstarDTO.rockstar &&  rockstarDTO.rockstar.recognitions) ? rockstarDTO.rockstar.recognitions.map( (item, i) => <Post key={i} recognition={item} /> ) : <div>default rec goes here</div>
+            }
+             </Carousel>
             </div>
             </div>
           </CardContent>
