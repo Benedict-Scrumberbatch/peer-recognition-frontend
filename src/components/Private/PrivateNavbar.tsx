@@ -310,7 +310,7 @@ export default function PrivateNavbar(props: any) {
             </CardContent>
             <CardActions>
               <Button>
-                <Post recognition={{msg:"some message here", tags: [{tagId: 1, value:"tag1"}, {tagId: 2, value: "tag2"}], empTo: {firstName: 'john', lastName: 'Snow'}, empFrom: {firstName: 'Bob', lastName: 'Marley'}}}></Post>
+                {/* <Post recognition={{msg:"some message here", tags: [{tagId: 1, value:"tag1"}, {tagId: 2, value: "tag2"}], empTo: {firstName: 'john', lastName: 'Snow'}, empFrom: {firstName: 'Bob', lastName: 'Marley'}}}></Post> */}
               </Button>
             </CardActions>
           </Card>

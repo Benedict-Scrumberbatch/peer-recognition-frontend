@@ -30,6 +30,9 @@ import RockstarService from '../../api/RockstarService';
 import { ReturnRockstarDto } from '../../dtos/dto/rockstar-stats.dto';
 
 
+const imgLink =
+  "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
+
 const styles = (theme: Theme) => createStyles({
   grow: {
     marginTop: theme.spacing(4)
@@ -214,7 +217,6 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
       alert(`An Error Occured: ${e}`);
     }
   }
-
 
   useEffect(() => {
     let active = true;

@@ -2,6 +2,7 @@ import { RecognitionPagination } from "../dtos/dto/pagination.dto";
 import { Recognition } from "../dtos/entity/recognition.entity";
 import { Tag } from "../dtos/entity/tag.entity";
 import { Users } from "../dtos/entity/users.entity";
+import { Comment } from "../dtos/entity/comment.entity";
 import MainApiProtected from "./MainAPIProtected";
 
 export default class RecognitionService extends MainApiProtected {
@@ -28,8 +29,18 @@ export default class RecognitionService extends MainApiProtected {
         });
     }
 
+    public createComment = async (id: number, comment: string): Promise<Comment> => {
+        return await this.instance.post(`/recognitions/${id}/comment`, {
+            "msg": comment
+        });
+    }
+
     public searchRecs = async (query: string, page = 1, limit = 10): Promise<RecognitionPagination> => {
         return await this.instance.get(encodeURI(`/recognitions/search?search=${query}&page=${page}&limit=${limit}`));
+    };
+
+    public employeeRecs = async (employeeId: string, page = 1, limit = 10): Promise<RecognitionPagination> => {
+        return await this.instance.get(encodeURI(`/recognitions/search?empToFrom_id=${employeeId}&page=${page}&limit=${limit}`));
     };
 
     public paginatedRecs = async (page = 1, limit = 10): Promise<RecognitionPagination> => {

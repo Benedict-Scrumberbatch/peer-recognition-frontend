@@ -6,6 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Link from '@material-ui/core/Link';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
+import { useHistory } from 'react-router-dom';
 // Assets
 import PlaceholderProfileImg from '../../../assets/img/kitten_placeholder.jpg';
 import Carousel from 'react-material-ui-carousel'
@@ -60,6 +61,8 @@ export default function RockstarCard(props: {rockstar: ReturnRockstarDto}) {
       tagCount.push(stat.countReceived);
     })
   }
+  const history = useHistory(); // React Router history hook
+
   const chartColors = [
     "#336699",
     "#99CCFF",
@@ -127,7 +130,7 @@ export default function RockstarCard(props: {rockstar: ReturnRockstarDto}) {
     ]
   };
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} onClick={(event: any)=> {if (rockstarDTO.rockstar) {history.push(`/rockstar/${rockstarDTO.rockstar.rockstarID}`)}}}>
       <Box display="flex" flexDirection="row" style={{ marginTop: 3}}>
         <div>
           <CardContent> 

@@ -3,7 +3,6 @@
   component to recognize a person
 */
 
-import React from 'react';
 // Material UI Styling
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { green, red } from '@material-ui/core/colors';
@@ -78,11 +77,13 @@ const ColorButton = withStyles((theme) => ({
   },
 }))(Button);
 
+
 export default function Post(props: {recognition: Recognition}) {
   const classes = useStyles();
   const post = props.recognition;
   const history = useHistory(); // React Router history hook
   
+
   return (
     <Card className={classes.root} onClick={(event: any)=> {history.push(`/recognition/${post.recId}`)}}>
       <Box display="flex" flexDirection="row" style={{ marginTop: 8}}>
@@ -105,7 +106,6 @@ export default function Post(props: {recognition: Recognition}) {
             <Typography variant="body2" color="textSecondary" component="p" style={{ marginTop: 8 }}>
               {post.msg}
             </Typography>
-            
             {post.tags.map((tag, idx) => {
               return (
                 <ColorButton key={idx} variant="contained" color="primary" className={classes.buttons} disableElevation>
