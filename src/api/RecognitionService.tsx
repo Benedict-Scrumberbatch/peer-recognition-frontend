@@ -29,7 +29,7 @@ export default class RecognitionService extends MainApiProtected {
         });
     }
 
-    public createComment = async (id: string, comment: string): Promise<Comment> => {
+    public createComment = async (id: number, comment: string): Promise<Comment> => {
         return await this.instance.post(`/recognitions/${id}/comment`, {
             "msg": comment
         });

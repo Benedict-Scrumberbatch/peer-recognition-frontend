@@ -3,7 +3,7 @@
   component to recognize a person
 */
 
-import React from 'react';
+import  React from 'react';
 // Material UI Styling
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { green, red } from '@material-ui/core/colors';
@@ -26,7 +26,24 @@ import InputBase from '@material-ui/core/InputBase';
 import CreateIcon from '@material-ui/icons/Create';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import RecognitionService from '../../../api/RecognitionService';
+import { useState, useEffect, Fragment } from 'react';
 
+const StyledButton = withStyles({
+  root: {
+    background: 'linear-gradient(45deg, #00b327 30%, #53ff59 99%)',
+    borderRadius: 3,
+    border: 0,
+    color: 'white',
+    height: 48,
+    padding: '0 30px',
+    boxShadow: '0 3px 3px 2px rgba(155, 155, 135, .3)',
+  },
+  label: {
+    textTransform: 'capitalize',
+  },
+
+})(Button);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -118,10 +135,32 @@ const ColorButton = withStyles((theme) => ({
   },
 }))(Button);
 
+
 export default function Post(props: {recognition: Recognition}) {
   const classes = useStyles();
   const post = props.recognition;
-  
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  }
+  const handleClose = () => {
+    setOpen(false);
+  }
+  const [commentMsg, setcommentMsg] = useState("");
+  const recApi = new RecognitionService();
+  const handleCreateComment = async () => {
+    try {
+      if (commentMsg.length > 0) {
+        const response = await recApi.createComment(post.recId, commentMsg);
+  handleClose();    }
+      else {
+        alert("Please fill out all fields.");
+      }
+    } catch (e) {
+      alert(`An Error Occured: ${e}`);
+    }
+  }
+
   return (
     <Card className={classes.root}>
       <Box display="flex" flexDirection="row" style={{ marginTop: 8}}>
@@ -144,9 +183,14 @@ export default function Post(props: {recognition: Recognition}) {
             <Typography variant="body2" color="textSecondary" component="p" style={{ marginTop: 8 }}>
               {post.msg}
             </Typography>
-            
+            {post.tags.map((tag, idx) => {
+              return (
+                <ColorButton key={idx} variant="contained" color="primary" className={classes.buttons} disableElevation>
+                  {tag.value}
+                </ColorButton>
+              )
+            })}
 
-    
 
             <div> <Typography variant="h5" color="textSecondary" component="p" style={{ marginTop: 12 }}>
               Comments:
@@ -197,25 +241,19 @@ export default function Post(props: {recognition: Recognition}) {
               }}
               autoFocus
               margin="dense"
-              id="multiline-recognition"
+              id="multiline-comment"
               label="Write your comment..."
               multiline
               rows={2}
               variant="outlined"
-              // onChange={e => setRecMsg(e.target.value)}
+              onChange={e => setcommentMsg(e.target.value)}
               fullWidth
-            />
+              />
             </div>
+            <StyledButton onClick={handleCreateComment}>
+              Enter Comment
+            </StyledButton>
 
-
-
-            {post.tags.map((tag, idx) => {
-              return (
-                <ColorButton key={idx} variant="contained" color="primary" className={classes.buttons} disableElevation>
-                  {tag.value}
-                </ColorButton>
-              )
-            })}
           </CardContent>
         </div>
       </Box>

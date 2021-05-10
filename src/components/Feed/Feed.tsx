@@ -27,8 +27,6 @@ import UserService from '../../api/UserService';
 import { Tag } from '../../dtos/entity/tag.entity';
 import { CircularProgress } from '@material-ui/core';
 
-import Typography from '@material-ui/core/Typography';
-
 
 const imgLink =
   "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
