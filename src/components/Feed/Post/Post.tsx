@@ -114,18 +114,40 @@ export default function Post(props: {recognition: Recognition}) {
             </Typography>
             
 
+    
 
             <div> <Typography variant="h5" color="textSecondary" component="p" style={{ marginTop: 12 }}>
               Comments:
             </Typography> </div>
             <Paper style={{ padding: "40px 20px" }}>
               <Grid container wrap="nowrap" spacing={2}>
-              <div><img src={PlaceholderProfileImg} alt="profile photo" className={classes.usercommentPhoto} /> </div> 
-              <p style={{ textAlign: "right" }}>
-                LOL totally agree.{" "}
-              </p>
+                <Grid item>
+                  <img src={PlaceholderProfileImg} alt="profile photo" className={classes.usercommentPhoto} /> 
+                </Grid>
+                <Grid item>
+                  <h4 style={{ margin: 0, textAlign: "left" }}>John Doe</h4>
+                  <p style={{ textAlign: "left", color: "gray" }}>
+                    posted {(new Date(post.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                  </p>
+                  <p style={{ textAlign: "left" }}>
+                    LOL totally agree.{" "}
+                  </p>  
+                </Grid>
               </Grid>
-              <h4 style={{ margin: 0, textAlign: "left" }}>John Doe</h4>
+              <Grid container wrap="nowrap" spacing={2}>
+                <Grid item>
+                  <img src={PlaceholderProfileImg} alt="profile photo" className={classes.usercommentPhoto} /> 
+                </Grid>
+                <Grid item>
+                  <h4 style={{ margin: 0, textAlign: "left" }}>Chad Doe</h4>
+                  <p style={{ textAlign: "left", color: "gray" }}>
+                    posted {(new Date(post.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                  </p>
+                  <p style={{ textAlign: "left" }}>
+                    Yeehaw!{" "}
+                  </p>  
+                </Grid>
+              </Grid>
             </Paper>
 
 
