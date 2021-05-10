@@ -26,6 +26,8 @@ import { Users } from '../../dtos/entity/users.entity';
 import UserService from '../../api/UserService';
 import { Tag } from '../../dtos/entity/tag.entity';
 import { CircularProgress } from '@material-ui/core';
+import RockstarService from '../../api/RockstarService';
+import { ReturnRockstarDto } from '../../dtos/dto/rockstar-stats.dto';
 
 
 const styles = (theme: Theme) => createStyles({
@@ -123,12 +125,14 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
   const triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
   const userApi = new UserService();
   const recApi = new RecognitionService();
+  const rockstarApi = new RockstarService();
   const [postList, setPostList] = useState<Recognition[]>([]);
   const [nextPostUrl, setNextPostUrl] = useState<string>('');
   const [totalPostCount, setPostCount] = useState<number>(0);
   const [morePostBool, setPostBool] = useState<boolean>(true);
   const [nextUserUrl, setNextUserUrl] = useState<string>('');
-  const [userRecQuery, setRecQuery] = useState("");
+  const initialrockstar = new ReturnRockstarDto()
+  const [rockstar, setRockstar] = useState<ReturnRockstarDto>(initialrockstar);
 
 
 
@@ -259,6 +263,9 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
 
   useEffect(() => {
     initPostList();
+    rockstarApi.getRockstar().then((response) => {
+      setRockstar(response)
+    })
   }, [triggerUseEffect])
 
   return (
@@ -273,7 +280,6 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
             placeholder="Search…"
             onChange={(async (event: any) => {
                 console.log('rec change')
-                setRecQuery(event.target.value);
                 if (event.target.value === "") {
                   initPostList()
                 } else {
@@ -405,7 +411,7 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
       </div>
       <div className={classes.postList}>
         <div className={classes.postItem}>
-          <Rockstar />
+          <Rockstar rockstar={rockstar} />
         </div>
         <InfiniteScroll
         dataLength={totalPostCount} //This is important field to render the next data

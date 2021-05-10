@@ -8,8 +8,11 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 // Assets
 import PlaceholderProfileImg from '../../../assets/img/kitten_placeholder.jpg';
+import Carousel from 'react-material-ui-carousel'
 import { Pie } from 'react-chartjs-2';
 import RockstarService from '../../../api/RockstarService';
+import { Rockstar } from '../../../dtos/entity/rockstar.entity';
+import { ReturnRockstarDto } from '../../../dtos/dto/rockstar-stats.dto';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,18 +45,19 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default async function RockstarCard() {
+export default function RockstarCard(props: {rockstar: ReturnRockstarDto}) {
   const classes = useStyles();
-  const rockstarService = new RockstarService();
-  const rockstarDTO = await rockstarService.getRockstar();
+  const rockstarDTO = props.rockstar;
   const months = ["January","February","March","April","May","June","July","August","September","October","November","December"]
   const rockstarStats = rockstarDTO.rockstarStats;
   const tagVal:String[] = [];
   const tagCount:number[] = [];
-  rockstarStats.forEach((stat)=>{
-    tagVal.push(stat.tag.value);
-    tagCount.push(stat.countReceived);
-  })
+  if (rockstarStats) {
+    rockstarStats.forEach((stat)=>{
+      tagVal.push(stat.tag.value);
+      tagCount.push(stat.countReceived);
+    })
+  }
   const chartColors = [
     "#336699",
     "#99CCFF",
@@ -129,7 +133,7 @@ export default async function RockstarCard() {
               Rockstar of the Month
             </Typography>
             <Typography variant="h5" style = {{marginLeft : 15, color: '#f39c12'}}>
-              {months[rockstarDTO.rockstar.month-1]}
+              {rockstarDTO.rockstar ? months[rockstarDTO.rockstar.month-1] : 'No Rockstar'}
             </Typography> 
             <div className = {classes.wrapper}>
             <div>
@@ -137,10 +141,10 @@ export default async function RockstarCard() {
             <div><img src={PlaceholderProfileImg} alt="profile photo" className={classes.profilePhoto} /> </div>
             <div>
             <div><Typography variant="h6" style={{ display: 'inline-block' }}>
-              <Link href="#" color="inherit" style={{ textDecoration: 'none' }}>{rockstarDTO.rockstar.rockstar.firstName} {rockstarDTO.rockstar.rockstar.lastName}</Link>
+              <Link href="#" color="inherit" style={{ textDecoration: 'none' }}> { rockstarDTO.rockstar ? `${rockstarDTO.rockstar.rockstar.firstName} ${rockstarDTO.rockstar.rockstar.lastName}` : 'FistName LastName'}</Link>
             </Typography></div>
             <div><Typography variant="body2" color="textSecondary">
-              {rockstarDTO.rockstar.rockstar.positionTitle}
+              {rockstarDTO.rockstar ? `${rockstarDTO.rockstar.rockstar.positionTitle}` : 'PsotionTitle'}
             </Typography></div>
             </div>
             </div>
