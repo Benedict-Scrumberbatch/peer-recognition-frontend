@@ -203,7 +203,8 @@ export default function Post(props: {recognition: Recognition}) {
                   <Avatar alt="profile photo" src={PlaceholderProfileImg} />                
                 </Grid>
                 <Grid item>
-                  <h4 style={{ margin: 0, textAlign: "left" }}>[Placeholder]</h4>
+                  <Link href="#" color="inherit" style={{ textDecoration: 'none' }}>{comment.employeeFrom.firstName}{comment.employeeFrom.lastName}</Link>
+                  <h4 style={{ margin: 0, textAlign: "left" }}>&nbsp;</h4>
                   <p style={{ textAlign: "left" }}>
                     {comment.msg}
                   </p>  
