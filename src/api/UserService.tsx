@@ -13,6 +13,18 @@ export default class UserService extends MainApiProtected {
         return await this.instance.get('users/profile');
     };
 
+    public async uploadJson(file: any) {
+        console.log('uploading');
+        let formData = new FormData();
+    
+        formData.append("file", file);
+        return await this.instance.post("/users/uploadJSON", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          });
+    }
+
     public getStats = async (id: string): Promise<UserStats> => {
         return await this.instance.get(encodeURI(`/users/stats/${id}`));
     };

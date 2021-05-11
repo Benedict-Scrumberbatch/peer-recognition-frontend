@@ -9,6 +9,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
+import UserService from '../../api/UserService';
+
 import Paper from '@material-ui/core/Paper';
 import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
@@ -55,11 +57,13 @@ interface SimpleProps extends WithStyles<typeof styles> {
 
 const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
   const triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
+  const userApi = new UserService();
 
   const [contactOpen, setContactOpen] = useState(false);
   const [passwordOpen, setPasswordOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
+  const [createUserFile, setCreateUserFile] = useState('');
   const [createUsers, setCreateUsers] = useState({
     firstName: "",
     lastName: "",
@@ -94,6 +98,7 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
   const handleDeleteUserClose = () => setDeleteOpen(false)
   const handleCreateUserOpen = () => setCreateOpen(true)
   const handleCreateUserClose = () => setCreateOpen(false)
+ 
 
   return (
     <Container component="main" maxWidth="sm">
@@ -143,7 +148,7 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
                 <Button onClick={handleContactClose}>
                   Cancel
         </Button>
-                <Button onClick={handleContactClose} >
+                <Button >
                   Save
         </Button>
               </DialogActions>
@@ -204,6 +209,10 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
                 <DialogContent>
                   Please upload JSON file of employees you would like to add.
                 <TextField
+                  onChange={(event: any) => {
+                    console.log(event);
+                    setCreateUserFile(event.target.files[0]);
+                  }}
                     margin="dense"
                     id="employees-json"
                     type='file'
@@ -215,7 +224,13 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
                   <Button onClick={handleCreateUserClose}>
                     Cancel
         </Button>
-                  <Button onClick={handleCreateUserClose} >
+                  <Button onClick={(async (event) => {
+                  console.log('saving');
+                  console.log(new Date())
+                  await userApi.uploadJson(createUserFile);
+                  console.log(new Date())
+                  console.log('uploaded')
+                })}  >
                     Save
         </Button>
                 </DialogActions>
