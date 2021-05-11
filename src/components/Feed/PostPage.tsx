@@ -27,7 +27,7 @@ import { Recognition } from '../../dtos/entity/recognition.entity';
 import { Users } from '../../dtos/entity/users.entity';
 import UserService from '../../api/UserService';
 import { Tag } from '../../dtos/entity/tag.entity';
-import { Avatar, CircularProgress, Grid, InputAdornment, Paper, Typography } from '@material-ui/core';
+import { Avatar, CircularProgress, Grid, InputAdornment, Link, Paper, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 
 
@@ -184,31 +184,7 @@ const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
       <Container>
       <div> 
       {!post.recId ? <div>Loading...</div> : <div><div> <Typography variant="h5" color="textSecondary" component="p" style={{ marginTop: 12 }}>
-              Comments:
-            </Typography> </div>
-            <Paper style={{ padding: "40px 20px" }}>
-              {post.comments.map((comment, idx)=> {
-              return (
-              <Grid container wrap="nowrap" spacing={2}>
-                <Grid item>
-                  <Avatar alt="profile photo" src={PlaceholderProfileImg} />                
-                </Grid>
-                <Grid item>
-                  <h4 style={{ margin: 0, textAlign: "left" }}>[Placeholder]</h4>
-                  <p style={{ textAlign: "left" }}>
-                    {comment.msg}
-                  </p>  
-                </Grid>
-                <Grid item>
-                  <p style={{ margin: 0, textAlign: "left", color: "gray" }}>
-                    posted {(new Date(comment.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                  </p>
-                </Grid>
-              </Grid>
-              )})}
-
-            </Paper>
-            <div className={classes.searchWrapper}>
+      <div className={classes.searchWrapper}>
               <TextField
               InputProps={{
                 startAdornment: (
@@ -231,6 +207,33 @@ const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
             <StyledButton onClick={handleCreateComment}>
               Enter Comment
             </StyledButton>
+              <br></br>
+              Comments:
+            </Typography> </div>
+            <Paper style={{ padding: "40px 20px" }}>
+              {post.comments.map((comment, idx)=> {
+              return (
+              <Grid container wrap="nowrap" spacing={2}>
+                <Grid item>
+                  <Avatar alt="profile photo" src={PlaceholderProfileImg} />                
+                </Grid>
+                <Grid item>
+                  <Link href={`/profile/${comment.employeeFrom.employeeId}` } color="inherit" style={{ textDecoration: 'none' }}>{comment.employeeFrom.firstName} {comment.employeeFrom.lastName}</Link>
+                  {/* <h4 style={{ margin: 0, textAlign: "left" }}>&nbsb;</h4> */}
+                  <p style={{ textAlign: "left" }}>
+                    {comment.msg}
+                  </p>  
+                </Grid>
+                <Grid item>
+                  <p style={{ margin: 0, textAlign: "left", color: "gray" }}>
+                    posted {(new Date(comment.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                  </p>
+                </Grid>
+              </Grid>
+              )})}
+
+            </Paper>
+
 </div>}
       </div>
       </Container>
