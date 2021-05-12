@@ -242,7 +242,7 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
               <Button variant="outlined" color="secondary" className={classes.buttons} onClick={handleDeleteUserOpen}>
                 Delete User
           </Button>
-              <Dialog open={deleteOpen} onClose={handleDeleteUserClose} aria-labelledby="form-dialog-title" >
+              <Dialog open={deleteOpen} onClose={handleDeleteUserClose} aria-labelledby="form-dialog-title" maxWidth="sm" fullWidth>
                 <DialogTitle id="form-dialog-title">Delete User</DialogTitle>
                 <DialogContent>
                   <TextField
