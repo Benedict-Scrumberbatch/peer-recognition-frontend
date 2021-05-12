@@ -1,9 +1,14 @@
+import { fileURLToPath } from "url";
+import { EditLoginDto } from "../dtos/dto/edit-login.dto";
+import MainApi from "./MainAPI";
 import MainApiProtected from "./MainAPIProtected";
 
-export default class SettingsService extends MainApiProtected {
+export default class SettingsService extends MainApi {
     public constructor() {
         super();
     }
-    // not a real endpoint
-    // public getSettings = () => this.instance.get('/settings/all');
+
+    public changeLogin = async (details: EditLoginDto) => {
+        return await this.instance.patch('/auth', details);
+    }
 }
