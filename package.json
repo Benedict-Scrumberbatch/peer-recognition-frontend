@@ -85,6 +85,7 @@
     "react-app-rewired": "^2.1.8",
     "react-styleguidist": "^11.1.6",
     "ts-loader": "^8.2.0",
-    "webpack": "^4.44.2"
+    "webpack": "^4.44.2",
+    "webpack-node-externals": "^3.0.0"
   }
 }
