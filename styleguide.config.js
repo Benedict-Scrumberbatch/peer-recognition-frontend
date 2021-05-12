@@ -3,7 +3,7 @@ var webpack = require('webpack');
 
 module.exports = {
 	components: 'src/components/**/[A-Z]*.tsx', 
-	ignore: ['**/src/components/Feed/Feed.tsx','**/*.test.{js,jsx,ts,tsx}','**src/components/Private/PrivateNavbar.tsx'
+	ignore: ['**/tools/postinstall.js', '**/src/components/Feed/Feed.tsx','**/*.test.{js,jsx,ts,tsx}','**src/components/Private/PrivateNavbar.tsx'
 	,'src/components/Private/PrivateRoute.tsx','**/src/components/Signup/Signup.tsx', "**/src/components/Signup/TagSelect.tsx"],
 	  webpackConfig: {
 		plugins: [
@@ -22,7 +22,7 @@ module.exports = {
 					],
 				  },
 				{
-                    test: /\.(js|jsx|tsx|ts)$/,
+                    test: /\.(tsx|ts)$/,
                     exclude: /node_modules/,
                     use: [
                         {
