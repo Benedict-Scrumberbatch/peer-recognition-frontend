@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 // Assets
 import PlaceholderProfileImg from '../../../assets/img/kitten_placeholder.jpg';
 import BackgroundStar from '../../../assets/img/lime-green-star.png';
-import { Recognition } from '../../../dtos/entity/recognition.entity';
+import { Recognition } from '../../../common/entity/recognition.entity';
 import { useHistory } from 'react-router-dom';
 
 

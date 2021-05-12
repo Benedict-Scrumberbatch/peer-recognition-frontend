@@ -1,4 +1,4 @@
-import { Login } from "../dtos/entity/login.entity"
+import { Login } from "../common/entity/login.entity"
 
 // Implementation code where T is the returned data shape
 export function postLogin(url: string, username: string, password: string): Promise<Login> {

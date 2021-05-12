@@ -16,11 +16,11 @@ import UserService from '../../api/UserService';
 // Assets
 import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
 // Types
-import { UserStats } from "../../dtos/interface/userstats.interface";
-import { TagStats } from '../../dtos/entity/tagstats.entity';
+import { UserStats } from "../../common/interface/userstats.interface";
+import { TagStats } from '../../common/entity/tagstats.entity';
 import { useParams } from 'react-router-dom';
-import { Users } from '../../dtos/entity/users.entity';
-import { Recognition } from '../../dtos/entity/recognition.entity';
+import { Users } from '../../common/entity/users.entity';
+import { Recognition } from '../../common/entity/recognition.entity';
 import RecognitionService from '../../api/RecognitionService';
 
 const styles = (theme: Theme) => createStyles({

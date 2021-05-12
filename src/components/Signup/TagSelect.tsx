@@ -6,7 +6,7 @@ import InputBase from '@material-ui/core/InputBase';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 // types
-import { Tag } from '../../dtos/entity/tag.entity';
+import { Tag } from '../../common/entity/tag.entity';
 // icons
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ClearIcon from '@material-ui/icons/Clear';

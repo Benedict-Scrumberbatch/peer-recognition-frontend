@@ -1,5 +1,5 @@
 import { fileURLToPath } from "url";
-import { EditLoginDto } from "../dtos/dto/edit-login.dto";
+import { EditLoginDto } from "../common/dto/edit-login.dto";
 import MainApi from "./MainAPI";
 import MainApiProtected from "./MainAPIProtected";
 

@@ -1,7 +1,7 @@
 import MainApiProtected from "./MainAPIProtected";
-import { Users } from "../dtos/entity/users.entity";
-import { UserStats } from "../dtos/interface/userstats.interface";
-import { UserPagination } from "../dtos/dto/pagination.dto";
+import { Users } from "../common/entity/users.entity";
+import { UserStats } from "../common/interface/userstats.interface";
+import { UserPagination } from "../common/dto/pagination.dto";
 
 export default class UserService extends MainApiProtected {
 

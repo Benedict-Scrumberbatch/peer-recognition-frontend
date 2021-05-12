@@ -21,14 +21,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import SettingsService from '../../api/SettingsService';
 // Assets
 import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
-import { Users } from '../../dtos/entity/users.entity';
+import { Users } from '../../common/entity/users.entity';
 import { settings } from 'cluster';
-import { EditLoginDto } from '../../dtos/dto/edit-login.dto';
-import { Login } from '../../dtos/entity/login.entity';
+import { EditLoginDto } from '../../common/dto/edit-login.dto';
+import { Login } from '../../common/entity/login.entity';
 import AuthLoginService from '../../api/AuthLoginService';
 import auth from '../../api/authHelper';
 import { Autocomplete } from '@material-ui/lab';
-import { Role } from '../../dtos/enum/role.enum';
+import { Role } from '../../common/enum/role.enum';
 
 const styles = (theme: Theme) => createStyles({
   paper: {

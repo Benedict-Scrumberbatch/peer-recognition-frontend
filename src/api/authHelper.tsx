@@ -1,4 +1,4 @@
-import { authDtoFull } from '../dtos/dto/auth.dto';
+import { authDtoFull } from '../common/dto/auth.dto';
 
 const auth = {
 	isAuthenticated() {

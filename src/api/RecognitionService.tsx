@@ -1,8 +1,8 @@
-import { RecognitionPagination } from "../dtos/dto/pagination.dto";
-import { Recognition } from "../dtos/entity/recognition.entity";
-import { Tag } from "../dtos/entity/tag.entity";
-import { Users } from "../dtos/entity/users.entity";
-import { Comment } from "../dtos/entity/comment.entity";
+import { RecognitionPagination } from "../common/dto/pagination.dto";
+import { Recognition } from "../common/entity/recognition.entity";
+import { Tag } from "../common/entity/tag.entity";
+import { Users } from "../common/entity/users.entity";
+import { Comment } from "../common/entity/comment.entity";
 import MainApiProtected from "./MainAPIProtected";
 
 export default class RecognitionService extends MainApiProtected {

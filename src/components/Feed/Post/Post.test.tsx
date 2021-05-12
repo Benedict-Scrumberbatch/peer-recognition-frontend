@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import Post from './Post';
-import { Recognition } from '../../../dtos/entity/recognition.entity';
+import { Recognition } from '../../../common/entity/recognition.entity';
 
 test('renders learn react link', () => {
   const recognition: Recognition = {
