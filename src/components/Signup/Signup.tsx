@@ -79,7 +79,7 @@ const Signup = withStyles(styles)(({ classes }: SimpleProps) => {
     loginAPI.postCreateCompany(name, tags)
       .then((response) => {
         console.log(response);
-        alert(`Success! Company, ${name}, was created`)
+        alert(`Success! Company, ${name}, was created!\nLogin Email: admin@${name.toLowerCase().replace(/\s/g, '')}.com\n Password: password`);
         history.push("/login");
       })
       .catch(error => {
