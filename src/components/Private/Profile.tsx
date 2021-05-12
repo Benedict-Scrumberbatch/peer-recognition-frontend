@@ -22,6 +22,10 @@ import { useParams } from 'react-router-dom';
 import { Users } from '../../common/entity/users.entity';
 import { Recognition } from '../../common/entity/recognition.entity';
 import RecognitionService from '../../api/RecognitionService';
+import Grid from '@material-ui/core/Grid';
+import { sizing } from '@material-ui/system';
+import { Box } from '@material-ui/core';
+import { flexbox } from '@material-ui/system';
 
 const styles = (theme: Theme) => createStyles({
   paper: {
@@ -141,8 +145,9 @@ const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
     })
   }, [triggerUseEffect])
   return (
-    <Container component="main" maxWidth="sm">
+    <Container component="main" maxWidth="lg">
       <CssBaseline />
+      <Box width = "100%" display="flex" justifyContent="center">
       <Paper elevation={3} className={classes.paper}>
         <div className={classes.wrapper}>
           <Avatar alt="profile photo" src={PlaceholderProfileImg} className={classes.avatar} />
@@ -169,7 +174,9 @@ const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
           </Typography>
         </div>
       </Paper>
+      </Box>
       <Container>
+        <Box width="100%" justifyContent="center">
       <InfiniteScroll
         dataLength={totalPostCount} //This is important field to render the next data
         next={handleFeedPaging}
@@ -191,6 +198,7 @@ const Profile = withStyles(styles)(({ classes }: SimpleProps) => {
           )
         })}    
         </InfiniteScroll>
+        </Box>
       </Container>
     </Container>
   )
