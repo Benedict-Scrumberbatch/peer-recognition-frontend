@@ -45,4 +45,8 @@ export default class UserService extends MainApiProtected {
     public getEmail = async(): Promise<{ email: string }> => {
         return await this.instance.get('/users/email');
     }
+
+    public deleteUser = async (id: number) => {
+        return await this.instance.delete(`/users/${id}`);
+    }
 }

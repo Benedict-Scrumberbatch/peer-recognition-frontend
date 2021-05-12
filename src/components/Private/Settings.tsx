@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 // Material UI Styling
 import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
@@ -27,6 +27,8 @@ import { EditLoginDto } from '../../dtos/dto/edit-login.dto';
 import { Login } from '../../dtos/entity/login.entity';
 import AuthLoginService from '../../api/AuthLoginService';
 import auth from '../../api/authHelper';
+import { Autocomplete } from '@material-ui/lab';
+import { Role } from '../../dtos/enum/role.enum';
 
 const styles = (theme: Theme) => createStyles({
   paper: {
@@ -93,6 +95,13 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
   const [newEmail, setNewEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordVerify, setNewPasswordVerify] = useState('');
+  const [userSearchOpen, setUserSearchOpen] = useState(false);
+  const [userQuery, setUserQuery] = useState("");
+  const [targetUser, setTargetUser] = useState<Users | null>(null);
+  const [userList, setUserList] = useState<Users[]>([]);
+  const [nextUserUrl, setNextUserUrl] = useState<string>('');
+  // const [userRole, setUserRole] = useState<Role>(Role.Employee);
+
 
   useEffect(() => {
 
@@ -101,6 +110,7 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
       const userAPI = new UserService();
       const user = await userAPI.getUserProfile();
       setCurrUser(user);
+
 
       const temp_email = await userAPI.getEmail();
       setEmail(temp_email.email);
@@ -126,9 +136,12 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
     handleClearSettings();
   }
   const handleDeleteUserOpen = () => setDeleteOpen(true)
-  const handleDeleteUserClose = () => setDeleteOpen(false)
+  const handleDeleteUserClose = () => {
+    setTargetUser(null);
+    setDeleteOpen(false)
+  }
   const handleCreateUserOpen = () => setCreateOpen(true)
-  const handleCreateUserClose = () =>  {
+  const handleCreateUserClose = () => {
     setCreateOpen(false);
     setCreateUserFile('');
   }
@@ -138,6 +151,16 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
     setNewPassword('');
     setPassword('');
     setNewPasswordVerify('');
+  }
+
+  const handleUserPaging = () => {
+    (async () => {
+      const response = await userApi.searchUserNext(nextUserUrl);
+      if (response.items.length > 0) {
+        setUserList(userList.concat(response.items));
+        setNextUserUrl(response.links.next);
+      }
+    })();
   }
 
   const handleChangeContact = async () => {
@@ -194,6 +217,29 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
   }
 
 
+  useEffect(() => {
+    let active = true;
+    if (userSearchOpen) {
+      (async () => {
+        const response = await userApi.searchUsers(userQuery);
+
+        if (active) {
+          setUserList(response.items);
+          setNextUserUrl(response.links.next);
+        }
+      })();
+    }
+    return () => {
+      active = false;
+    };
+  }, [userQuery, userSearchOpen]);
+
+  useEffect(() => {
+    if (!userSearchOpen) {
+      setUserList([]);
+      setNextUserUrl('');
+    }
+  }, [userSearchOpen]);
 
 
   return (
@@ -305,10 +351,7 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
             </Dialog>
           </div>
 
-
           <div id="admin-settings">
-
-
             <div id="create-user">
               <Button variant="outlined" color="primary" className={classes.buttons} onClick={handleCreateUserOpen}>
                 Create Users
@@ -353,45 +396,83 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
             </div>
 
 
-            {/* <div id="delete-user">
+            <div id="delete-user">
               <Button variant="outlined" color="secondary" className={classes.buttons} onClick={handleDeleteUserOpen}>
                 Delete User
           </Button>
               <Dialog open={deleteOpen} onClose={handleDeleteUserClose} aria-labelledby="form-dialog-title" >
                 <DialogTitle id="form-dialog-title">Delete User</DialogTitle>
                 <DialogContent>
-                  <TextField
-                    margin="dense"
-                    id="company-ID"
-                    label="Company ID"
-                    type="number"
+                  <Autocomplete
                     fullWidth
-                  />
-                  <TextField
-                    margin="dense"
-                    id="employee-id"
-                    label="Employee ID"
-                    type='number'
-                    fullWidth
+                    id="user-search"
+                    open={userSearchOpen}
+                    onOpen={() => {
+                      setUserSearchOpen(true);
+                    }}
+                    onClose={() => {
+                      setUserSearchOpen(false);
+                    }}
+                    ListboxProps={{
+                      style: { maxHeight: 300, overflow: 'auto' },
+                      onScroll: (event: React.SyntheticEvent) => {
+                        const listboxNode = event.currentTarget;
+                        if (listboxNode.scrollTop + listboxNode.clientHeight === listboxNode.scrollHeight) {
+                          handleUserPaging();
+                        }
+                      }
+                    }}
+                    value={targetUser}
+                    onChange={(event: any, newValue: Users | null) => {
+                      setTargetUser(newValue);
+                    }}
+                    inputValue={userQuery}
+                    onInputChange={(event, newInputValue) => {
+                      setUserQuery(newInputValue);
+                    }}
+                    getOptionSelected={(userOption: Users, selected: Users) => userOption.employeeId === selected.employeeId}
+                    getOptionLabel={(userOption) => userOption.firstName + " " + userOption.lastName}
+                    options={userList}
+                    loading={false}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Find User"
+                        variant="outlined"
+                        InputProps={{
+                          ...params.InputProps,
+                        }}
+                      />
+                    )}
                   />
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleDeleteUserClose}>
                     Cancel
         </Button>
-                  <Button onClick={handleDeleteUserClose} >
+                  <Button onClick={(async () => {
+                    try {
+                      if (targetUser && targetUser.employeeId !== undefined) {
+                        await userApi.deleteUser(targetUser.employeeId);
+                        alert("User has been deleted.");
+                        handleDeleteUserClose();
+                      }
+                      else alert("please select a user")
+                    } catch (ex) {
+                      alert(ex);
+                    }
+                  })}>
                     Save
         </Button>
                 </DialogActions>
               </Dialog>
-            </div> */}
+            </div>
           </div>
-
 
         </div>
       </Paper>
-    </Container>
-  )
-})
+    </Container >
+  );
+});
 
 export default Settings;
