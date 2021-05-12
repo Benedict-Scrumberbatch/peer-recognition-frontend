@@ -170,7 +170,7 @@ export default function RockstarCard(props: {rockstar: ReturnRockstarDto}) {
               Some Quotes:
             </Typography> </div>
 
-            <Carousel>
+            <Carousel autoPlay={false}>
             {
                 (rockstarDTO.rockstar &&  rockstarDTO.rockstar.recognitions) ? rockstarDTO.rockstar.recognitions.map( (item, i) => <Post key={i} recognition={item} /> ) : <div>default rec goes here</div>
             }
