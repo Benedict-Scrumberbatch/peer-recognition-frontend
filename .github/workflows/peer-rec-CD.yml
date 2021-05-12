@@ -131,7 +131,7 @@ jobs:
     - name: Github REST API Call
       env:
         CI_TOKEN: ${{ secrets.CI_TOKEN }}
-        PARENT_REPO: Benedict-Scrumberbatch/peer-recognition-deployment
+        PARENT_REPO: Benedict-Scrumberbatch/peer-recognition
         PARENT_BRANCH: master
         WORKFLOW_ID: 8649109
       run: |
