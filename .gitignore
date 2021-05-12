@@ -6,6 +6,8 @@
 .pnp.js
 .npmrc
 
+tsconfig.json
+
 /styleguide
 # testing
 /coverage
