@@ -41,6 +41,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+/**
+ * Special post component that displays the Rockstar of the Month: i.e - the employee who received the most recognitions in the past  
+ * month.
+ * @returns 
+ */
 export default function RockstarCard() {
   const classes = useStyles();
   const chartColors = [
