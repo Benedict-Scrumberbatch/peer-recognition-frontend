@@ -67,7 +67,7 @@ jobs:
            # Git branch where assets will be deployed
           target_branch: gh-pages
            # Build directory to deploy
-          build_dir: styleguide/build
+          build_dir: styleguide
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
