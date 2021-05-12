@@ -6,6 +6,7 @@ module.exports = {
 	ignore: ['**/tools/postinstall.js', '**/src/components/Feed/Feed.tsx','**/*.test.{js,jsx,ts,tsx}','**src/components/Private/PrivateNavbar.tsx'
 	,'src/components/Private/PrivateRoute.tsx','**/src/components/Signup/Signup.tsx', "**/src/components/Signup/TagSelect.tsx"],
 	  webpackConfig: {
+		context: path.resolve('./src'),
 		plugins: [
 			new webpack.ProvidePlugin({
 			  process: 'process/browser',
@@ -22,7 +23,7 @@ module.exports = {
 					],
 				  },
 				{
-                    test: /\.(tsx|ts)$/,
+                    test: /\.(jsx|js|tsx|ts)$/,
                     exclude: /node_modules/,
                     use: [
                         {
