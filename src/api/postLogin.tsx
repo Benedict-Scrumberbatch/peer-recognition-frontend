@@ -1,12 +1,14 @@
+import { Login } from "../dtos/entity/login.entity"
+
 // Implementation code where T is the returned data shape
-export function postLogin(url: string, username: string, password: string): Promise<any> {
+export function postLogin(url: string, username: string, password: string): Promise<Login> {
   return fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
-    body: JSON.stringify({ "username": username, "password": password })
+    body: JSON.stringify({ username,  password })
   })
     .then(response => {
       if (!response.ok) {

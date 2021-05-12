@@ -3,7 +3,6 @@
   component to recognize a person
 */
 
-import React from 'react';
 // Material UI Styling
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { green, red } from '@material-ui/core/colors';
@@ -18,6 +17,8 @@ import Typography from '@material-ui/core/Typography';
 import PlaceholderProfileImg from '../../../assets/img/kitten_placeholder.jpg';
 import BackgroundStar from '../../../assets/img/lime-green-star.png';
 import { Recognition } from '../../../dtos/entity/recognition.entity';
+import { useHistory } from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,6 +77,7 @@ const ColorButton = withStyles((theme) => ({
     },
   },
 }))(Button);
+
 /**
  * Post component that shows a single recognition on the timeline.
  * @param props recognition 
@@ -84,31 +86,32 @@ const ColorButton = withStyles((theme) => ({
 export default function Post(props: {recognition: Recognition}) {
   const classes = useStyles();
   const post = props.recognition;
+  const history = useHistory(); // React Router history hook
   
+
   return (
-    <Card className={classes.root}>
+    <Card className={classes.root} onClick={(event: any)=> {history.push(`/recognition/${post.recId}`)}}>
       <Box display="flex" flexDirection="row" style={{ marginTop: 8}}>
         <div>
           <img src={PlaceholderProfileImg} alt="profile" className={classes.profilePhoto} />
           <Typography variant="body2" color="textSecondary" style={{ marginLeft: 20 }}>
-              {(new Date(post.postDate)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              {(new Date(post.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </Typography>
         </div>
         <div>
           <CardContent>
             <Typography variant="h4" className={classes.themeColor} style={{ display: 'inline-block' }}>
-              <Link href="#" color="inherit" style={{ textDecoration: 'none' }}>{post.empTo.firstName} {post.empTo.lastName}</Link>
+              <Link href={`/profile/${post.empTo.employeeId}` } color="inherit" style={{ textDecoration: 'none' }}>{post.empTo.firstName} {post.empTo.lastName}</Link>
             </Typography>
             <Typography variant="h6" color="textSecondary" style={{ display: 'inline-block' }}>
               &nbsp;has been recognized by&nbsp;
-              <Link href="#" color="inherit" style={{ textDecoration: 'none' }}>{post.empFrom.firstName} {post.empFrom.lastName}</Link>
+              <Link href={`/profile/${post.empFrom.employeeId}` } color="inherit" style={{ textDecoration: 'none' }}>{post.empFrom.firstName} {post.empFrom.lastName}</Link>
             </Typography>
             
             <Typography variant="body2" color="textSecondary" component="p" style={{ marginTop: 8 }}>
               {post.msg}
             </Typography>
-            
-            {post.tags.map((tag: any, idx: number) => {
+            {post.tags.map((tag, idx) => {
               return (
                 <ColorButton key={idx} variant="contained" color="primary" className={classes.buttons} disableElevation>
                   {tag.value}
