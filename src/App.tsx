@@ -11,7 +11,6 @@ import Signup from './components/Signup';
 
 import { makeStyles } from '@material-ui/core/styles';
 import PostPage from './components/Feed/PostPage';
-import RockstarPage from './components/Feed/RockstarPage';
 
 
 const NotFound: FunctionComponent<{}> = () => <h1>Not Found</h1>;
@@ -41,7 +40,6 @@ function App () {
             <PrivateRoute path="/feed" component={Feed} />
             <PrivateRoute path="/profile/:id" component={Profile} />
             <PrivateRoute path="/recognition/:id" component={PostPage} />
-            <PrivateRoute path="/rockstar/:id" component={RockstarPage} />
             {/* <PrivateRoute path="/profile" component={Profile} /> */}
             <PrivateRoute path="/settings" component={Settings} />
             <Route path="/404" component={NotFound} />

@@ -129,6 +129,7 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
   const userApi = new UserService();
   const recApi = new RecognitionService();
   const rockstarApi = new RockstarService();
+  const [showRockstar, setShowRockstar] = useState(true);
   const [postList, setPostList] = useState<Recognition[]>([]);
   const [nextPostUrl, setNextPostUrl] = useState<string>('');
   const [totalPostCount, setPostCount] = useState<number>(0);
@@ -283,12 +284,14 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
             onChange={(async (event: any) => {
                 console.log('rec change')
                 if (event.target.value === "") {
-                  initPostList()
+                  initPostList();
+                  setShowRockstar(true);
                 } else {
                   const response = await recApi.searchRecs(event.target.value);
                   setPostList(response.items);
                   setPostCount(response.meta.totalItems);
                   setNextPostUrl(response.links.next);
+                  setShowRockstar(false);
                   if (response.links.next !== "") {
                     setPostBool(true);
                   } else {
@@ -412,9 +415,9 @@ const Feed = withStyles(styles)(({ classes }: SimpleProps) => {
         <StyledButton onClick={handleOpen} className={classes.buttonItem}>{"Create a Post"} </StyledButton>
       </div>
       <div className={classes.postList}>
-        <div className={classes.postItem}>
+        {showRockstar && rockstar.rockstar && <div className={classes.postItem}>
           <Rockstar rockstar={rockstar} />
-        </div>
+        </div>} 
         <InfiniteScroll
         dataLength={totalPostCount} //This is important field to render the next data
         next={handleFeedPaging}

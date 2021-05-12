@@ -4,6 +4,7 @@ import { Tag } from "../common/entity/tag.entity";
 import { Users } from "../common/entity/users.entity";
 import { Comment } from "../common/entity/comment.entity";
 import MainApiProtected from "./MainAPIProtected";
+import { Reaction } from "../common/entity/reaction.entity";
 
 export default class RecognitionService extends MainApiProtected {
     public constructor() {
@@ -16,6 +17,11 @@ export default class RecognitionService extends MainApiProtected {
     public getRec = async (id: string): Promise<Recognition> => {
         return await this.instance.get(`/recognitions/${id}`);
     };
+
+    public getComment = async (id: string): Promise<Comment> => {
+        return await this.instance.get(`/recognitions/comment/${id}`);
+    };
+
 
     public getAllTags = async (): Promise<Tag[]> => {
         return await this.instance.get('/tag');
@@ -33,6 +39,31 @@ export default class RecognitionService extends MainApiProtected {
         return await this.instance.post(`/recognitions/${id}/comment`, {
             "msg": comment
         });
+    }
+
+    public createReport = async (id: number, report: string): Promise<Comment> => {
+        return await this.instance.post(`/recognitions/${id}/report`, {
+            "msg": report
+        });
+    }
+
+    
+    public createCommentReport = async (id: number, report: string): Promise<Comment> => {
+        return await this.instance.post(`/recognitions/comment/${id}/report`, {
+            "msg": report
+        });
+    }
+
+    public likeRec = async (id: number): Promise<Reaction> => {
+        return await this.instance.post(`/recognitions/${id}/reaction`, {});
+    }
+
+    public likeCommentRec = async (id: number): Promise<Reaction> => {
+        return await this.instance.post(`/recognitions/comment/${id}/reaction`, {});
+    }
+
+    public deleteLike = async (id: number): Promise<Reaction> => {
+        return await this.instance.delete(`/recognitions/reaction/${id}`);
     }
 
     public searchRecs = async (query: string, page = 1, limit = 10): Promise<RecognitionPagination> => {

@@ -4,6 +4,8 @@ import { Theme } from '@material-ui/core/styles/createMuiTheme';
 import { fade, createStyles, withStyles, WithStyles, responsiveFontSizes } from "@material-ui/core/styles";
 // Material UI Comopnents
 import TextField from '@material-ui/core/TextField';
+
+// Material UI Components
 import Container from '@material-ui/core/Container';
 import Button from '@material-ui/core/Button';
 import PlaceholderProfileImg from '../../assets/img/kitten_placeholder.jpg';
@@ -24,11 +26,13 @@ import Rockstar from './Rockstar';
 // Services
 import RecognitionService from '../../api/RecognitionService';
 import { Recognition } from '../../common/entity/recognition.entity';
+import { Comment } from '../../common/entity/comment.entity';
 import { Users } from '../../common/entity/users.entity';
 import UserService from '../../api/UserService';
 import { Tag } from '../../common/entity/tag.entity';
 import { Avatar, CircularProgress, Grid, InputAdornment, Link, Paper, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
+import CommentComponent from './Comment';
 
 
 
@@ -129,10 +133,32 @@ interface SimpleProps extends WithStyles<typeof styles> {
 
 
 const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
-  let triggerUseEffect = true; // changing the value of this varable will rerender the useEffect hook
+  const userApi = new UserService();
+
+
   const params = useParams<ParamTypes>();
   const initialPost: Recognition = new Recognition();
   const [post, setPost] = useState(initialPost);
+  const [reload, setReload] = useState(true);
+  const [reportMsg, setReportMsg] = useState('');
+  const [userProfile, setProfile] = useState<Users>();
+  const [profileUpdate, setProfileUpdate] = useState(true);
+
+
+  const handleReport = async () => {
+    try {
+      if (reportMsg.length > 0) {
+        const response = await recApi.createReport(post.recId, reportMsg);
+      }
+      else {
+        alert("Please fill out all fields.");
+      }
+    } catch (e) {
+      alert(`An Error Occured: ${e}`);
+    }
+  }
+
+
 
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -147,8 +173,10 @@ const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
     try {
       if (commentMsg.length > 0) {
         const response = await recApi.createComment(post.recId, commentMsg);
-        triggerUseEffect = !triggerUseEffect
-  handleClose();    }
+        console.log(response);
+        setReload(!reload);
+        setcommentMsg('');
+      }
       else {
         alert("Please fill out all fields.");
       }
@@ -158,17 +186,21 @@ const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
   }
 
 
-  //Create Rec Consts
-  const [userCommemt, setUserComment] = useState("");
 
+  useEffect(() => {
+    userApi.getUserProfile().then(response => {
+      setProfile(response)
+    })
+  }, [profileUpdate])
 
 
   useEffect(() => {
+    console.log('updating')
     const recognitionAPI = new RecognitionService();
     recognitionAPI.getRec(params.id).then(
       (rec: Recognition) => {console.log(rec); setPost(rec);}
     );
-  }, [triggerUseEffect])
+  }, [reload])
 
   return (
     <Container maxWidth="lg">
@@ -193,6 +225,7 @@ const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
                   </InputAdornment>
                 ),
               }}
+              value={commentMsg}
               autoFocus
               margin="dense"
               id="multiline-comment"
@@ -213,23 +246,24 @@ const PostPage = withStyles(styles)(({ classes }: SimpleProps) => {
             <Paper style={{ padding: "40px 20px" }}>
               {post.comments.map((comment, idx)=> {
               return (
-              <Grid container wrap="nowrap" spacing={2}>
-                <Grid item>
-                  <Avatar alt="profile photo" src={PlaceholderProfileImg} />                
-                </Grid>
-                <Grid item>
-                  <Link href={`/profile/${comment.employeeFrom.employeeId}` } color="inherit" style={{ textDecoration: 'none' }}>{comment.employeeFrom.firstName} {comment.employeeFrom.lastName}</Link>
-                  {/* <h4 style={{ margin: 0, textAlign: "left" }}>&nbsb;</h4> */}
-                  <p style={{ textAlign: "left" }}>
-                    {comment.msg}
-                  </p>  
-                </Grid>
-                <Grid item>
-                  <p style={{ margin: 0, textAlign: "left", color: "gray" }}>
-                    posted {(new Date(comment.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                  </p>
-                </Grid>
-              </Grid>
+                <CommentComponent comment={comment}></CommentComponent>
+              // <Grid container wrap="nowrap" spacing={2}>
+              //   <Grid item>
+              //     <Avatar alt="profile photo" src={PlaceholderProfileImg} />                
+              //   </Grid>
+              //   <Grid item>
+              //     <Link href={`/profile/${comment.employeeFrom.employeeId}` } color="inherit" style={{ textDecoration: 'none' }}>{comment.employeeFrom.firstName} {comment.employeeFrom.lastName}</Link>
+              //     {/* <h4 style={{ margin: 0, textAlign: "left" }}>&nbsb;</h4> */}
+              //     <p style={{ textAlign: "left" }}>
+              //       {comment.msg}
+              //     </p>  
+              //   </Grid>
+              //   <Grid item>
+              //     <p style={{ margin: 0, textAlign: "left", color: "gray" }}>
+              //       posted {(new Date(comment.createdAt!)).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              //     </p>
+              //   </Grid>
+              // </Grid>
               )})}
 
             </Paper>

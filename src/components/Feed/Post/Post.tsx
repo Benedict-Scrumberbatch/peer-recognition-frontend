@@ -4,9 +4,15 @@
 */
 
 // Material UI Styling
+import React, { useState, useEffect, Fragment } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { green, red } from '@material-ui/core/colors';
+import TextField from '@material-ui/core/TextField';
+import CreateIcon from '@material-ui/icons/Create';
+
 // Material UI Components
+import { InputAdornment} from '@material-ui/core';
+
 import Link from '@material-ui/core/Link'; // replace with react-router link for in-app routing
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -18,6 +24,9 @@ import PlaceholderProfileImg from '../../../assets/img/kitten_placeholder.jpg';
 import BackgroundStar from '../../../assets/img/lime-green-star.png';
 import { Recognition } from '../../../common/entity/recognition.entity';
 import { useHistory } from 'react-router-dom';
+import RecognitionService from '../../../api/RecognitionService';
+import UserService from '../../../api/UserService';
+import { Users } from '../../../common/entity/users.entity';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -78,16 +87,74 @@ const ColorButton = withStyles((theme) => ({
   },
 }))(Button);
 
+
+
 /**
  * Post component that shows a single recognition on the timeline.
  * @param props recognition 
  * @returns 
  */
 export default function Post(props: {recognition: Recognition}) {
+  const recApi = new RecognitionService();
+  const userApi = new UserService();
+
   const classes = useStyles();
-  const post = props.recognition;
+  const initPost = props.recognition;
+  console.log(initPost)
+  const [post, setPost] = useState(initPost);
+  const [triggerPost, setPostTrigger] = useState(true);
+  const [reportMsg, setReportMsg] = useState('');
+  const [userProfile, setProfile] = useState<Users>();
+  const [profileUpdate, setProfileUpdate] = useState(true);
+
+
+
   const history = useHistory(); // React Router history hook
+
+
+  const handleReport = async () => {
+    try {
+      if (reportMsg.length > 0) {
+        const response = await recApi.createReport(post.recId, reportMsg);
+      }
+      else {
+        alert("Please fill out all fields.");
+      }
+    } catch (e) {
+      alert(`An Error Occured: ${e}`);
+    }
+  }
   
+  const handleLike = async () => {
+    try {
+      console.log(post)
+      const match = post.reactions.find(react => react.employeeFrom.employeeId === userProfile.employeeId)
+      console.log(match)
+      if (match) {
+        await recApi.deleteLike(match.reactionID);
+      } else {
+        await recApi.likeRec(post.recId);
+      }
+      setPostTrigger(!triggerPost)
+
+
+    } catch (e) {
+      alert(`An Error Occured: ${e}`);
+    }
+  }
+  
+  useEffect(() => {
+    userApi.getUserProfile().then(response => {
+      setProfile(response)
+    })
+  }, [profileUpdate])
+
+  useEffect(() => {
+    recApi.getRec(post.recId.toString()).then(response => {
+      console.log(response)
+      setPost(response);
+    })
+  }, [triggerPost])
 
   return (
     <Card className={classes.root} onClick={(event: any)=> {history.push(`/recognition/${post.recId}`)}}>
@@ -118,6 +185,32 @@ export default function Post(props: {recognition: Recognition}) {
                 </ColorButton>
               )
             })}
+            <Button onClick={handleLike}>
+              Like: {post.reactions.length}
+            </Button>
+            <TextField
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <CreateIcon />
+                  </InputAdornment>
+                ),
+              }}
+              value={reportMsg}
+              autoFocus
+              margin="dense"
+              id="multiline-comment"
+              label="Write your comment..."
+              multiline
+              rows={2}
+              variant="outlined"
+              onChange={e => setReportMsg(e.target.value)}
+              fullWidth
+              />
+              <br></br>
+            <Button onClick={handleReport}>
+              Enter Report
+            </Button>
           </CardContent>
         </div>
       </Box>
