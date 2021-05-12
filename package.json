@@ -20,6 +20,7 @@
     "@types/react-router-dom": "^5.1.7",
     "ast-types": "^0.14.2",
     "axios": "^0.21.1",
+    "babel-plugin-transform-typescript-metadata": "^0.3.2",
     "chart.js": "^3.0.0",
     "cross-env": "^7.0.3",
     "env-cmd": "^10.1.0",
