@@ -351,7 +351,7 @@ const Settings = withStyles(styles)(({ classes }: SimpleProps) => {
             </Dialog>
           </div>
 
-          <div id="admin-settings">
+          <div id="admin-settings" hidden={currUser.role === Role.Admin ? false: true}>
             <div id="create-user">
               <Button variant="outlined" color="primary" className={classes.buttons} onClick={handleCreateUserOpen}>
                 Create Users
