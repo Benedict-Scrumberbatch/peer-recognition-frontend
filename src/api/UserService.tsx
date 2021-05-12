@@ -1,7 +1,7 @@
 import MainApiProtected from "./MainAPIProtected";
-import { Users } from "../dtos/entity/users.entity";
-import { UserStats } from "../dtos/interface/userstats.interface";
-import { UserPagination } from "../dtos/dto/pagination.dto";
+import { Users } from "../common/entity/users.entity";
+import { UserStats } from "../common/interface/userstats.interface";
+import { UserPagination } from "../common/dto/pagination.dto";
 
 export default class UserService extends MainApiProtected {
 
@@ -40,5 +40,13 @@ export default class UserService extends MainApiProtected {
 
     public getUserId = async (id: string): Promise<Users> => {
         return await this.instance.get(`/users/employeeId/${id}`);
+    }
+
+    public getEmail = async(): Promise<{ email: string }> => {
+        return await this.instance.get('/users/email');
+    }
+
+    public deleteUser = async (id: number) => {
+        return await this.instance.delete(`/users/${id}`);
     }
 }

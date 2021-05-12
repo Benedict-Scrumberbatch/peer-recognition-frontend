@@ -1,8 +1,8 @@
 import MainApi from './MainAPI';
-import { Tag } from '../dtos/entity/tag.entity';
-import { authDtoFull, authDto } from '../dtos/dto/auth.dto';
-import { Login } from '../dtos/entity/login.entity';
-import { Company } from '../dtos/entity/company.entity';
+import { Tag } from '../common/entity/tag.entity';
+import { authDtoFull, authDto } from '../common/dto/auth.dto';
+import { Login } from '../common/entity/login.entity';
+import { Company } from '../common/entity/company.entity';
 
 
 export default class AuthLoginService extends MainApi {

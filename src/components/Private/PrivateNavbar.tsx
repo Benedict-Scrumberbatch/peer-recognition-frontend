@@ -37,7 +37,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import auth from '../../api/authHelper';
 import Post from '../Feed/Post';
 import UserService from '../../api/UserService';
-import { Users } from '../../dtos/entity/users.entity';
+import { Users } from '../../common/entity/users.entity';
 /*
   Navigation Menu holds
     - navbar (for settings)

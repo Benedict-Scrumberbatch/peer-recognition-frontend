@@ -23,10 +23,10 @@ import Post from './Post';
 import Rockstar from './Rockstar';
 // Services
 import RecognitionService from '../../api/RecognitionService';
-import { Recognition } from '../../dtos/entity/recognition.entity';
-import { Users } from '../../dtos/entity/users.entity';
+import { Recognition } from '../../common/entity/recognition.entity';
+import { Users } from '../../common/entity/users.entity';
 import UserService from '../../api/UserService';
-import { Tag } from '../../dtos/entity/tag.entity';
+import { Tag } from '../../common/entity/tag.entity';
 import { Avatar, CircularProgress, Grid, InputAdornment, Link, Paper, Typography } from '@material-ui/core';
 import { useParams } from 'react-router-dom';
 

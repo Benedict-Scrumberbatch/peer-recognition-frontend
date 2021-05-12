@@ -16,8 +16,9 @@ import Typography from '@material-ui/core/Typography';
 // Assets
 import PlaceholderProfileImg from '../../../assets/img/kitten_placeholder.jpg';
 import BackgroundStar from '../../../assets/img/lime-green-star.png';
-import { Recognition } from '../../../dtos/entity/recognition.entity';
+import { Recognition } from '../../../common/entity/recognition.entity';
 import { useHistory } from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,7 +78,11 @@ const ColorButton = withStyles((theme) => ({
   },
 }))(Button);
 
-
+/**
+ * Post component that shows a single recognition on the timeline.
+ * @param props recognition 
+ * @returns 
+ */
 export default function Post(props: {recognition: Recognition}) {
   const classes = useStyles();
   const post = props.recognition;

@@ -19,7 +19,7 @@ import Alert from '@material-ui/lab/Alert';
 // utils
 import AuthLoginService from '../../api/AuthLoginService';
 // types
-import { Tag } from '../../dtos/entity/tag.entity';
+import { Tag } from '../../common/entity/tag.entity';
 // custom components
 import TagSelect from './TagSelect'
 

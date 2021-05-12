@@ -12,6 +12,8 @@ on:
   workflow_dispatch:
 env:
   NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+  CI: false
+
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:

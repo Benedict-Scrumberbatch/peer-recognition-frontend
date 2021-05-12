@@ -12,8 +12,8 @@ import PlaceholderProfileImg from '../../../assets/img/kitten_placeholder.jpg';
 import Carousel from 'react-material-ui-carousel'
 import { Pie } from 'react-chartjs-2';
 import RockstarService from '../../../api/RockstarService';
-import { Rockstar } from '../../../dtos/entity/rockstar.entity';
-import { ReturnRockstarDto } from '../../../dtos/dto/rockstar-stats.dto';
+import { Rockstar } from '../../../common/entity/rockstar.entity';
+import { ReturnRockstarDto } from '../../../common/dto/rockstar-stats.dto';
 import React from 'react';
 import Post from '../Post';
 
@@ -48,6 +48,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+/**
+ * Special post component that displays the Rockstar of the Month: i.e - the employee who received the most recognitions in the past  
+ * month.
+ * @returns 
+ */
 export default function RockstarCard(props: {rockstar: ReturnRockstarDto}) {
   const classes = useStyles();
   const rockstarDTO = props.rockstar;

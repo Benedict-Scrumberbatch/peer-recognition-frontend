@@ -1,5 +1,5 @@
 import MainApiProtected from "./MainAPIProtected";
-import { ReturnRockstarDto} from '../dtos/dto/rockstar-stats.dto';
+import { ReturnRockstarDto} from '../common/dto/rockstar-stats.dto';
 
 export default class RockstarService extends MainApiProtected {
     public constructor() {

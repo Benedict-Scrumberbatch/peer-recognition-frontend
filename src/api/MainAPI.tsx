@@ -1,4 +1,4 @@
-import { Users } from '../dtos/entity/users.entity';
+import { Users } from '../common/entity/users.entity';
 import HttpClient from './HTTPClient';
 
 let API_URL: string;
