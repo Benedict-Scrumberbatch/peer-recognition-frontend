@@ -48,6 +48,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+/**
+ * Special post component that displays the Rockstar of the Month: i.e - the employee who received the most recognitions in the past  
+ * month.
+ * @returns 
+ */
 export default function RockstarCard(props: {rockstar: ReturnRockstarDto}) {
   const classes = useStyles();
   const rockstarDTO = props.rockstar;

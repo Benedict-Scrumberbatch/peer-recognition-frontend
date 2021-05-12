@@ -56,6 +56,11 @@ type TagSelectProps = {
   setCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
+/** 
+ * Component for selecting tags representing company values.
+ * @param TagSelectProps tags
+ * @returns 
+ */
 const TagSelect: React.FC<TagSelectProps> = ({ tags, setTags, count, setCount }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState('');

@@ -12,6 +12,7 @@ on:
   workflow_dispatch:
 env:
   NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+  CI: false
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -58,18 +59,18 @@ jobs:
       - uses: c-hive/gha-npm-cache@v1
       - run: npm install
       # - run: npm run build # may or may not need to build for docs
-      # - run: npm run docs
-      # - name: GitHub Pages
-      #   # You may pin to the exact commit or the version.
-      #   # uses: crazy-max/ghaction-github-pages@b8f8d291c97fe0edd9fb4ee73018163593418e8f
-      #   uses: crazy-max/ghaction-github-pages@v2.3.0
-      #   with:
-      #     # Git branch where assets will be deployed
-      #     target_branch: gh-pages
-      #     # Build directory to deploy
-      #     build_dir: docs
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.REPO_TOKEN_ACTIONS }}
+      - run: npx styleguidist build
+      - name: GitHub Pages
+         # You may pin to the exact commit or the version.
+         # uses: crazy-max/ghaction-github-pages@b8f8d291c97fe0edd9fb4ee73018163593418e8f
+        uses: crazy-max/ghaction-github-pages@v2.3.0
+        with:
+           # Git branch where assets will be deployed
+          target_branch: gh-pages
+           # Build directory to deploy
+          build_dir: styleguide
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
   npm-publish:
